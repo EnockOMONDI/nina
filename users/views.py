@@ -1,4 +1,5 @@
 import logging
+import threading
 
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
@@ -12,22 +13,24 @@ from .tasks import send_contact_emails, send_corporate_emails, send_package_quot
 logger = logging.getLogger(__name__)
 
 
+def _dispatch_email_async(send_fn, inquiry, label):
+    def _runner():
+        try:
+            send_fn(inquiry)
+            logger.info("%s %s emails sent successfully.", label, inquiry.id)
+        except Exception:
+            logger.exception("%s %s email send failed.", label, inquiry.id)
+
+    threading.Thread(target=_runner, daemon=True).start()
+
+
 def contact_view(request):
     if request.method == "POST":
         form = ContactForm(request.POST)
         if form.is_valid():
             inquiry = form.save()
-            try:
-                send_contact_emails(inquiry)
-                logger.info("Contact inquiry %s emails sent successfully.", inquiry.id)
-                return redirect(f"{reverse('inquiry-success')}?id={inquiry.id}")
-            except Exception as exc:
-                messages.warning(
-                    request,
-                    "Your request was received, but the confirmation email could not be sent. Our team will still contact you.",
-                )
-                logger.exception("Contact inquiry %s email send failed: %s", inquiry.id, exc)
-                return redirect("contact")
+            _dispatch_email_async(send_contact_emails, inquiry, "Contact inquiry")
+            return redirect(f"{reverse('inquiry-success')}?id={inquiry.id}")
         messages.error(request, "Please check the form and try again.")
         logger.warning("Contact form validation failed. Errors: %s", form.errors.as_json())
     else:
@@ -41,17 +44,8 @@ def corporate_view(request):
         form = CorporateInquiryForm(request.POST)
         if form.is_valid():
             inquiry = form.save()
-            try:
-                send_corporate_emails(inquiry)
-                logger.info("Corporate inquiry %s emails sent successfully.", inquiry.id)
-                return redirect(f"{reverse('inquiry-success')}?id={inquiry.id}")
-            except Exception as exc:
-                messages.warning(
-                    request,
-                    "Your corporate inquiry was received, but the confirmation email could not be sent. Our team will still contact you.",
-                )
-                logger.exception("Corporate inquiry %s email send failed: %s", inquiry.id, exc)
-                return redirect("corporates")
+            _dispatch_email_async(send_corporate_emails, inquiry, "Corporate inquiry")
+            return redirect(f"{reverse('inquiry-success')}?id={inquiry.id}")
         messages.error(request, "Please check the form and try again.")
         logger.warning("Corporate form validation failed. Errors: %s", form.errors.as_json())
     else:
@@ -121,17 +115,8 @@ def package_quote_view(request):
 
             inquiry.save()
 
-            try:
-                send_package_quote_emails(inquiry)
-                logger.info("Package quote inquiry %s emails sent successfully.", inquiry.id)
-                return redirect(f"{reverse('inquiry-success')}?id={inquiry.id}")
-            except Exception as exc:
-                messages.warning(
-                    request,
-                    "Your quote request was received, but the confirmation email could not be sent. Our team will still contact you.",
-                )
-                logger.exception("Package quote inquiry %s email send failed: %s", inquiry.id, exc)
-                return redirect(f"{reverse('package-quote')}?package={posted_slug}" if posted_slug else "package-quote")
+            _dispatch_email_async(send_package_quote_emails, inquiry, "Package quote inquiry")
+            return redirect(f"{reverse('inquiry-success')}?id={inquiry.id}")
 
         messages.error(request, "Please check the quote form and try again.")
         logger.warning("Package quote form validation failed. Errors: %s", form.errors.as_json())
