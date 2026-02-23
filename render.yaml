@@ -21,13 +21,12 @@ services:
       echo "🌟 Starting nina Travel web server..."
       gunicorn tours_travels.wsgi:application \
         --bind 0.0.0.0:$PORT \
-        --workers $WEB_CONCURRENCY \
-        --timeout $GUNICORN_TIMEOUT \
+        --workers ${WEB_CONCURRENCY:-1} \
+        --timeout ${GUNICORN_TIMEOUT:-120} \
         --worker-class sync \
         --worker-connections 1000 \
         --max-requests 1000 \
         --max-requests-jitter 100 \
-        --preload \
         --access-logfile - \
         --error-logfile - \
         --log-level info
@@ -43,7 +42,7 @@ services:
       - key: DEBUG
         value: False
       - key: ALLOWED_HOSTS
-        value: ziadatravel.onrender.com,.onrender.com,www.ziadatoursandtravel.com
+        value: nina-50ni.onrender.com
       - key: DATABASE_URL
         fromDatabase:
           name: ziadatravel-db
@@ -55,13 +54,13 @@ services:
       - key: EMAIL_PROVIDER
         value: smtp
       - key: DEFAULT_FROM_EMAIL
-        value: Ziada Tours and Travel <info@ziadatoursandtravel.com>
+        value: Nina Tours and Travel <kipekee254@gmail.com>
       - key: ADMIN_EMAIL
-        value: info@ziadatoursandtravel.com
+        value: info@ninatoursandtravel.com
       - key: EXTRA_EMAIL_RECIPIENTS
         value: ""
       - key: SITE_URL
-        value: https://www.ziadatoursandtravel.com
+        value: https://nina-50ni.onrender.com
       - key: EMAIL_HOST
         value: smtp.gmail.com
       - key: EMAIL_PORT
