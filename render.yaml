@@ -41,6 +41,8 @@ services:
         generateValue: true
       - key: DEBUG
         value: False
+      - key: SECURE_SSL_REDIRECT
+        value: False
       - key: ALLOWED_HOSTS
         value: nina-50ni.onrender.com
       - key: DATABASE_URL
