@@ -1,0 +1,32 @@
+{% extends "ninatoursui/base.html" %}
+{% load static %}
+{% block title %}{{ post.title }} | Nina Insights{% endblock %}
+
+{% block nav %}
+    {% include "ninatoursui/partials/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+<main class="nina-landing pt-8 md:pt-44 pb-14">
+    <section class="max-w-12xl mx-auto px-4 sm:px-6 lg:px-8">
+        <article class="rounded-3xl border border-gray-200 bg-white overflow-hidden shadow-sm">
+            <div class="relative h-64 sm:h-80">
+                {% if post.image %}
+                    <img src="{{ post.image.url }}" alt="{{ post.title }}" class="absolute inset-0 h-full w-full object-cover">
+                {% else %}
+                    <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1800&q=80" alt="{{ post.title }}" class="absolute inset-0 h-full w-full object-cover">
+                {% endif %}
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+            </div>
+            <div class="p-6 sm:p-8">
+                <a href="{% url 'blog-list' %}" class="inline-flex items-center text-sm font-bold text-[#da176e] hover:text-[#bf125f]">&larr; Back to Insights</a>
+                <p class="mt-4 text-xs uppercase tracking-[0.12em] text-gray-500">{{ post.category.title|default:"Insight" }} • {{ post.created|date:"M d, Y" }} • {{ post.views }} views</p>
+                <h1 class="mt-2 text-3xl sm:text-4xl font-extrabold text-[#0f2f5f] leading-tight">{{ post.title }}</h1>
+                <div class="mt-6 prose max-w-none prose-headings:text-[#0f2f5f] prose-a:text-[#da176e] prose-p:text-gray-700">
+                    {{ post.content|safe }}
+                </div>
+            </div>
+        </article>
+    </section>
+</main>
+{% endblock %}

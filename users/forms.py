@@ -1,13 +1,22 @@
 from django import forms
 
+from adminside.models import Hotel, PackageHotelOption
+
 from .models import ContactInquiry, CorporateInquiry, PackageQuoteInquiry
 
 
 TRAVEL_CATEGORY_CHOICES = (
-    ("Safari Experience", "Safari Experience"),
-    ("Beach Holiday", "Beach Holiday"),
+    ("Corporate Travel Management", "Corporate Travel Management"),
+    ("Tours, Holidays & Safaris", "Tours, Holidays & Safaris"),
+    ("Visa Facilitation", "Visa Facilitation"),
+    ("Travel Insurance", "Travel Insurance"),
+    ("Pre-Online Check-In", "Pre-Online Check-In"),
+    ("Airport Transfers", "Airport Transfers"),
+    ("Health Advisory Requirements", "Health Advisory Requirements"),
+    ("Meetings & Conference Facilitation", "Meetings & Conference Facilitation"),
     ("Corporate Travel", "Corporate Travel"),
     ("Ticketing & Reservations", "Ticketing & Reservations"),
+    ("General Inquiry", "General Inquiry"),
 )
 
 BUDGET_RANGE_CHOICES = (
@@ -38,13 +47,10 @@ class ContactForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.fields["package_title"].required = True
-        self.fields["package_slug"].required = True
-
         self.fields["full_name"].required = True
         self.fields["full_name"].widget.attrs.update(
             {
-                "class": "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-primary outline-none",
+                "class": "w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-slate-900 focus:border-[#da176e] focus:ring-2 focus:ring-[#da176e]/15 outline-none",
                 "placeholder": "Brian Otieno",
             }
         )
@@ -52,7 +58,7 @@ class ContactForm(forms.ModelForm):
         self.fields["email"].required = True
         self.fields["email"].widget.attrs.update(
             {
-                "class": "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-primary outline-none",
+                "class": "w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-slate-900 focus:border-[#da176e] focus:ring-2 focus:ring-[#da176e]/15 outline-none",
                 "placeholder": "brian.otieno@gmail.com",
             }
         )
@@ -60,7 +66,7 @@ class ContactForm(forms.ModelForm):
         self.fields["phone"].required = False
         self.fields["phone"].widget.attrs.update(
             {
-                "class": "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-primary outline-none",
+                "class": "w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-slate-900 focus:border-[#da176e] focus:ring-2 focus:ring-[#da176e]/15 outline-none",
                 "placeholder": "07XX XXX XXX (optional)",
             }
         )
@@ -68,23 +74,23 @@ class ContactForm(forms.ModelForm):
         self.fields["company"].required = False
         self.fields["company"].widget.attrs.update(
             {
-                "class": "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-primary outline-none",
-                "placeholder": "Ziada Holdings (optional)",
+                "class": "w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-slate-900 focus:border-[#da176e] focus:ring-2 focus:ring-[#da176e]/15 outline-none",
+                "placeholder": "Company name (optional)",
             }
         )
 
         self.fields["subject"].required = True
         self.fields["subject"].widget.attrs.update(
             {
-                "class": "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-primary outline-none appearance-none",
+                "class": "w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-slate-900 focus:border-[#da176e] focus:ring-2 focus:ring-[#da176e]/15 outline-none appearance-none",
             }
         )
 
         self.fields["message"].required = True
         self.fields["message"].widget.attrs.update(
             {
-                "class": "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-primary outline-none",
-                "placeholder": "E.g. 5-day Maasai Mara safari for a family of 4, travel dates in June.",
+                "class": "w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-slate-900 focus:border-[#da176e] focus:ring-2 focus:ring-[#da176e]/15 outline-none",
+                "placeholder": "Tell us what you need and your preferred travel dates.",
                 "rows": 4,
             }
         )
@@ -177,6 +183,8 @@ class CorporateInquiryForm(forms.ModelForm):
 
 
 class PackageQuoteInquiryForm(forms.ModelForm):
+    hotel_option = forms.ChoiceField(required=False)
+
     class Meta:
         model = PackageQuoteInquiry
         fields = [
@@ -203,6 +211,7 @@ class PackageQuoteInquiryForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
+        package = kwargs.pop("package", None)
         super().__init__(*args, **kwargs)
 
         self.fields["full_name"].required = True
@@ -251,6 +260,40 @@ class PackageQuoteInquiryForm(forms.ModelForm):
             attrs={
                 "class": "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-primary outline-none appearance-none",
             },
+        )
+
+        hotel_choices = [("", "Select hotel option (optional)")]
+        if package:
+            options = (
+                PackageHotelOption.objects.filter(package=package, active=True)
+                .select_related("hotel")
+                .order_by("-is_recommended", "sort_order", "id")
+            )
+            option_count = 0
+            for option in options:
+                label_parts = [option.hotel.name]
+                if option.room_type:
+                    label_parts.append(option.room_type)
+                if option.board_basis:
+                    label_parts.append(option.board_basis)
+                if option.nights:
+                    label_parts.append(f"{option.nights} nights")
+                if option.is_recommended:
+                    label_parts.append("Recommended")
+                hotel_choices.append((str(option.id), " | ".join(label_parts)))
+                option_count += 1
+
+            # Fallback: still provide options when package-specific mappings are not configured yet.
+            if option_count == 0:
+                fallback_hotels = Hotel.objects.filter(active=True).order_by("name")[:50]
+                for hotel in fallback_hotels:
+                    hotel_choices.append((f"hotel:{hotel.id}", f"{hotel.name} | General option"))
+
+        self.fields["hotel_option"].choices = hotel_choices
+        self.fields["hotel_option"].widget = forms.Select(
+            attrs={
+                "class": "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-primary outline-none appearance-none",
+            }
         )
 
         self.fields["special_requests"].required = False

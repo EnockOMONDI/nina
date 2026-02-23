@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
-from adminside.models import Package
+from adminside.models import Hotel, Package, PackageHotelOption
 
 from .forms import ContactForm, CorporateInquiryForm, PackageQuoteInquiryForm
 from .tasks import send_contact_emails, send_corporate_emails, send_package_quote_emails
@@ -33,7 +33,7 @@ def contact_view(request):
     else:
         form = ContactForm()
 
-    return render(request, "pages/contact.html", {"form": form})
+    return render(request, "ninatoursui/pages/contact.html", {"form": form})
 
 
 def corporate_view(request):
@@ -57,7 +57,7 @@ def corporate_view(request):
     else:
         form = CorporateInquiryForm()
 
-    return render(request, "pages/corporates.html", {"form": form})
+    return render(request, "ninatoursui/pages/corporate.html", {"form": form})
 
 
 def inquiry_success_view(request):
@@ -70,7 +70,11 @@ def package_quote_view(request):
     package_slug = request.GET.get("package", "").strip()
 
     if request.method == "POST":
-        form = PackageQuoteInquiryForm(request.POST)
+        posted_slug = request.POST.get("package_slug", "").strip()
+        if posted_slug:
+            package = Package.objects.filter(slug=posted_slug, active=True).first()
+
+        form = PackageQuoteInquiryForm(request.POST, package=package)
         if form.is_valid():
             inquiry = form.save(commit=False)
 
@@ -79,6 +83,41 @@ def package_quote_view(request):
                 package = Package.objects.filter(slug=posted_slug, active=True).first()
                 if package:
                     inquiry.package = package
+
+            selected_hotel_option_id = form.cleaned_data.get("hotel_option", "").strip()
+            if selected_hotel_option_id:
+                selected_hotel_text = ""
+                if selected_hotel_option_id.startswith("hotel:"):
+                    hotel_id = selected_hotel_option_id.split(":", 1)[1]
+                    selected_hotel = Hotel.objects.filter(id=hotel_id, active=True).first()
+                    if selected_hotel:
+                        selected_hotel_text = f"Selected hotel option: {selected_hotel.name}"
+                elif package:
+                    selected_option = (
+                        PackageHotelOption.objects.filter(
+                            id=selected_hotel_option_id,
+                            package=package,
+                            active=True,
+                        )
+                        .select_related("hotel")
+                        .first()
+                    )
+                    if selected_option:
+                        detail_parts = [selected_option.hotel.name]
+                        if selected_option.room_type:
+                            detail_parts.append(selected_option.room_type)
+                        if selected_option.board_basis:
+                            detail_parts.append(selected_option.board_basis)
+                        if selected_option.nights:
+                            detail_parts.append(f"{selected_option.nights} nights")
+                        selected_hotel_text = f"Selected hotel option: {' | '.join(detail_parts)}"
+
+                if selected_hotel_text:
+                    inquiry.special_requests = (
+                        f"{selected_hotel_text}\n{inquiry.special_requests}".strip()
+                        if inquiry.special_requests
+                        else selected_hotel_text
+                    )
 
             inquiry.save()
 
@@ -113,10 +152,10 @@ def package_quote_view(request):
                 "package_duration": package.duration,
                 "package_price": package.price,
             }
-        form = PackageQuoteInquiryForm(initial=initial_data)
+        form = PackageQuoteInquiryForm(initial=initial_data, package=package)
 
     context = {
         "form": form,
         "selected_package": package,
     }
-    return render(request, "pages/package-quote.html", context)
+    return render(request, "ninatoursui/pages/package-quote.html", context)

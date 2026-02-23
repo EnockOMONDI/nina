@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, render
-from django.db.models import Count, Min, Q
+from django.db.models import Min, Q
 
-from .models import Hotel, Package
+from .models import Destination, Hotel, Package
 
 
 def home(request):
@@ -27,55 +27,96 @@ def home(request):
 
 def packages(request):
     package_list = Package.objects.filter(active=True).order_by("-created_at")
-    return render(request, 'pages/packages.html', {"packages": package_list})
+    return render(request, 'ninatoursui/pages/packages.html', {"packages": package_list})
 
 
 def package_detail(request, slug):
     package = get_object_or_404(Package, slug=slug, active=True)
-    return render(request, 'ninatoursui/pages/package-detail.html', {"package": package})
+    availability_rows = list(
+        package.availability_months.filter(active=True).order_by("year", "month", "sort_order", "id")
+    )
+    availability_chips = []
+    for row in availability_rows:
+        month_label = row.get_month_display()
+        label = f"{month_label} {row.year}" if row.year else month_label
+        availability_chips.append(
+            {
+                "label": label,
+                "status": row.status,
+                "notes": row.notes,
+            }
+        )
+
+    hotel_options = list(
+        package.hotel_options.filter(active=True)
+        .select_related("hotel")
+        .order_by("-is_recommended", "sort_order", "id")
+    )
+
+    context = {
+        "package": package,
+        "availability_chips": availability_chips,
+        "hotel_options": hotel_options,
+    }
+    return render(request, 'ninatoursui/pages/package-detail.html', context)
 
 
 def hotels(request):
     hotel_list = Hotel.objects.filter(active=True).order_by("-created_at")
-    return render(request, 'pages/hotels.html', {"hotels": hotel_list})
+    return render(request, 'ninatoursui/pages/hotels.html', {"hotels": hotel_list})
 
 
 def about(request):
-    return render(request, 'pages/aboutus.html')
+    return render(request, 'ninatoursui/pages/aboutus.html')
 
 
 def corporates(request):
-    return render(request, 'pages/corporates.html')
+    return render(request, 'ninatoursui/pages/corporate.html')
 
 
 def destinations(request):
-    base_qs = Package.objects.filter(active=True).exclude(location="")
-    destination_rows = (
-        base_qs.values("location")
-        .annotate(
-            package_count=Count("id"),
-            starting_from=Min("price", filter=Q(is_featured=True, price__gt=0)),
-        )
-        .order_by("location")
-    )
+    selected_destination_slug = request.GET.get("destination", "").strip()
+    destination_pills = Destination.objects.filter(active=True).order_by("sort_order", "name")
+    visible_destinations = destination_pills
+    if selected_destination_slug:
+        visible_destinations = destination_pills.filter(slug=selected_destination_slug)
 
+    base_qs = Package.objects.filter(active=True).select_related("destination")
     destinations_data = []
-    for row in destination_rows:
-        location = row["location"]
-        top_packages = list(
-            base_qs.filter(location=location)
-            .order_by("price", "-created_at")[:2]
-        )
+    for destination in visible_destinations:
+        destination_packages = base_qs.filter(destination=destination)
+        top_packages = list(destination_packages.order_by("price", "-created_at")[:4])
+        for pkg in top_packages:
+            pkg.hotel_options_count = pkg.hotel_options.filter(active=True).count()
+            month_rows = pkg.availability_months.filter(active=True).order_by("year", "month", "sort_order", "id")
+            month_labels = []
+            for month_row in month_rows:
+                month_name = month_row.get_month_display()
+                month_labels.append(f"{month_name} {month_row.year}" if month_row.year else month_name)
+            pkg.available_month_labels = month_labels[:4]
+            pkg.available_month_extra_count = max(0, len(month_labels) - 4)
+
         destinations_data.append(
             {
-                "location": location,
-                "package_count": row["package_count"],
-                "starting_from": row["starting_from"],
+                "name": destination.name,
+                "slug": destination.slug,
+                "package_count": destination_packages.count(),
+                "starting_from": destination_packages.aggregate(
+                    starting_from=Min("price", filter=Q(is_featured=True, price__gt=0))
+                )["starting_from"],
                 "top_packages": top_packages,
             }
         )
 
-    return render(request, "pages/destinations.html", {"destinations": destinations_data})
+    return render(
+        request,
+        "ninatoursui/pages/destinations.html",
+        {
+            "destinations": destinations_data,
+            "destination_pills": destination_pills,
+            "selected_destination_slug": selected_destination_slug,
+        },
+    )
 
 
 def contact(request):

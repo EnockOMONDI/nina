@@ -20,7 +20,7 @@ def blog_list(request):
         "trending_posts": trending,
         "categories": categories,
     }
-    return render(request, "blog/blog_list.html", context)
+    return render(request, "ninatoursui/blogs/blog_list.html", context)
 
 
 def blog_search(request):
@@ -33,14 +33,14 @@ def blog_search(request):
             | Q(content__icontains=query)
         )
     context = {"posts": posts, "query": query}
-    return render(request, "blog/blog_search.html", context)
+    return render(request, "ninatoursui/blogs/blog_search.html", context)
 
 
 def category_detail(request, slug):
     category = get_object_or_404(Category, slug=slug, active=True)
     posts = Post.objects.filter(status="published", category=category)
     context = {"category": category, "posts": posts}
-    return render(request, "blog/category_detail.html", context)
+    return render(request, "ninatoursui/blogs/category_detail.html", context)
 
 
 def blog_detail(request, slug):
@@ -48,7 +48,7 @@ def blog_detail(request, slug):
     Post.objects.filter(pk=post.pk).update(views=F("views") + 1)
     post.refresh_from_db(fields=["views"])
     context = {"post": post}
-    return render(request, "blog/blog_detail.html", context)
+    return render(request, "ninatoursui/blogs/blog_detail.html", context)
 
 
 def blog_detail_redirect(request, pid):

@@ -1,0 +1,94 @@
+{% extends "ninatoursui/base.html" %}
+{% load static %}
+{% block title %}Insights & News | Nina Tours & Travel{% endblock %}
+
+{% block nav %}
+    {% include "ninatoursui/partials/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+<main class="nina-landing pt-8 md:pt-44 pb-14">
+    <section class="max-w-12xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="rounded-3xl border border-gray-200 bg-white p-6 sm:p-8 shadow-sm">
+            <p class="section-kicker">Nina Insights</p>
+            <h1 class="mt-2 text-3xl sm:text-4xl font-extrabold text-[#0f2f5f]">Travel News, Market Updates, and Practical Briefings</h1>
+            <p class="mt-3 text-gray-600 max-w-3xl">
+                Read our latest insights on aviation trends, destination updates, travel policy planning, and East African travel intelligence.
+            </p>
+            <form action="{% url 'blog-search' %}" method="get" class="mt-5 flex max-w-2xl">
+                <input name="q" type="text" placeholder="Search news and insights..." class="w-full rounded-l-xl border border-gray-300 bg-white px-4 py-3 text-sm text-slate-900 focus:border-[#da176e] focus:ring-2 focus:ring-[#da176e]/15 outline-none">
+                <button type="submit" class="rounded-r-xl bg-[#da176e] px-5 py-3 text-sm font-bold text-white hover:bg-[#bf125f] transition-colors">Search</button>
+            </form>
+            <div class="mt-5 flex flex-wrap gap-2">
+                {% for category in categories %}
+                    <a href="{% url 'category-detail' category.slug %}" class="inline-flex items-center rounded-full border border-gray-300 px-4 py-2 text-xs font-bold uppercase tracking-[0.1em] text-[#0f2f5f] hover:border-[#da176e] hover:text-[#da176e] transition-colors">{{ category.title }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-12xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+        <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+            {% if featured_posts %}
+                {% with featured_posts.0 as featured %}
+                    <article class="xl:col-span-2 rounded-3xl border border-gray-200 bg-white overflow-hidden shadow-sm">
+                        <div class="grid grid-cols-1 lg:grid-cols-2">
+                            <div class="relative min-h-[260px]">
+                                {% if featured.image %}
+                                    <img src="{{ featured.image.url }}" alt="{{ featured.title }}" class="absolute inset-0 h-full w-full object-cover">
+                                {% else %}
+                                    <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1400&q=80" alt="{{ featured.title }}" class="absolute inset-0 h-full w-full object-cover">
+                                {% endif %}
+                            </div>
+                            <div class="p-6 sm:p-7">
+                                <p class="text-xs uppercase tracking-[0.14em] font-bold text-[#da176e]">Featured News</p>
+                                <h2 class="mt-2 text-2xl font-extrabold text-[#0f2f5f] leading-snug">{{ featured.title }}</h2>
+                                <p class="mt-3 text-sm text-gray-600 line-clamp-4">{{ featured.excerpt|striptags }}</p>
+                                <a href="{% url 'blog-detail' featured.slug %}" class="mt-5 inline-flex items-center rounded-full bg-[#da176e] px-5 py-2.5 text-sm font-bold text-white hover:bg-[#bf125f] transition-colors">Read Article</a>
+                            </div>
+                        </div>
+                    </article>
+                {% endwith %}
+            {% endif %}
+
+            <aside class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
+                <h3 class="text-lg font-extrabold text-[#0f2f5f]">Trending</h3>
+                <div class="mt-4 space-y-4">
+                    {% for post in trending_posts %}
+                        <a href="{% url 'blog-detail' post.slug %}" class="block rounded-xl border border-gray-200 px-4 py-3 hover:border-[#da176e]/40 hover:bg-[#da176e]/[0.03] transition-colors">
+                            <p class="text-xs uppercase tracking-[0.12em] text-gray-500">{{ post.category.title|default:"Insight" }}</p>
+                            <p class="mt-1 text-sm font-bold text-[#0f2f5f] leading-snug">{{ post.title }}</p>
+                        </a>
+                    {% empty %}
+                        <p class="text-sm text-gray-500">No trending posts yet.</p>
+                    {% endfor %}
+                </div>
+            </aside>
+        </div>
+    </section>
+
+    <section class="max-w-12xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            {% for post in posts %}
+                <article class="rounded-3xl border border-gray-200 bg-white overflow-hidden shadow-sm hover:shadow-[0_14px_30px_rgba(218,23,110,0.10)] transition-shadow">
+                    <div class="relative h-52">
+                        {% if post.image %}
+                            <img src="{{ post.image.url }}" alt="{{ post.title }}" class="absolute inset-0 h-full w-full object-cover">
+                        {% else %}
+                            <img src="https://images.unsplash.com/photo-1529074963764-98f45c47344b?auto=format&fit=crop&w=1400&q=80" alt="{{ post.title }}" class="absolute inset-0 h-full w-full object-cover">
+                        {% endif %}
+                    </div>
+                    <div class="p-5">
+                        <p class="text-xs uppercase tracking-[0.12em] text-gray-500">{{ post.category.title|default:"Insight" }} • {{ post.created|date:"M d, Y" }}</p>
+                        <h3 class="mt-2 text-xl font-extrabold text-[#0f2f5f] leading-snug">{{ post.title }}</h3>
+                        <p class="mt-3 text-sm text-gray-600 line-clamp-3">{{ post.excerpt|striptags }}</p>
+                        <a href="{% url 'blog-detail' post.slug %}" class="mt-4 inline-flex items-center text-sm font-bold text-[#da176e] hover:text-[#bf125f]">Read more</a>
+                    </div>
+                </article>
+            {% empty %}
+                <div class="rounded-3xl border border-gray-200 bg-white p-8 text-sm text-gray-600">No posts published yet.</div>
+            {% endfor %}
+        </div>
+    </section>
+</main>
+{% endblock %}

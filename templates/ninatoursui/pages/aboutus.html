@@ -1,0 +1,132 @@
+{% extends "ninatoursui/base.html" %}
+{% load static %}
+{% block title %}About Us | Nina Tours & Travel{% endblock %}
+
+{% block nav %}
+    {% include "ninatoursui/partials/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+<main class="nina-landing pt-8 md:pt-44 pb-14">
+    <section class="max-w-12xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="relative overflow-hidden rounded-[30px] border border-gray-200 min-h-[420px] sm:min-h-[520px]">
+            <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1800&q=80" alt="Nina Tours team planning travel experiences" class="absolute inset-0 h-full w-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-r from-[#08152f]/85 via-[#0f2f5f]/70 to-[#0f2f5f]/35"></div>
+            <div class="relative z-10 p-6 sm:p-10 lg:p-14 max-w-4xl text-white">
+                <p class="text-xs uppercase tracking-[0.2em] font-extrabold text-[#8ccaff]">About Nina Tours & Travel Ltd</p>
+                <h1 class="mt-4 text-3xl sm:text-5xl lg:text-6xl font-extrabold leading-tight text-white">Reliable Corporate Travel Management with East African Expertise</h1>
+                <p class="mt-5 text-base sm:text-lg text-white/90 leading-relaxed max-w-3xl">
+                    We are an IATA-certified travel management company serving national and multinational organizations with calm, accountable, and responsive support from first request to final arrival.
+                </p>
+                <div class="mt-7 flex flex-wrap gap-3">
+                    <a href="{% url 'contact' %}" class="inline-flex items-center rounded-full bg-[#da176e] px-6 py-3 text-sm font-extrabold text-white hover:bg-[#bf125f] transition-colors">Speak to a Consultant</a>
+                    <a href="{% url 'packages' %}" class="inline-flex items-center rounded-full border border-white/60 bg-white/10 px-6 py-3 text-sm font-extrabold text-white hover:bg-white hover:text-[#0f2f5f] transition-colors">View Safaris & Holidays</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-12xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+            <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+                <p class="text-xs uppercase tracking-[0.16em] text-gray-500 font-bold">Certification</p>
+                <p class="mt-2 text-2xl font-extrabold text-[#0f2f5f]">IATA</p>
+                <p class="mt-1 text-sm text-gray-600">Accredited ticketing and airline standards.</p>
+            </div>
+            <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+                <p class="text-xs uppercase tracking-[0.16em] text-gray-500 font-bold">Coverage</p>
+                <p class="mt-2 text-2xl font-extrabold text-[#0f2f5f]">East Africa + Global</p>
+                <p class="mt-1 text-sm text-gray-600">Inbound, outbound, and corporate travel support.</p>
+            </div>
+            <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+                <p class="text-xs uppercase tracking-[0.16em] text-gray-500 font-bold">Client Segments</p>
+                <p class="mt-2 text-2xl font-extrabold text-[#0f2f5f]">NGOs to MNCs</p>
+                <p class="mt-1 text-sm text-gray-600">Trusted by institutions, SMEs, and communities.</p>
+            </div>
+            <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+                <p class="text-xs uppercase tracking-[0.16em] text-gray-500 font-bold">Support</p>
+                <p class="mt-2 text-2xl font-extrabold text-[#0f2f5f]">Working + After-Hours</p>
+                <p class="mt-1 text-sm text-gray-600">Responsive teams for urgent travel changes.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-12xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+        <div class="grid grid-cols-1 xl:grid-cols-12 gap-8">
+            <div class="xl:col-span-5 rounded-3xl border border-gray-200 bg-white p-7 shadow-sm">
+                <p class="section-kicker">Who We Are</p>
+                <h2 class="mt-2 text-3xl font-extrabold text-[#0f2f5f]">Travel Operations Built for Professional Teams</h2>
+                <p class="mt-4 text-gray-600 leading-relaxed">
+                    Nina Tours & Travel Ltd is headquartered in Nairobi, Kenya. We combine regional knowledge with disciplined delivery to manage flights, accommodations, policy compliance, reporting, and on-ground coordination under one partner.
+                </p>
+                <p class="mt-4 text-gray-600 leading-relaxed">
+                    Our account-led model gives every client continuity. We build traveler profiles, align to travel policy, and maintain clear communication from booking to return.
+                </p>
+                <div class="mt-6 rounded-2xl bg-[#0f2f5f] p-5 text-white">
+                    <p class="text-sm font-bold text-[#8ccaff] uppercase tracking-[0.14em]">Head Office</p>
+                    <p class="mt-2 font-semibold">National Bank Building, Harambee Avenue, 2nd Floor, Nairobi</p>
+                    <p class="mt-1 text-sm text-white/90">P.O. Box 49581-00100</p>
+                    <p class="mt-3 text-sm text-white/90">Office Line: 020 2632600</p>
+                </div>
+            </div>
+
+            <div class="xl:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-5">
+                <article class="rounded-3xl border border-[#da176e]/30 bg-white p-6 shadow-[0_14px_30px_rgba(218,23,110,0.10)]">
+                    <h3 class="text-xl font-extrabold text-[#0f2f5f]">Corporate Travel Management</h3>
+                    <p class="mt-2 text-sm text-gray-600">Flight reservations, ticketing, amendments, policy compliance, and reconciled reporting.</p>
+                </article>
+                <article class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
+                    <h3 class="text-xl font-extrabold text-[#0f2f5f]">Tours, Holidays & Safaris</h3>
+                    <p class="mt-2 text-sm text-gray-600">Luxury safaris, beach holidays, cultural tours, day trips, and inbound/outbound programs.</p>
+                </article>
+                <article class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
+                    <h3 class="text-xl font-extrabold text-[#0f2f5f]">Visa & Insurance Support</h3>
+                    <p class="mt-2 text-sm text-gray-600">Practical guidance for documentation, travel insurance, and health requirement readiness.</p>
+                </article>
+                <article class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
+                    <h3 class="text-xl font-extrabold text-[#0f2f5f]">Meetings & Transfers</h3>
+                    <p class="mt-2 text-sm text-gray-600">Conference logistics, venue coordination, and private airport transfers.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-12xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+        <div class="rounded-3xl border border-gray-200 bg-white p-7 sm:p-9 shadow-sm">
+            <p class="section-kicker">How We Work</p>
+            <h2 class="mt-2 text-3xl font-extrabold text-[#0f2f5f]">Structured Delivery with Clear Accountability</h2>
+            <div class="mt-7 grid grid-cols-1 md:grid-cols-3 gap-5">
+                <div class="rounded-2xl border border-gray-200 bg-gray-50 p-5">
+                    <p class="text-sm font-extrabold text-[#da176e] uppercase tracking-[0.12em]">01. Onboarding</p>
+                    <p class="mt-2 text-sm text-gray-600">Familiarization meeting, SLA alignment, policy setup, and traveler profiling.</p>
+                </div>
+                <div class="rounded-2xl border border-gray-200 bg-gray-50 p-5">
+                    <p class="text-sm font-extrabold text-[#da176e] uppercase tracking-[0.12em]">02. Account Management</p>
+                    <p class="mt-2 text-sm text-gray-600">Dedicated account manager, service monitoring, and quarterly performance reviews.</p>
+                </div>
+                <div class="rounded-2xl border border-gray-200 bg-gray-50 p-5">
+                    <p class="text-sm font-extrabold text-[#da176e] uppercase tracking-[0.12em]">03. Continuous Improvement</p>
+                    <p class="mt-2 text-sm text-gray-600">Feedback loops, complaint resolution, and long-term corrective actions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-12xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+        <div class="rounded-3xl border border-gray-200 bg-gradient-to-r from-[#0f2f5f] to-[#122a4d] p-7 sm:p-9 text-white">
+            <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+                <div>
+                    <p class="text-xs uppercase tracking-[0.18em] font-bold text-[#8ccaff]">Our Commitment</p>
+                    <h2 class="mt-2 text-3xl sm:text-4xl font-extrabold text-white leading-tight">We Stay Close to Your Team Throughout the Travel Lifecycle</h2>
+                    <p class="mt-3 text-white/85 max-w-3xl">
+                        From first request to trip completion, we prioritize punctuality, transparent pricing, and dependable communication in every engagement.
+                    </p>
+                </div>
+                <a href="{% url 'corporates' %}" class="inline-flex items-center justify-center rounded-full bg-[#da176e] px-6 py-3 text-sm font-extrabold text-white hover:bg-[#bf125f] transition-colors">
+                    Request Corporate Setup
+                </a>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

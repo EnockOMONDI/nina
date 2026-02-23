@@ -1,12 +1,12 @@
 services:
   - type: web
-    name: ziadatravel
+    name: ninatours
     env: python
     region: frankfurt
     plan: starter
-    branch: deploy
+    branch: main
     buildCommand: |
-      echo "🚀 Starting Ziada Travel build process..."
+      echo "🚀 Starting nina build process..."
       pip install --upgrade pip
       pip install -r requirements.txt
       echo "📦 Dependencies installed successfully"
@@ -18,7 +18,7 @@ services:
       echo "💾 Cache table created"
       echo "✅ Build completed successfully"
     startCommand: |
-      echo "🌟 Starting Ziada Travel web server..."
+      echo "🌟 Starting nina Travel web server..."
       gunicorn tours_travels.wsgi:application \
         --bind 0.0.0.0:$PORT \
         --workers $WEB_CONCURRENCY \
@@ -49,7 +49,7 @@ services:
           name: ziadatravel-db
           property: connectionString
       - key: DB_CONN_MAX_AGE
-        value: 600
+        value: 0
       - key: DB_CONN_HEALTH_CHECKS
         value: True
       - key: EMAIL_PROVIDER

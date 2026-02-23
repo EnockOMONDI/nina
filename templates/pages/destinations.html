@@ -43,6 +43,23 @@
                                         <div class="min-w-0">
                                             <p class="font-semibold text-white truncate">{{ pkg.title }}</p>
                                             <p class="text-xs text-gray-400">{{ pkg.duration }}</p>
+                                            <p class="text-[11px] text-gray-400 mt-1">
+                                                Hotel options: <span class="text-white font-semibold">{{ pkg.hotel_options_count }}</span>
+                                            </p>
+                                            {% if pkg.available_month_labels %}
+                                                <div class="mt-2 flex flex-wrap gap-1.5">
+                                                    {% for month_label in pkg.available_month_labels %}
+                                                        <span class="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-2 py-0.5 text-[10px] text-primary font-semibold">
+                                                            {{ month_label }}
+                                                        </span>
+                                                    {% endfor %}
+                                                    {% if pkg.available_month_extra_count %}
+                                                        <span class="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-2 py-0.5 text-[10px] text-gray-300">
+                                                            +{{ pkg.available_month_extra_count }} more
+                                                        </span>
+                                                    {% endif %}
+                                                </div>
+                                            {% endif %}
                                         </div>
                                         <a href="{% url 'package-detail' pkg.slug %}" class="text-primary text-xs font-bold uppercase tracking-widest hover:underline">View</a>
                                     </div>
