@@ -1,0 +1,58 @@
+from .settings import *
+import os
+import dj_database_url
+
+DEBUG = False
+
+DATABASES = {
+    'default': dj_database_url.parse(
+        os.getenv('DATABASE_URL'),
+        conn_max_age=int(os.getenv('DB_CONN_MAX_AGE', '600')),
+        conn_health_checks=os.getenv('DB_CONN_HEALTH_CHECKS', 'True').lower() == 'true',
+    )
+}
+
+MAILTRAP_API_TOKEN = os.getenv('MAILTRAP_API_TOKEN', '')
+BREVO_API_KEY = os.getenv('BREVO_API_KEY', BREVO_API_KEY)
+BREVO_SENDER_EMAIL = os.getenv('BREVO_SENDER_EMAIL', BREVO_SENDER_EMAIL)
+BREVO_SENDER_NAME = os.getenv('BREVO_SENDER_NAME', BREVO_SENDER_NAME)
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', DEFAULT_FROM_EMAIL)
+ADMIN_EMAIL = os.getenv('ADMIN_EMAIL', ADMIN_EMAIL)
+JOBS_EMAIL = os.getenv('JOBS_EMAIL', JOBS_EMAIL)
+NEWSLETTER_EMAIL = os.getenv('NEWSLETTER_EMAIL', NEWSLETTER_EMAIL)
+EXTRA_EMAIL_RECIPIENTS = os.getenv('EXTRA_EMAIL_RECIPIENTS', '').split(',')
+SITE_URL = os.getenv('SITE_URL', SITE_URL)
+WHATSAPP_PHONE = os.getenv('WHATSAPP_PHONE', WHATSAPP_PHONE)
+
+EMAIL_PROVIDER = os.getenv('EMAIL_PROVIDER', EMAIL_PROVIDER)
+EMAIL_HOST = os.getenv('EMAIL_HOST', EMAIL_HOST)
+EMAIL_PORT = int(os.getenv('EMAIL_PORT', EMAIL_PORT))
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', str(EMAIL_USE_TLS)).lower() == 'true'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
+EMAIL_TIMEOUT = int(os.getenv('EMAIL_TIMEOUT', EMAIL_TIMEOUT))
+EMAIL_RATE_LIMIT_PER_MINUTE = int(os.getenv('EMAIL_RATE_LIMIT_PER_MINUTE', EMAIL_RATE_LIMIT_PER_MINUTE))
+EMAIL_RATE_LIMIT_PER_HOUR = int(os.getenv('EMAIL_RATE_LIMIT_PER_HOUR', EMAIL_RATE_LIMIT_PER_HOUR))
+
+GOOGLE_ANALYTICS_ID = os.getenv('GOOGLE_ANALYTICS_ID', GOOGLE_ANALYTICS_ID)
+GOOGLE_TAG_MANAGER_ID = os.getenv('GOOGLE_TAG_MANAGER_ID', GOOGLE_TAG_MANAGER_ID)
+ENABLE_ANALYTICS = os.getenv('ENABLE_ANALYTICS', str(ENABLE_ANALYTICS)).lower() == 'true'
+ANALYTICS_TRACK_ADMIN = os.getenv('ANALYTICS_TRACK_ADMIN', str(ANALYTICS_TRACK_ADMIN)).lower() == 'true'
+
+UPLOADCARE_PUBLIC_KEY = os.getenv('UPLOADCARE_PUBLIC_KEY', UPLOADCARE_PUBLIC_KEY)
+UPLOADCARE_SECRET_KEY = os.getenv('UPLOADCARE_SECRET_KEY', UPLOADCARE_SECRET_KEY)
+
+allowed_hosts = os.getenv('ALLOWED_HOSTS', '')
+if allowed_hosts:
+    ALLOWED_HOSTS = [host.strip() for host in allowed_hosts.split(',') if host.strip()]
+else:
+    render_host = os.getenv('RENDER_EXTERNAL_HOSTNAME', '').strip()
+    if render_host:
+        ALLOWED_HOSTS = [render_host, '.onrender.com']
+
+SECURE_SSL_REDIRECT = True
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True

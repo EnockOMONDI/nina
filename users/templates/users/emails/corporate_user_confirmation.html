@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <body style="margin:0;padding:0;background-color:#0c0c0c;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color:#0c0c0c;padding:24px 0;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="600" cellspacing="0" cellpadding="0" style="background-color:#151515;border:1px solid #222;border-radius:18px;overflow:hidden;">
+            <tr>
+              <td style="padding:24px 32px;background:linear-gradient(135deg,#f38120 0%,#fb923c 100%);color:#ffffff;font-family:Arial,Helvetica,sans-serif;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td valign="middle">
+                      <h1 style="margin:0;font-size:24px;letter-spacing:0.5px;">Ziada Tours &amp; Travels</h1>
+                      <p style="margin:6px 0 0 0;font-size:14px;opacity:0.9;">Corporate Travel Desk</p>
+                    </td>
+                    <td align="right" valign="middle">
+                      <img src="{{ site_url }}/static/ziada-logo.png" alt="Ziada Tours & Travels" width="72" height="72" style="display:block;border-radius:8px;">
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:28px 32px;color:#f5f5f5;font-family:Arial,Helvetica,sans-serif;">
+                <p style="margin:0 0 14px 0;font-size:16px;">Hi {{ inquiry.full_name }},</p>
+                <p style="margin:0 0 16px 0;line-height:1.6;color:#d1d1d1;">
+                  Thank you for your corporate inquiry. Our team is reviewing your requirements and will contact you within
+                  <strong>2 to 24 hours</strong>.
+                </p>
+
+                <div style="margin:18px 0;padding:16px;border:1px solid #2a2a2a;border-radius:12px;background-color:#101010;">
+                  <p style="margin:0 0 10px 0;color:#f38120;font-weight:bold;">Inquiry Summary</p>
+                  <p style="margin:0 0 8px 0;color:#d1d1d1;"><strong style="color:#f5f5f5;">Inquiry ID:</strong> {{ inquiry.id }}</p>
+                  <p style="margin:0 0 8px 0;color:#d1d1d1;"><strong style="color:#f5f5f5;">Company:</strong> {{ inquiry.company_name }}</p>
+                  <p style="margin:0 0 8px 0;color:#d1d1d1;"><strong style="color:#f5f5f5;">Service Need:</strong> {{ inquiry.service_needs }}</p>
+                  {% if inquiry.monthly_travelers %}
+                  <p style="margin:0;color:#d1d1d1;"><strong style="color:#f5f5f5;">Monthly Travelers:</strong> {{ inquiry.monthly_travelers }}</p>
+                  {% endif %}
+                </div>
+
+                <p style="margin:0;color:#bfbfbf;font-size:14px;">
+                  If you need to add details, simply reply to this email.
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:18px 32px;border-top:1px solid #222;color:#8f8f8f;font-family:Arial,Helvetica,sans-serif;font-size:12px;">
+                <div style="margin-bottom:8px;color:#bfbfbf;line-height:1.5;">
+                  View Park Towers, Seventeenth Floor, University way
+                </div>
+                <div style="margin-bottom:8px;">
+                  <a href="tel:+254706625612" style="color:#f38120;text-decoration:none;">+254 706 625612</a>
+                  <span style="color:#555;padding:0 6px;">|</span>
+                  <a href="tel:+254734552114" style="color:#f38120;text-decoration:none;">+254 734 552114</a>
+                </div>
+                <div style="margin-bottom:10px;">
+                  <a href="mailto:info@ziadatoursandtravel.com" style="color:#f38120;text-decoration:none;">info@ziadatoursandtravel.com</a>
+                  <span style="color:#555;padding:0 6px;">|</span>
+                  <a href="{{ site_url }}" style="color:#f38120;text-decoration:none;">www.ziadatoursandtravel.com</a>
+                </div>
+                <div>
+                  <a href="https://x.com/ziadatoursandtravel" style="display:inline-block;margin-right:8px;padding:6px 8px;border-radius:6px;background:#1a1a1a;color:#ffffff;text-decoration:none;font-size:11px;">X</a>
+                  <a href="https://www.linkedin.com/company/ziadatoursandtravel" style="display:inline-block;margin-right:8px;padding:6px 8px;border-radius:6px;background:#1a1a1a;color:#ffffff;text-decoration:none;font-size:11px;">in</a>
+                  <a href="https://www.instagram.com/ziadatoursandtravel" style="display:inline-block;margin-right:8px;padding:6px 8px;border-radius:6px;background:#1a1a1a;color:#ffffff;text-decoration:none;font-size:11px;">IG</a>
+                  <a href="https://www.facebook.com/ziadatoursandtravel" style="display:inline-block;padding:6px 8px;border-radius:6px;background:#1a1a1a;color:#ffffff;text-decoration:none;font-size:11px;">f</a>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

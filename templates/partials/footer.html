@@ -1,0 +1,49 @@
+{% load static %}
+<footer class="bg-secondary border-t border-white/5 py-12 mt-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+            <div>
+                <img src="{% static 'ziada-logo.png' %}" alt="Ziada Tours" class="h-20 w-auto object-contain" />
+                <p class="mt-4 text-gray-400 text-sm leading-relaxed">
+                    Premium travel solutions for leisure and corporate journeys across Kenya, Africa, and beyond.
+                </p>
+            </div>
+
+            <div>
+                <h4 class="text-white font-bold uppercase tracking-widest text-xs">Quick Links</h4>
+                <div class="mt-4 space-y-2 text-sm text-gray-400">
+                    <a href="{% url 'home' %}" class="block hover:text-primary transition-colors">Home</a>
+                    <a href="{% url 'packages' %}" class="block hover:text-primary transition-colors">Safaris & Packages</a>
+                    <a href="{% url 'hotels' %}" class="block hover:text-primary transition-colors">Luxury Hotels</a>
+                    <a href="{% url 'destinations' %}" class="block hover:text-primary transition-colors">Destinations</a>
+                    <a href="{% url 'corporates' %}" class="block hover:text-primary transition-colors">Corporates</a>
+                    <a href="{% url 'contact' %}" class="block hover:text-primary transition-colors">Contact</a>
+                </div>
+            </div>
+
+            <div>
+                <h4 class="text-white font-bold uppercase tracking-widest text-xs">Contact Details</h4>
+                <div class="mt-4 space-y-2 text-sm text-gray-400">
+                    <p><i class="fa-solid fa-location-dot text-primary mr-2"></i>View Park Towers, Seventeenth Floor, University way</p>
+                    <p>
+                        <a href="tel:+254706625612" class="hover:text-primary transition-colors">+254 706 625612</a>
+                        <span class="text-gray-600 px-2">|</span>
+                        <a href="tel:+254734552114" class="hover:text-primary transition-colors">+254 734 552114</a>
+                    </p>
+                    <p>
+                        <a href="mailto:info@ziadatoursandtravel.com" class="hover:text-primary transition-colors">info@ziadatoursandtravel.com</a>
+                        <span class="text-gray-600 px-2">|</span>
+                        <a href="https://www.ziadatoursandtravel.com" class="hover:text-primary transition-colors">www.ziadatoursandtravel.com</a>
+                    </p>
+                </div>
+                <div class="flex gap-3 mt-4">
+                    <a href="https://www.instagram.com/ziadatoursandtravel" class="w-9 h-9 glass rounded-full flex items-center justify-center text-gray-400 hover:text-primary transition-all"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/ziadatoursandtravel" class="w-9 h-9 glass rounded-full flex items-center justify-center text-gray-400 hover:text-primary transition-all"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="https://www.linkedin.com/company/ziadatoursandtravel" class="w-9 h-9 glass rounded-full flex items-center justify-center text-gray-400 hover:text-primary transition-all"><i class="fa-brands fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-10 text-center text-gray-600 text-xs">&copy; 2026 Ziada Tours &amp; Travels. All rights reserved.</div>
+    </div>
+</footer>

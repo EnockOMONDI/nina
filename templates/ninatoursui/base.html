@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Nina Tours & Travel{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    maxWidth: {
+                        '12xl': '100rem'
+                    },
+                    colors: {
+                        brand: {
+                            pink: '#da176e',
+                            sky: '#8ccaff',
+                            black: '#000000'
+                        }
+                    },
+                    fontFamily: {
+                        heading: ['Poppins', 'sans-serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif']
+                    },
+                    boxShadow: {
+                        glow: '0 0 0 1px rgba(218, 23, 110, 0.3), 0 10px 40px rgba(218, 23, 110, 0.2)'
+                    }
+                }
+            }
+        };
+    </script>
+    <link rel="stylesheet" href="{% static 'ninatours/index.css' %}">
+    <style>
+        :root { --brand-pink: #da176e; --brand-sky: #8ccaff; --brand-black: #000000; }
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="font-sans antialiased">
+    {% block nav %}{% endblock %}
+    {% block content %}{% endblock %}
+    {% block footer %}{% include 'ninatoursui/partials/footer.html' %}{% endblock %}
+
+    <script>
+        (() => {
+            const btn = document.getElementById('mobile-menu-btn');
+            const menu = document.getElementById('mobile-menu');
+            if (btn && menu) {
+                btn.addEventListener('click', () => {
+                    menu.classList.toggle('hidden');
+                });
+            }
+        })();
+    </script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

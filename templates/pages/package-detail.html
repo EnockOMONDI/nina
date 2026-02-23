@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Package Details | Ziada Tours{% endblock %}
+
+{% block nav %}
+    {% include "partials/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+    <div class="bg-secondary min-h-screen pt-20" id="detail-content">
+        <br><br><br><br><br>
+        <div class="relative h-[60vh] md:h-[70vh] overflow-hidden">
+            <img id="pkg-image" src="{{ package.image_url }}" alt="Package Image" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-secondary via-secondary/40 to-transparent"></div>
+            <div class="absolute inset-0 flex items-end pb-12">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+                    <a href="{% url 'packages' %}" class="mb-8 flex items-center gap-2 text-white/70 hover:text-white transition-colors group">
+                        <i class="fa-solid fa-arrow-left transition-transform group-hover:-translate-x-1"></i> Back to Packages
+                    </a>
+                    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                        <div>
+                            <span id="pkg-category" class="bg-primary text-white text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full mb-4 inline-block">{{ package.category }}</span>
+                            <h1 id="pkg-title" class="text-4xl md:text-6xl font-serif font-black text-white mb-2 leading-tight">{{ package.title }}</h1>
+                            <div class="flex items-center gap-6 text-gray-300">
+                                <span class="flex items-center gap-2"><i class="fa-solid fa-location-dot text-primary"></i> <span id="pkg-location">{{ package.location }}</span></span>
+                                <span class="flex items-center gap-2"><i class="fa-solid fa-clock text-primary"></i> <span id="pkg-duration">{{ package.duration }}</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                <div class="lg:col-span-2 space-y-12">
+                    <section>
+                        <h2 class="text-2xl font-serif font-bold text-white mb-6 flex items-center gap-3">Overview</h2>
+                        <p id="pkg-description" class="text-gray-400 text-lg leading-relaxed">{{ package.description|safe }}</p>
+                    </section>
+
+                    <section>
+                        <h2 class="text-2xl font-serif font-bold text-white mb-6 flex items-center gap-3">Included Features</h2>
+                        <div id="pkg-features" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {% for feature in package.feature_items.all %}
+                            <div class="glass p-4 rounded-xl text-gray-300 text-sm">{{ feature.text }}</div>
+                            {% empty %}
+                            <div class="text-gray-500">No features listed.</div>
+                            {% endfor %}
+                        </div>
+                    </section>
+
+                    <section>
+                        <h2 class="text-2xl font-serif font-bold text-white mb-8 flex items-center gap-3">Itinerary</h2>
+                        <div id="pkg-itinerary" class="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-z-10 before:h-full before:w-0.5 before:-translate-x-1/2 before:bg-gradient-to-b before:from-primary before:via-white/5 before:to-transparent">
+                            {% for item in package.itinerary_days.all %}
+                            <div class="relative flex gap-10">
+                                <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary text-white font-black text-xs z-10 uppercase tracking-wider">Day {{ item.day_number }}</div>
+                                <div class="glass p-6 rounded-2xl flex-grow">
+                                    <h4 class="text-lg font-bold text-white mb-2">{{ item.title }}</h4>
+                                    <p class="text-gray-400 text-sm leading-relaxed">{{ item.description }}</p>
+                                    {% if item.inclusions %}
+                                    <div class="mt-5 text-xs text-gray-300">
+                                        <span class="font-bold uppercase tracking-wider text-primary/80">Inclusions</span>
+                                        <div class="mt-1 text-gray-400 leading-relaxed">{{ item.inclusions|linebreaksbr }}</div>
+                                    </div>
+                                    {% endif %}
+                                    {% if item.exclusions %}
+                                    <div class="mt-4 text-xs text-gray-300">
+                                        <span class="font-bold uppercase tracking-wider text-primary/80">Exclusions</span>
+                                        <div class="mt-1 text-gray-400 leading-relaxed">{{ item.exclusions|linebreaksbr }}</div>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% empty %}
+                            <div class="text-gray-500">No itinerary listed.</div>
+                            {% endfor %}
+                        </div>
+                    </section>
+                </div>
+
+                <div class="lg:col-span-1">
+                    <div class="glass p-8 rounded-3xl sticky top-32 border-primary/20">
+                        {% if package.is_featured and package.price > 0 %}
+                            <div class="mb-6">
+                                <p class="text-gray-400 text-sm font-bold uppercase tracking-widest mb-1">Starting from</p>
+                                <div class="flex items-baseline gap-2">
+                                    <span id="pkg-price" class="text-4xl font-black text-white">${{ package.price }}</span>
+                                    <span class="text-gray-500 text-sm font-medium">per person</span>
+                                </div>
+                            </div>
+                            <a href="{% url 'package-quote' %}?package={{ package.slug }}" class="w-full inline-flex justify-center items-center gap-2 orange-gradient hover:shadow-xl hover:shadow-primary/30 text-white font-black py-4 rounded-xl transition-all uppercase tracking-widest group">
+                                Book This Trip
+                                <i class="fa-solid fa-paper-plane group-hover:translate-x-1 transition-transform"></i>
+                            </a>
+                        {% else %}
+                            <div class="mb-6">
+                                <p class="text-gray-400 text-sm font-bold uppercase tracking-widest mb-1">Pricing</p>
+                                <p class="text-3xl font-black text-primary">Get Quote</p>
+                            </div>
+                            <a href="{% url 'package-quote' %}?package={{ package.slug }}" class="w-full inline-flex justify-center items-center gap-2 orange-gradient hover:shadow-xl hover:shadow-primary/30 text-white font-black py-4 rounded-xl transition-all uppercase tracking-widest group">
+                                Request a Quote
+                                <i class="fa-solid fa-paper-plane group-hover:translate-x-1 transition-transform"></i>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

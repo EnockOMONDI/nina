@@ -1,0 +1,248 @@
+{% extends "ninatoursui/base.html" %}
+{% load static %}
+{% block title %}Nina Tours & Travel | Corporate Travel Management{% endblock %}
+
+{% block nav %}
+    {% include "ninatoursui/partials/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+<main class="nina-landing pt-6 md:pt-40 pb-12">
+    <section class="max-w-12xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="hero-wrap rounded-[28px] overflow-hidden border border-gray-200 shadow-sm">
+            <div class="hero-slider" id="hero-slider">
+                <article class="hero-slide is-active">
+                    <img src="{% static 'ninatours/holidayspng.png' %}" alt="Corporate travel support" class="hero-media">
+                    <div class="hero-overlay"></div>
+                    <div class="hero-content">
+                        <p class="hero-kicker">Corporate Travel Management</p>
+                        <h1 class="hero-title">Reliable Travel Support for Teams That Need Results</h1>
+                        <p class="hero-copy">From booking and policy compliance to airport transfers and after-hours support, we manage every detail calmly and professionally.</p>
+                        <div class="hero-actions">
+                            <a href="{% url 'contact' %}" class="btn-primary">Partner With Us</a>
+                            <a href="{% url 'corporates' %}" class="btn-outline">Corporate Services</a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="hero-slide">
+                    <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1900&q=80" alt="Mountain lake" class="hero-media">
+                    <div class="hero-overlay"></div>
+                    <div class="hero-content">
+                        <p class="hero-kicker">Tours, Safaris and Holidays</p>
+                        <h2 class="hero-title">Journeys Across Kenya, East Africa, Europe and the Middle East</h2>
+                        <p class="hero-copy">From luxury safaris in Kenya and East Africa to curated journeys across Europe and the Middle East, we design travel experiences aligned to your purpose, season, and comfort level, with clear communication at every step.</p>
+                        <div class="hero-actions">
+                            <a href="{% url 'packages' %}" class="btn-primary">View Travel Packages</a>
+                            <a href="{% url 'destinations' %}" class="btn-outline">Explore Destinations</a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="hero-slide">
+                    <img src="https://images.unsplash.com/photo-1488085061387-422e29b40080?auto=format&fit=crop&w=1900&q=80" alt="Airport runway" class="hero-media">
+                    <div class="hero-overlay"></div>
+                    <div class="hero-content">
+                        <p class="hero-kicker">IATA Accredited Agency</p>
+                        <h2 class="hero-title">Trusted by Organizations That Value Speed, Clarity and Accountability</h2>
+                        <p class="hero-copy">Nina Tours & Travel supports NGOs, corporates, SMEs, and institutions with dependable travel operations and finance-friendly reporting.</p>
+                        <div class="hero-actions">
+                            <a href="{% url 'contact' %}" class="btn-primary">Request Consultation</a>
+                            <a href="tel:+254713461800" class="btn-outline">Call +254 713 461 800</a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <div class="hero-dots" id="hero-dots" aria-label="Hero slides"></div>
+        </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
+        <div class="section-head">
+            <h2 class="section-title">Corporate Travel, Safaris & Holidays Delivered with Care for Every Traveler.</h2>
+            <p class="section-copy">Expert guidance and complete support for every journey from start to finish,  so you can focus on the experience.</p>
+        </div>
+
+      
+    </section>
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20">
+        <div class="section-head flex-wrap gap-4">
+            <div>
+                <h1 class="text-3xl sm:text-4xl font-extrabold text-[#0f2f5f] tracking-tight">Explore Polular Trips </h1>
+            </div>
+            <div class="carousel-controls">
+                <button class="control-btn" id="pkg-prev" type="button" aria-label="Previous packages">&#8592;</button>
+                <button class="control-btn" id="pkg-next" type="button" aria-label="Next packages">&#8594;</button>
+            </div>
+        </div>
+
+        <div class="package-carousel-shell">
+        <div class="package-carousel" id="package-carousel">
+            {% for pkg in featured_packages %}
+                <article class="package-card">
+                    <div class="package-media-wrap">
+                        {% if pkg.image_url %}
+                            <img src="{{ pkg.image_url }}" alt="{{ pkg.title }}" class="package-media">
+                        {% else %}
+                            <img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=1200&q=80" alt="Travel destination" class="package-media">
+                        {% endif %}
+                        <span class="package-chip">{{ pkg.category|default:"Travel Package" }}</span>
+                        <div class="package-overlay">
+                            <div>
+                                <h3>{{ pkg.title }}</h3>
+                                <p class="package-location">{{ pkg.location|default:"Destination details available" }}</p>
+                            </div>
+                         
+                        </div>
+                    </div>
+                    <div class="package-content">
+                        <p class="package-meta">{{ pkg.duration|default:"Flexible duration" }}</p>
+                        <div class="package-footer">
+                            {% if pkg.price and pkg.price > 0 %}
+                                <p class="package-price">From ${{ pkg.price }}</p>
+                            {% else %}
+                                <p class="package-price">Price on request</p>
+                            {% endif %}
+                            <a href="{% url 'package-detail' pkg.slug %}" class="package-link">View Package</a>
+                        </div>
+                    </div>
+                </article>
+            {% empty %}
+                <article class="package-card">
+                    <div class="package-media-wrap">
+                        <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=80" alt="Travel destination" class="package-media">
+                    </div>
+                    <div class="package-content">
+                        <h3>Packages Coming Soon</h3>
+                        <p class="package-meta">Add active packages from admin to show highlights here.</p>
+                        <div class="package-footer">
+                            <p class="package-price">Ready for your listings</p>
+                            <a href="{% url 'packages' %}" class="package-link">Browse</a>
+                        </div>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+        </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20">
+        <div class="process-shell">
+            <div class="section-head mb-8">
+                <p class="section-kicker">How We Work</p>
+            </div>
+            <div class="process-grid">
+                <article class="process-card is-highlight">
+                    <span class="process-step">01</span>
+                    <h3>Understand Your Needs</h3>
+                    <p>We start with a focused meeting to map your travel goals and agree service expectations.</p>
+                </article>
+                <article class="process-card">
+                    <span class="process-step">02</span>
+                    <h3>Set Up Your Account</h3>
+                    <p>We assign an account manager and create traveler profiles to speed up future bookings.</p>
+                </article>
+                <article class="process-card">
+                    <span class="process-step">03</span>
+                    <h3>Deliver and Improve</h3>
+                    <p>We provide responsive support, performance reviews, and continuous service improvement.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+
+
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20">
+        <div class="cta-panel">
+            <div>
+                <p class="section-kicker">Let's Work Together</p>
+                <h2 class="section-title">Looking for a Dependable Travel Partner?</h2>
+                <p class="section-copy">We are ready to support your team with consistent service, clear reporting, and responsive communication.</p>
+            </div>
+            <div class="cta-actions">
+                <a href="{% url 'contact' %}" class="btn-primary">Start a Conversation</a>
+                <a href="mailto:info@ninatoursandtravel.com" class="btn-outline">info@ninatoursandtravel.com</a>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    (() => {
+        const slides = Array.from(document.querySelectorAll('#hero-slider .hero-slide'));
+        const dotsWrap = document.getElementById('hero-dots');
+        if (slides.length && dotsWrap) {
+            let current = 0;
+            const dots = slides.map((_, i) => {
+                const btn = document.createElement('button');
+                btn.className = 'hero-dot' + (i === 0 ? ' is-active' : '');
+                btn.setAttribute('aria-label', `Go to slide ${i + 1}`);
+                btn.addEventListener('click', () => goTo(i));
+                dotsWrap.appendChild(btn);
+                return btn;
+            });
+
+            const goTo = (idx) => {
+                slides[current].classList.remove('is-active');
+                dots[current].classList.remove('is-active');
+                current = idx;
+                slides[current].classList.add('is-active');
+                dots[current].classList.add('is-active');
+            };
+
+            setInterval(() => {
+                goTo((current + 1) % slides.length);
+            }, 5500);
+        }
+
+        const carousel = document.getElementById('package-carousel');
+        const prev = document.getElementById('pkg-prev');
+        const next = document.getElementById('pkg-next');
+        if (carousel && prev && next) {
+            const move = () => Math.min(420, Math.max(280, Math.floor(carousel.clientWidth * 0.5)));
+            const atEnd = () => carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - 2;
+            let autoTimer = null;
+
+            const goNext = () => {
+                if (atEnd()) {
+                    carousel.scrollTo({ left: 0, behavior: 'smooth' });
+                } else {
+                    carousel.scrollBy({ left: move(), behavior: 'smooth' });
+                }
+            };
+
+            const startAuto = () => {
+                if (autoTimer) return;
+                autoTimer = setInterval(goNext, 3200);
+            };
+
+            const stopAuto = () => {
+                if (!autoTimer) return;
+                clearInterval(autoTimer);
+                autoTimer = null;
+            };
+
+            prev.addEventListener('click', () => {
+                stopAuto();
+                carousel.scrollBy({ left: -move(), behavior: 'smooth' });
+                startAuto();
+            });
+            next.addEventListener('click', () => {
+                stopAuto();
+                goNext();
+                startAuto();
+            });
+
+            carousel.addEventListener('mouseenter', stopAuto);
+            carousel.addEventListener('mouseleave', startAuto);
+            carousel.addEventListener('touchstart', stopAuto, { passive: true });
+            carousel.addEventListener('touchend', startAuto, { passive: true });
+            startAuto();
+        }
+    })();
+</script>
+{% endblock %}

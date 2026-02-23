@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Safaris & Packages | Ziada Tours{% endblock %}
+
+{% block nav %}
+    {% include "partials/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+    <div class="pt-24 pb-12 bg-[#0c0c0c] min-h-screen">
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <br><br><br><br><br>
+            <div class="mb-12">
+                <h1 class="text-4xl md:text-5xl font-serif font-black text-white leading-tight">All Packages</h1>
+                <div class="w-24 h-1 bg-primary mt-6"></div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {% for pkg in packages %}
+                <div class="group relative glass rounded-3xl overflow-hidden hover:border-primary/50 transition-all duration-500 flex flex-col h-full bg-[#151515]/40" style="min-height: 500px;">
+                    <div class="relative h-72 overflow-hidden flex-shrink-0">
+                        <img src="{{ pkg.image_url }}" alt="{{ pkg.title }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                        <div class="absolute top-5 left-5"><span class="bg-primary text-white text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full shadow-lg">{{ pkg.category }}</span></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#151515] via-transparent to-transparent opacity-60"></div>
+                    </div>
+                    <div class="p-8 flex flex-col flex-grow">
+                        <div class="flex items-center gap-2 text-primary text-[10px] font-bold uppercase tracking-widest mb-3"><i class="fa-solid fa-location-dot"></i>{{ pkg.location }}</div>
+                        <h3 class="text-2xl font-bold text-white mb-4 font-serif leading-tight">{{ pkg.title }}</h3>
+                        <p class="text-gray-400 text-sm mb-8 line-clamp-2 leading-relaxed font-light">{{ pkg.description|safe }}</p>
+                        <div class="mt-auto flex items-center justify-between pt-8 border-t border-white/5">
+                            {% if pkg.is_featured and pkg.price > 0 %}
+                                <div>
+                                    <p class="text-gray-500 text-[9px] uppercase font-black tracking-[0.2em] mb-1">Starting From</p>
+                                    <p class="text-xl font-black text-white">${{ pkg.price }}</p>
+                                </div>
+                            {% else %}
+                                <div>
+                                    <p class="text-gray-500 text-[11px] uppercase font-black tracking-[0.2em] mb-1">Pricing</p>
+                                    <p class="text-[11px] font-bold text-primary uppercase tracking-widest">Instant Quote</p>
+                                </div>
+                            {% endif %}
+                            <a href="{% url 'package-detail' pkg.slug %}" class="group/btn relative px-6 py-3.5 overflow-hidden rounded-2xl bg-white/5 border border-white/10 text-white font-bold transition-all hover:border-primary hover:bg-primary inline-flex items-center gap-2 decoration-0">
+                                <span class="relative z-10 text-sm flex items-center gap-2">View Details <i class="fa-solid fa-chevron-right text-[10px] transition-transform group-hover/btn:translate-x-1"></i></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="text-gray-500">No packages yet.</div>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+{% endblock %}
+
+{% block chat_widget %}
+    <div class="fixed bottom-6 right-6 z-[100]">
+        <button id="open-chat-btn" class="bg-[#25D366] hover:bg-[#1ebe5a] w-14 h-14 rounded-full shadow-lg shadow-[#25D366]/30 flex items-center justify-center text-white text-2xl transition-all transform hover:scale-110 active:scale-95">
+            <i class="fa-brands fa-whatsapp"></i>
+            <span class="absolute -top-1 -right-1 flex h-3 w-3">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
+            </span>
+        </button>
+        <div id="chat-widget" class="hidden w-80 sm:w-96 glass rounded-2xl overflow-hidden shadow-2xl flex flex-col h-[500px] border border-primary/20">
+            <div class="bg-primary p-4 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center overflow-hidden p-1"><img src="{% static 'ziada-logo.png' %}" alt="Ziada logo" class="w-full h-full object-contain"></div>
+                    <span class="text-white font-bold">Ziada Travel Assistant</span>
+                </div>
+                <button id="close-chat-btn" class="text-white hover:rotate-90 transition-transform"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="chat-messages" class="flex-grow overflow-y-auto p-4 space-y-4"></div>
+            <div class="p-4 border-t border-white/10">
+                <div class="flex gap-2">
+                    <input type="text" id="chat-input" placeholder="Ask about Mara, migration..." class="flex-grow bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-primary" />
+                    <button id="send-chat-btn" class="bg-primary text-white w-10 h-10 rounded-xl flex items-center justify-center hover:bg-orange-600 transition-colors"><i class="fa-solid fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

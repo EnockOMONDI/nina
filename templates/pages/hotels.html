@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load static %}
+{% load range_tags %}
+{% block title %}Luxury Hotels | Ziada Tours{% endblock %}
+
+{% block nav %}
+    {% include "partials/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+    <div class="pt-32 pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-[#0c0c0c] min-h-screen">
+        <br><br><br><br><br>
+        <div class="text-center mb-16">
+            <h2 class="text-primary font-bold tracking-widest uppercase mb-2">Partner Accommodations</h2>
+            <h1 class="text-4xl sm:text-5xl font-serif font-black text-white">Luxury Stays</h1>
+            <div class="w-24 h-1 bg-primary mx-auto mt-6"></div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for hotel in hotels %}
+            <div class="glass rounded-2xl overflow-hidden group">
+                <div class="relative h-64 overflow-hidden">
+                    <img src="{{ hotel.image_url }}" class="w-full h-full object-cover transition-transform group-hover:scale-110" alt="{{ hotel.name }}" />
+                    <div class="absolute bottom-4 left-4 flex gap-1">
+                        {% range_list hotel.rating as stars %}
+                        {% for _ in stars %}
+                        <i class="fa-solid fa-star text-yellow-500 text-xs"></i>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-white mb-2">{{ hotel.name }}</h3>
+                    <p class="text-gray-400 text-sm mb-4"><i class="fa-solid fa-location-dot text-primary mr-2"></i>{{ hotel.location }}</p>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        {% for am in hotel.amenities %}
+                        <span class="text-[10px] bg-white/5 border border-white/10 px-2 py-1 rounded text-gray-300">{{ am }}</span>
+                        {% endfor %}
+                    </div>
+                    <div class="flex justify-between items-center pt-4 border-t border-white/10">
+                        <p class="text-white font-black text-xl">${{ hotel.price_per_night }}<span class="text-xs text-gray-400 font-normal"> / night</span></p>
+                        <a href="{% url 'contact' %}" class="text-primary font-bold hover:underline">Book Now</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="text-gray-500">No hotels yet.</div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block chat_widget %}
+    <div class="fixed bottom-6 right-6 z-[100]">
+        <button id="open-chat-btn" class="bg-[#25D366] hover:bg-[#1ebe5a] w-14 h-14 rounded-full shadow-lg shadow-[#25D366]/30 flex items-center justify-center text-white text-2xl transition-all transform hover:scale-110 active:scale-95">
+            <i class="fa-brands fa-whatsapp"></i>
+            <span class="absolute -top-1 -right-1 flex h-3 w-3">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
+            </span>
+        </button>
+        <div id="chat-widget" class="hidden w-80 sm:w-96 glass rounded-2xl overflow-hidden shadow-2xl flex flex-col h-[500px] border border-primary/20">
+            <div class="bg-primary p-4 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center overflow-hidden p-1"><img src="{% static 'ziada-logo.png' %}" alt="Ziada logo" class="w-full h-full object-contain"></div>
+                    <span class="text-white font-bold">Ziada Travel Assistant</span>
+                </div>
+                <button id="close-chat-btn" class="text-white hover:rotate-90 transition-transform"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="chat-messages" class="flex-grow overflow-y-auto p-4 space-y-4"></div>
+            <div class="p-4 border-t border-white/10">
+                <div class="flex gap-2">
+                    <input type="text" id="chat-input" placeholder="Ask about Mara, migration..." class="flex-grow bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-primary" />
+                    <button id="send-chat-btn" class="bg-primary text-white w-10 h-10 rounded-xl flex items-center justify-center hover:bg-orange-600 transition-colors"><i class="fa-solid fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,92 @@
+services:
+  - type: web
+    name: ziadatravel
+    env: python
+    region: frankfurt
+    plan: starter
+    branch: deploy
+    buildCommand: |
+      echo "🚀 Starting Ziada Travel build process..."
+      pip install --upgrade pip
+      pip install -r requirements.txt
+      echo "📦 Dependencies installed successfully"
+      python3 manage.py collectstatic --noinput --settings=tours_travels.settings_prod
+      echo "📁 Static files collected"
+      python3 manage.py migrate --settings=tours_travels.settings_prod
+      echo "🗄️ Database migrations applied"
+      python3 manage.py createcachetable --settings=tours_travels.settings_prod
+      echo "💾 Cache table created"
+      echo "✅ Build completed successfully"
+    startCommand: |
+      echo "🌟 Starting Ziada Travel web server..."
+      gunicorn tours_travels.wsgi:application \
+        --bind 0.0.0.0:$PORT \
+        --workers $WEB_CONCURRENCY \
+        --timeout $GUNICORN_TIMEOUT \
+        --worker-class sync \
+        --worker-connections 1000 \
+        --max-requests 1000 \
+        --max-requests-jitter 100 \
+        --preload \
+        --access-logfile - \
+        --error-logfile - \
+        --log-level info
+    healthCheckPath: /health/
+    autoDeploy: true
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: tours_travels.settings_prod
+      - key: PYTHON_VERSION
+        value: 3.12.0
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: False
+      - key: ALLOWED_HOSTS
+        value: ziadatravel.onrender.com,.onrender.com,www.ziadatoursandtravel.com
+      - key: DATABASE_URL
+        fromDatabase:
+          name: ziadatravel-db
+          property: connectionString
+      - key: DB_CONN_MAX_AGE
+        value: 600
+      - key: DB_CONN_HEALTH_CHECKS
+        value: True
+      - key: EMAIL_PROVIDER
+        value: brevo_api
+      - key: DEFAULT_FROM_EMAIL
+        value: Ziada Tours and Travel <info@ziadatoursandtravel.com>
+      - key: ADMIN_EMAIL
+        value: info@ziadatoursandtravel.com
+      - key: EXTRA_EMAIL_RECIPIENTS
+        value: ""
+      - key: SITE_URL
+        value: https://www.ziadatoursandtravel.com
+      - key: EMAIL_HOST
+        value: smtp-relay.brevo.com
+      - key: EMAIL_PORT
+        value: 587
+      - key: EMAIL_USE_TLS
+        value: True
+      - key: EMAIL_HOST_USER
+        sync: false
+      - key: EMAIL_HOST_PASSWORD
+        sync: false
+      - key: MAILTRAP_API_TOKEN
+        sync: false
+      - key: BREVO_API_KEY
+        sync: false
+      - key: BREVO_SENDER_EMAIL
+        value: info@ziadatoursandtravel.com
+      - key: BREVO_SENDER_NAME
+        value: Ziada Tours and Travel
+      - key: EMAIL_TIMEOUT
+        value: 10
+
+databases:
+  - name: ziadatravel-db
+    databaseName: ziadatravel
+    user: ziadatravel_user
+    region: frankfurt
+    plan: free
+    postgresMajorVersion: 15

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Search | Ziada Tours & Travels{% endblock %}
+
+{% block nav %}
+    {% include "partials/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+    <main class="min-h-screen pt-32 px-6 text-white">
+        <h1 class="text-4xl font-serif font-black mb-4">Search Results</h1>
+        <p class="text-gray-400 mb-8">Query: {{ query }}</p>
+        <div class="space-y-6">
+            {% for post in posts %}
+                <div class="glass p-6 rounded-2xl">
+                    <h2 class="text-2xl font-bold">{{ post.title }}</h2>
+                    <p class="text-gray-400 mt-2">{{ post.excerpt|safe }}</p>
+                    <a href="{% url 'blog-detail' post.slug %}" class="text-primary font-semibold">Read more</a>
+                </div>
+            {% empty %}
+                <p class="text-gray-400">No results.</p>
+            {% endfor %}
+        </div>
+    </main>
+{% endblock %}

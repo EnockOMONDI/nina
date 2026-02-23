@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }} | Ziada Tours & Travels{% endblock %}
+
+{% block nav %}
+    {% include "partials/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+    <main class="min-h-screen pt-32 px-6 text-white">
+        <h1 class="text-4xl font-serif font-black mb-4">{{ post.title }}</h1>
+        <p class="text-gray-400 mb-6">Views: {{ post.views }}</p>
+        <div class="prose prose-invert max-w-4xl">
+            {{ post.content|safe }}
+        </div>
+    </main>
+{% endblock %}

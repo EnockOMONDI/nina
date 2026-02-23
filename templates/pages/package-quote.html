@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Get Package Quote | Ziada Tours{% endblock %}
+
+{% block nav %}
+    {% include "partials/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+    <div class="pt-32 pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-screen">
+        <br><br><br><br><br>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <div>
+                <p class="text-primary font-bold tracking-[0.2em] uppercase text-xs">Package Quote</p>
+                <h1 class="mt-3 text-5xl font-serif font-black text-white">Get a Tailored Quote</h1>
+                <p class="mt-5 text-gray-400 text-lg leading-relaxed">
+                    Share your travel details and we will send a tailored quote for this package within 2 to 24 hours.
+                </p>
+
+                <div class="mt-8 glass p-6 rounded-3xl border border-primary/20">
+                    <p class="text-xs text-gray-500 uppercase tracking-[0.2em] font-bold">Selected Package</p>
+                    <h2 class="mt-3 text-2xl text-white font-serif font-bold">
+                        {{ selected_package.title|default:form.initial.package_title }}
+                    </h2>
+                    <div class="mt-4 space-y-2 text-gray-300 text-sm">
+                        <p>
+                            <i class="fa-solid fa-location-dot text-primary mr-2"></i>
+                            {{ selected_package.location|default:form.initial.package_location|default:"Location provided on request" }}
+                        </p>
+                        <p>
+                            <i class="fa-solid fa-clock text-primary mr-2"></i>
+                            {{ selected_package.duration|default:form.initial.package_duration|default:"Duration provided on request" }}
+                        </p>
+                        <p>
+                            <i class="fa-solid fa-tag text-primary mr-2"></i>
+                            {% if selected_package and selected_package.price > 0 %}
+                                Starting from ${{ selected_package.price }}
+                            {% elif form.initial.package_price %}
+                                Starting from ${{ form.initial.package_price }}
+                            {% else %}
+                                Quote only pricing
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass p-10 rounded-3xl border border-primary/10">
+                <form class="space-y-6" method="post">
+                    {% csrf_token %}
+                    {{ form.package_title }}
+                    {{ form.package_slug }}
+                    {{ form.package_location }}
+                    {{ form.package_duration }}
+                    {{ form.package_price }}
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="text-sm text-green-400">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+
+                    {% if form.non_field_errors %}
+                        <div class="text-sm text-red-400">{{ form.non_field_errors }}</div>
+                    {% endif %}
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Full Name</label>
+                            {{ form.full_name }}
+                            {% if form.full_name.errors %}<p class="mt-1 text-xs text-red-400">{{ form.full_name.errors.0 }}</p>{% endif %}
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Email Address</label>
+                            {{ form.email }}
+                            {% if form.email.errors %}<p class="mt-1 text-xs text-red-400">{{ form.email.errors.0 }}</p>{% endif %}
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Phone Number</label>
+                            {{ form.phone }}
+                            {% if form.phone.errors %}<p class="mt-1 text-xs text-red-400">{{ form.phone.errors.0 }}</p>{% endif %}
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Travelers</label>
+                            {{ form.number_of_travelers }}
+                            {% if form.number_of_travelers.errors %}<p class="mt-1 text-xs text-red-400">{{ form.number_of_travelers.errors.0 }}</p>{% endif %}
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Preferred Travel Date</label>
+                            {{ form.travel_date }}
+                            {% if form.travel_date.errors %}<p class="mt-1 text-xs text-red-400">{{ form.travel_date.errors.0 }}</p>{% endif %}
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Budget Range</label>
+                            {{ form.budget_range }}
+                            {% if form.budget_range.errors %}<p class="mt-1 text-xs text-red-400">{{ form.budget_range.errors.0 }}</p>{% endif %}
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Special Requests</label>
+                        {{ form.special_requests }}
+                        {% if form.special_requests.errors %}<p class="mt-1 text-xs text-red-400">{{ form.special_requests.errors.0 }}</p>{% endif %}
+                    </div>
+
+                    <button class="w-full orange-gradient hover:shadow-lg hover:shadow-primary/20 text-white font-black py-4 rounded-xl transition-all uppercase tracking-widest">
+                        Submit Quote Request
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

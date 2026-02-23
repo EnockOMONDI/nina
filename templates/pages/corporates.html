@@ -1,0 +1,271 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Corporate Travel | Ziada Tours{% endblock %}
+
+{% block nav %}
+    {% include "partials/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+<br><br><br><br><br>
+    <div class="pt-28 pb-24 bg-[#0c0c0c] text-white min-h-screen">
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="relative overflow-hidden rounded-[2rem] border border-primary/20 glass p-8 sm:p-10 lg:p-14 mb-12">
+                <div class="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent"></div>
+                <div class="relative grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <p class="text-primary font-bold tracking-[0.25em] uppercase text-xs">Corporate Overview</p>
+                        <h2 class="mt-4 text-4xl sm:text-5xl font-black leading-tight">Ziada Tours & Travel</h2>
+                        <div class="mt-5 flex items-center gap-3">
+                            <span class="h-1.5 w-16 bg-white/30"></span>
+                            <span class="h-1.5 w-48 bg-primary"></span>
+                        </div>
+                        <p class="mt-6 text-lg leading-relaxed text-gray-300">
+                            Ziada Tours & Travel is a strategic travel management partner delivering corporate travel across Kenya, Africa, and international markets.
+                        </p>
+                        <p class="mt-5 text-lg leading-relaxed text-gray-300">
+                            We manage flights, hotels, transfers, executive travel, and event mobility through clear processes, accountable service, and strong supplier partnerships.
+                        </p>
+                        <p class="mt-5 text-lg leading-relaxed text-gray-300">
+                            Our focus is simple: operational reliability, policy alignment, and measurable value for every business trip.
+                        </p>
+                    </div>
+                    <div class="relative min-h-[320px] rounded-[1.5rem] overflow-hidden border border-primary/20">
+                        <img
+                            src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1200&q=80"
+                            alt="Premium corporate travel by Ziada"
+                            class="w-full h-full object-cover"
+                        />
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+                        <div class="absolute bottom-5 left-5 right-5">
+                            <p class="text-sm uppercase tracking-[0.2em] text-primary font-bold">Luxury • Precision • Trust</p>
+                            <p class="text-xl font-black text-white mt-2">Journeys designed for impact, comfort, and confidence.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative overflow-hidden rounded-[2rem] border border-primary/20 glass p-8 sm:p-10 lg:p-14">
+                <div class="absolute inset-y-0 right-0 w-[42%] hidden lg:block">
+                    <div
+                        class="absolute inset-0 opacity-20 bg-cover bg-center"
+                        style="background-image: url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80');"
+                    ></div>
+                </div>
+                <div class="relative max-w-4xl">
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.08]">Why Organizations Choose <span class="block text-primary">ZIADA</span></h1>
+                <div class="mt-6 flex items-center gap-3">
+                    <span class="h-2 w-24 bg-white/30"></span>
+                    <span class="h-2 w-72 max-w-[60vw] bg-primary"></span>
+                </div>
+                <p class="mt-8 text-lg sm:text-xl leading-relaxed text-gray-300">
+                    ZIADA Corporate Travel simplifies business mobility through structured planning, responsive support, and dependable delivery.
+                </p>
+                <ul class="mt-8 space-y-2 list-disc list-inside text-lg text-gray-300">
+                    <li>Experienced delivery across multi-sector corporate accounts</li>
+                    <li>Preferred partnerships with major airlines and hotel brands</li>
+                    <li>Policy-aligned travel programs with cost control built in</li>
+                    <li>Dedicated account support and direct consultant access</li>
+                    <li>Reliable local and international service network</li>
+                    <li>Transparent pricing and consistent communication</li>
+                </ul>
+            </div>
+            </div>
+
+            <div class="mt-14 bg-gradient-to-r from-[#041220] via-[#052745] to-[#041220] rounded-full px-6 py-6 text-center shadow-2xl shadow-black/40 border border-white/10">
+                <p class="text-white text-2xl sm:text-4xl font-black tracking-wide uppercase">Unveiling The World One Journey At A Time!</p>
+            </div>
+
+            <div class="mt-10 rounded-[2rem] border border-primary/20 glass p-8 sm:p-10">
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+                    <div>
+                        <p class="text-primary font-bold tracking-[0.2em] uppercase text-xs">Corporate CTA</p>
+                        <h3 class="mt-3 text-3xl sm:text-4xl font-black">Need a Dedicated Corporate Travel Partner?</h3>
+                        <p class="mt-4 text-gray-300 text-lg">Share your requirements and our corporate desk will respond with a tailored plan.</p>
+                    </div>
+                    <a
+                        href="#corporate-inquiry-form"
+                        class="inline-flex items-center justify-center px-8 py-4 rounded-xl orange-gradient text-white font-black uppercase tracking-widest hover:shadow-lg hover:shadow-primary/20 transition-all"
+                    >
+                        Request Consultation
+                    </a>
+                </div>
+            </div>
+
+            <div class="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch">
+                <div class="rounded-[2rem] glass p-8 sm:p-10 border border-primary/20">
+                    <h2 class="text-4xl sm:text-5xl font-black leading-tight text-white">Who We Work Best With</h2>
+                    <p class="mt-6 text-xl text-gray-300">ZIADA Corporate Travel is ideal for:</p>
+                    <ul class="mt-6 space-y-2 list-disc list-inside text-lg text-gray-300">
+                        <li>Small and medium-sized enterprises</li>
+                        <li>Large organizations and institutions</li>
+                        <li>NGOs and development organizations</li>
+                        <li>Government bodies</li>
+                        <li>Conference and event organizers</li>
+                    </ul>
+                </div>
+                <div class="rounded-[2rem] overflow-hidden border border-primary/20 min-h-[340px]">
+                    <img
+                        src="https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=1200&q=80"
+                        alt="Corporate traveler speaking on phone"
+                        class="w-full h-full object-cover"
+                    />
+                </div>
+            </div>
+        </section>
+
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
+            <div class="relative overflow-hidden rounded-[2rem] border border-primary/20 glass p-8 sm:p-10 lg:p-14">
+                <div class="absolute inset-y-0 right-0 w-[42%] hidden lg:block">
+                    <div
+                        class="absolute inset-0 opacity-20 bg-cover bg-center"
+                        style="background-image: url('https://images.unsplash.com/photo-1573496799515-eebbb63814f2?auto=format&fit=crop&w=1200&q=80');"
+                    ></div>
+                </div>
+                <div class="relative max-w-3xl">
+                    <h2 class="text-4xl sm:text-5xl font-black text-white">What We Do</h2>
+                    <div class="mt-4 flex items-center gap-3">
+                        <span class="h-1.5 w-14 bg-white/30"></span>
+                        <span class="h-1.5 w-44 bg-primary"></span>
+                    </div>
+
+                    <p class="mt-8 text-xl leading-relaxed text-gray-300">
+                        We deliver end-to-end corporate travel services for enterprises, institutions, and project teams.
+                    </p>
+
+                    <h3 class="mt-8 text-3xl font-black text-white">Core Corporate Services</h3>
+                    <ul class="mt-4 space-y-2 list-disc list-inside text-lg text-gray-300">
+                        <li>Corporate flight bookings (domestic, regional, and international)</li>
+                        <li>Hotel and accommodation management</li>
+                        <li>Airport transfers and logistics</li>
+                        <li>VIP and executive travel support for leadership teams</li>
+                        <li>Group and conference travel coordination</li>
+                        <li>End-to-end event logistics to ensure seamless experiences</li>
+                        <li>Visa services and travel documentation</li>
+                        <li>Executive and leadership travel support</li>
+                    </ul>
+
+                    <p class="mt-7 text-xl leading-relaxed text-gray-300">
+                        Engagement models support recurring travel programs and one-off projects.
+                    </p>
+
+                    <h2 class="mt-12 text-4xl sm:text-5xl font-black leading-tight text-white">How We Manage Corporate Travel</h2>
+                    <div class="mt-4 flex items-center gap-3">
+                        <span class="h-1.5 w-14 bg-white/30"></span>
+                        <span class="h-1.5 w-44 bg-primary"></span>
+                    </div>
+
+                    <h3 class="mt-7 text-3xl font-black text-white">Our Approach</h3>
+                    <p class="mt-4 text-xl leading-relaxed text-gray-300">
+                        Our delivery model is built on process control, response speed, and accountability.
+                    </p>
+                    <ul class="mt-4 space-y-2 list-disc list-inside text-lg text-gray-300">
+                        <li><span class="font-bold">Clear workflows:</span> Every booking follows a defined process, ensuring accuracy and consistency.</li>
+                        <li><span class="font-bold">Guaranteed pricing:</span> Once confirmed, prices and travel dates are secured - no last-minute surprises.</li>
+                        <li><span class="font-bold">Rapid response:</span> All inquiries are handled promptly, with clear itineraries and confirmations.</li>
+                        <li><span class="font-bold">Single point of contact:</span> Each client works with a dedicated travel consultant who understands their preferences and policies.</li>
+                        <li><span class="font-bold">24/7 travel support with direct access to our operations team</span></li>
+                    </ul>
+
+                    <p class="mt-7 text-xl leading-relaxed text-gray-300">
+                        We adapt to your internal processes rather than forcing rigid systems.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="corporate-inquiry-form" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
+            <div class="rounded-[2rem] border border-primary/20 glass p-8 sm:p-10 lg:p-14">
+                <div class="max-w-4xl">
+                    <p class="text-primary font-bold tracking-[0.2em] uppercase text-xs">Corporate Inquiry Form</p>
+                    <h2 class="mt-3 text-4xl sm:text-5xl font-black">Tell Us Your Corporate Travel Needs</h2>
+                    <p class="mt-4 text-gray-300 text-lg">Submit your business travel requirements and our corporate specialist will contact you.</p>
+                </div>
+
+                <form class="mt-10 space-y-6" method="post">
+                    {% csrf_token %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="text-sm text-green-400">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Full Name</label>
+                            {{ form.full_name }}
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Work Email</label>
+                            {{ form.email }}
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Phone Number</label>
+                            {{ form.phone }}
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Company Name</label>
+                            {{ form.company_name }}
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Your Role</label>
+                            {{ form.role_title }}
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Estimated Monthly Travelers</label>
+                            {{ form.monthly_travelers }}
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Primary Service Need</label>
+                        {{ form.service_needs }}
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Requirements</label>
+                        {{ form.message }}
+                    </div>
+
+                    <button class="w-full md:w-auto orange-gradient hover:shadow-lg hover:shadow-primary/20 text-white font-black py-4 px-8 rounded-xl transition-all uppercase tracking-widest">
+                        Submit Corporate Inquiry
+                    </button>
+                </form>
+            </div>
+        </section>
+    </div>
+{% endblock %}
+
+{% block chat_widget %}
+    <div class="fixed bottom-6 right-6 z-[100]">
+        <button id="open-chat-btn" class="bg-[#25D366] hover:bg-[#1ebe5a] w-14 h-14 rounded-full shadow-lg shadow-[#25D366]/30 flex items-center justify-center text-white text-2xl transition-all transform hover:scale-110 active:scale-95">
+            <i class="fa-brands fa-whatsapp"></i>
+            <span class="absolute -top-1 -right-1 flex h-3 w-3">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
+            </span>
+        </button>
+        <div id="chat-widget" class="hidden w-80 sm:w-96 glass rounded-2xl overflow-hidden shadow-2xl flex flex-col h-[500px] border border-primary/20">
+            <div class="bg-primary p-4 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center overflow-hidden p-1"><img src="{% static 'ziada-logo.png' %}" alt="Ziada logo" class="w-full h-full object-contain"></div>
+                    <span class="text-white font-bold">Ziada Travel Assistant</span>
+                </div>
+                <button id="close-chat-btn" class="text-white hover:rotate-90 transition-transform"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="chat-messages" class="flex-grow overflow-y-auto p-4 space-y-4"></div>
+            <div class="p-4 border-t border-white/10">
+                <div class="flex gap-2">
+                    <input type="text" id="chat-input" placeholder="Ask about corporate packages..." class="flex-grow bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-primary" />
+                    <button id="send-chat-btn" class="bg-primary text-white w-10 h-10 rounded-xl flex items-center justify-center hover:bg-orange-600 transition-colors"><i class="fa-solid fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

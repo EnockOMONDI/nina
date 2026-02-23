@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}About Us | Ziada Tours{% endblock %}
+
+{% block nav %}
+    {% include "partials/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+    <div class="bg-[#0a0a0a] min-h-screen text-white pt-24">
+        <section class="relative py-20 overflow-hidden">
+            <br><br><br><br><br>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="max-w-3xl">
+                    <h2 class="text-primary font-bold tracking-[0.3em] uppercase mb-4 text-xs">Our Legacy</h2>
+                    <h1 class="text-5xl md:text-7xl font-serif font-black mb-8 leading-[1.1]">Crafting Stories <br /><span class="text-primary italic">Beyond Destinations.</span></h1>
+                    <p class="text-gray-400 text-lg md:text-xl leading-relaxed font-light">Founded on the principles of discovery and excellence, Ziada Tours & Travels isn't just a travel agency. We are architects of memories, dedicated to unveiling the raw, unscripted beauty of Africa through a lens of absolute luxury and local intimacy.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-24 bg-[#0d0d0d]">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-16">
+                <h2 class="text-primary font-bold tracking-[0.3em] uppercase mb-4 text-xs">The Ziada Difference</h2>
+                <h3 class="text-4xl font-serif font-bold">Why Discriminating Travelers <br /> Choose Ziada</h3>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="text-center p-8 rounded-3xl border border-white/5 hover:bg-white/[0.02] transition-all">
+                        <div class="w-16 h-16 rounded-full border border-primary/20 flex items-center justify-center mx-auto mb-6">
+                            <i class="fa-solid fa-wand-magic-sparkles text-primary text-2xl"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-4">Bespoke Curations</h4>
+                        <p class="text-gray-500 text-sm leading-relaxed">No two journeys are identical. We tailor every detail to your pace, taste, and curiosity.</p>
+                    </div>
+
+                    <div class="text-center p-8 rounded-3xl border border-white/5 hover:bg-white/[0.02] transition-all">
+                        <div class="w-16 h-16 rounded-full border border-primary/20 flex items-center justify-center mx-auto mb-6">
+                            <i class="fa-solid fa-user-tie text-primary text-2xl"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-4">Local Intelligence</h4>
+                        <p class="text-gray-500 text-sm leading-relaxed">Our guides are elders and experts of the land, offering insights you won't find in any book.</p>
+                    </div>
+
+                    <div class="text-center p-8 rounded-3xl border border-white/5 hover:bg-white/[0.02] transition-all">
+                        <div class="w-16 h-16 rounded-full border border-primary/20 flex items-center justify-center mx-auto mb-6">
+                            <i class="fa-solid fa-leaf text-primary text-2xl"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-4">Sustainable Luxury</h4>
+                        <p class="text-gray-500 text-sm leading-relaxed">We partner only with eco-conscious lodges that prioritize the preservation of our wild heritage.</p>
+                    </div>
+
+                    <div class="text-center p-8 rounded-3xl border border-white/5 hover:bg-white/[0.02] transition-all">
+                        <div class="w-16 h-16 rounded-full border border-primary/20 flex items-center justify-center mx-auto mb-6">
+                            <i class="fa-solid fa-headset text-primary text-2xl"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-4">24/7 Concierge</h4>
+                        <p class="text-gray-500 text-sm leading-relaxed">From the moment you land until your departure, our team is always just a heartbeat away.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}
+
+{% block chat_widget %}
+    <div class="fixed bottom-6 right-6 z-[100]">
+        <button id="open-chat-btn" class="bg-[#25D366] hover:bg-[#1ebe5a] w-14 h-14 rounded-full shadow-lg shadow-[#25D366]/30 flex items-center justify-center text-white text-2xl transition-all transform hover:scale-110 active:scale-95">
+            <i class="fa-brands fa-whatsapp"></i>
+            <span class="absolute -top-1 -right-1 flex h-3 w-3">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
+            </span>
+        </button>
+        <div id="chat-widget" class="hidden w-80 sm:w-96 glass rounded-2xl overflow-hidden shadow-2xl flex flex-col h-[500px] border border-primary/20">
+            <div class="bg-primary p-4 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center overflow-hidden p-1"><img src="{% static 'ziada-logo.png' %}" alt="Ziada logo" class="w-full h-full object-contain"></div>
+                    <span class="text-white font-bold">Ziada Travel Assistant</span>
+                </div>
+                <button id="close-chat-btn" class="text-white hover:rotate-90 transition-transform"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="chat-messages" class="flex-grow overflow-y-auto p-4 space-y-4"></div>
+            <div class="p-4 border-t border-white/10">
+                <div class="flex gap-2">
+                    <input type="text" id="chat-input" placeholder="Ask about Mara, migration..." class="flex-grow bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-primary" />
+                    <button id="send-chat-btn" class="bg-primary text-white w-10 h-10 rounded-xl flex items-center justify-center hover:bg-orange-600 transition-colors"><i class="fa-solid fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

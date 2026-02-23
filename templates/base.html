@@ -1,0 +1,124 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Ziada Tours{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;700;900&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#f38120',
+                        secondary: '#1a1a1a',
+                        accent: '#f97316',
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="{% static 'index.css' %}">
+</head>
+
+<body>
+    {% block nav %}{% endblock %}
+    {% block content %}{% endblock %}
+    {% block footer %}
+        {% include "partials/footer.html" %}
+    {% endblock %}
+    {% block chat_widget %}{% endblock %}
+
+    <script>
+        (() => {
+            const btn = document.getElementById('mobile-menu-btn');
+            const menu = document.getElementById('mobile-menu');
+            if (btn && menu) {
+                btn.addEventListener('click', () => {
+                    menu.classList.toggle('hidden');
+                    const icon = btn.querySelector('i');
+                    if (icon) {
+                        icon.classList.toggle('fa-bars');
+                        icon.classList.toggle('fa-xmark');
+                    }
+                });
+            }
+
+            const openBtn = document.getElementById('open-chat-btn');
+            const widget = document.getElementById('chat-widget');
+            const closeBtn = document.getElementById('close-chat-btn');
+            const sendBtn = document.getElementById('send-chat-btn');
+            const input = document.getElementById('chat-input');
+            const messagesArea = document.getElementById('chat-messages');
+
+            const addMessage = (text, role) => {
+                if (!messagesArea) return;
+                const wrap = document.createElement('div');
+                wrap.className = `flex ${role === 'user' ? 'justify-end' : 'justify-start'}`;
+                const bubble = document.createElement('div');
+                bubble.className = `max-w-[80%] p-3 rounded-2xl text-sm ${role === 'user' ? 'bg-primary text-white rounded-tr-none' : 'bg-white/10 text-gray-200 rounded-tl-none'}`;
+                bubble.textContent = text;
+                wrap.appendChild(bubble);
+                messagesArea.appendChild(wrap);
+                messagesArea.scrollTop = messagesArea.scrollHeight;
+            };
+
+            if (openBtn && widget) {
+                openBtn.addEventListener('click', () => {
+                    widget.classList.remove('hidden');
+                    openBtn.classList.add('hidden');
+                    if (messagesArea && messagesArea.children.length === 0) {
+                        addMessage('Jambo! I am your Ziada Travel Assistant. How can I help you today?', 'model');
+                    }
+                });
+            }
+
+            if (closeBtn && widget && openBtn) {
+                closeBtn.addEventListener('click', () => {
+                    widget.classList.add('hidden');
+                    openBtn.classList.remove('hidden');
+                });
+            }
+
+            if (sendBtn && input) {
+                const whatsappNumber = '254706625612';
+                const send = () => {
+                    const text = input.value.trim();
+                    if (!text) return;
+                    addMessage(text, 'user');
+                    input.value = '';
+
+                    const encodedMessage = encodeURIComponent(
+                        `Hello Ziada, ${text}\n\nFrom: ${window.location.href}`
+                    );
+                    const waUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+                    const popup = window.open(waUrl, '_blank');
+
+                    if (!popup) {
+                        window.location.href = waUrl;
+                        return;
+                    }
+                    addMessage('Opening WhatsApp so you can send this message.', 'model');
+                };
+                sendBtn.addEventListener('click', send);
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') send();
+                });
+            }
+        })();
+    </script>
+
+    {% block extra_scripts %}{% endblock %}
+</body>
+
+</html>

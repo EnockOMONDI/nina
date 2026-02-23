@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <body style="margin:0;padding:0;background-color:#0c0c0c;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color:#0c0c0c;padding:24px 0;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="600" cellspacing="0" cellpadding="0" style="background-color:#151515;border:1px solid #222;border-radius:18px;overflow:hidden;">
+            <tr>
+              <td style="padding:24px 32px;background:#1a1a1a;color:#ffffff;font-family:Arial,Helvetica,sans-serif;">
+                <h1 style="margin:0;font-size:20px;letter-spacing:0.3px;">New Package Quote Inquiry</h1>
+                <p style="margin:6px 0 0 0;font-size:13px;color:#bfbfbf;">Ziada Tours &amp; Travels</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:24px 32px;color:#f5f5f5;font-family:Arial,Helvetica,sans-serif;">
+                <p style="margin:0 0 12px 0;color:#d1d1d1;">A new quote request was submitted.</p>
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;">
+                  <tr>
+                    <td style="padding:10px 0;border-bottom:1px solid #2a2a2a;color:#f38120;font-weight:bold;width:170px;">Inquiry ID</td>
+                    <td style="padding:10px 0;border-bottom:1px solid #2a2a2a;color:#e8e8e8;">{{ inquiry.id }}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 0;border-bottom:1px solid #2a2a2a;color:#f38120;font-weight:bold;">Package</td>
+                    <td style="padding:10px 0;border-bottom:1px solid #2a2a2a;color:#e8e8e8;">{{ inquiry.package_title }}</td>
+                  </tr>
+                  {% if inquiry.package_location %}
+                  <tr>
+                    <td style="padding:10px 0;border-bottom:1px solid #2a2a2a;color:#f38120;font-weight:bold;">Location</td>
+                    <td style="padding:10px 0;border-bottom:1px solid #2a2a2a;color:#e8e8e8;">{{ inquiry.package_location }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if inquiry.package_duration %}
+                  <tr>
+                    <td style="padding:10px 0;border-bottom:1px solid #2a2a2a;color:#f38120;font-weight:bold;">Duration</td>
+                    <td style="padding:10px 0;border-bottom:1px solid #2a2a2a;color:#e8e8e8;">{{ inquiry.package_duration }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if inquiry.package_price %}
+                  <tr>
+                    <td style="padding:10px 0;border-bottom:1px solid #2a2a2a;color:#f38120;font-weight:bold;">Starting Price</td>
+                    <td style="padding:10px 0;border-bottom:1px solid #2a2a2a;color:#e8e8e8;">${{ inquiry.package_price }}</td>
+                  </tr>
+                  {% endif %}
+                  <tr>
+                    <td style="padding:10px 0;border-bottom:1px solid #2a2a2a;color:#f38120;font-weight:bold;">Name</td>
+                    <td style="padding:10px 0;border-bottom:1px solid #2a2a2a;color:#e8e8e8;">{{ inquiry.full_name }}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 0;border-bottom:1px solid #2a2a2a;color:#f38120;font-weight:bold;">Email</td>
+                    <td style="padding:10px 0;border-bottom:1px solid #2a2a2a;color:#e8e8e8;">{{ inquiry.email }}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 0;border-bottom:1px solid #2a2a2a;color:#f38120;font-weight:bold;">Phone</td>
+                    <td style="padding:10px 0;border-bottom:1px solid #2a2a2a;color:#e8e8e8;">{{ inquiry.phone }}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 0;border-bottom:1px solid #2a2a2a;color:#f38120;font-weight:bold;">Travelers</td>
+                    <td style="padding:10px 0;border-bottom:1px solid #2a2a2a;color:#e8e8e8;">{{ inquiry.number_of_travelers }}</td>
+                  </tr>
+                  {% if inquiry.travel_date %}
+                  <tr>
+                    <td style="padding:10px 0;border-bottom:1px solid #2a2a2a;color:#f38120;font-weight:bold;">Travel Date</td>
+                    <td style="padding:10px 0;border-bottom:1px solid #2a2a2a;color:#e8e8e8;">{{ inquiry.travel_date }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if inquiry.budget_range %}
+                  <tr>
+                    <td style="padding:10px 0;border-bottom:1px solid #2a2a2a;color:#f38120;font-weight:bold;">Budget Range</td>
+                    <td style="padding:10px 0;border-bottom:1px solid #2a2a2a;color:#e8e8e8;">{{ inquiry.budget_range }}</td>
+                  </tr>
+                  {% endif %}
+                </table>
+
+                {% if inquiry.special_requests %}
+                <div style="margin:18px 0;padding:16px;border:1px solid #2a2a2a;border-radius:12px;background-color:#101010;">
+                  <p style="margin:0 0 8px 0;color:#f38120;font-weight:bold;">Special Requests</p>
+                  <p style="margin:0;color:#d1d1d1;line-height:1.6;">{{ inquiry.special_requests }}</p>
+                </div>
+                {% endif %}
+
+                <p style="margin:0;color:#bfbfbf;font-size:13px;">Please follow up within 2–24 hours.</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

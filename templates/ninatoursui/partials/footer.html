@@ -1,0 +1,42 @@
+{% load static %}
+<footer class="mt-24 border-t border-gray-200 bg-white">
+    <div class="max-w-12xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+            <div>
+                <img src="{% static 'ninatours/ninatourslogo.png' %}" alt="Nina Tours and Travel" class="h-12 w-auto object-contain">
+                <p class="mt-4 text-sm text-gray-600 leading-relaxed">
+                    IATA-certified corporate travel management and destination specialists supporting national and multinational organizations.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-sm font-bold uppercase tracking-[0.18em] text-brand-sky">Quick Links</h4>
+                <ul class="mt-4 space-y-2 text-sm text-gray-600">
+                    <li><a href="{% url 'corporates' %}" class="hover:text-brand-sky">Corporate Travel</a></li>
+                    <li><a href="{% url 'packages' %}" class="hover:text-brand-sky">Tours & Safaris</a></li>
+                    <li><a href="{% url 'destinations' %}" class="hover:text-brand-sky">Destinations</a></li>
+                    <li><a href="{% url 'contact' %}" class="hover:text-brand-sky">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-sm font-bold uppercase tracking-[0.18em] text-brand-sky">Core Services</h4>
+                <ul class="mt-4 space-y-2 text-sm text-gray-600">
+                    <li>Corporate Travel Management</li>
+                    <li>Visa Facilitation</li>
+                    <li>Travel Insurance</li>
+                    <li>Airport Transfers</li>
+                    <li>Meetings & Conference Support</li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-sm font-bold uppercase tracking-[0.18em] text-brand-sky">Contact</h4>
+                <div class="mt-4 space-y-2 text-sm text-gray-600">
+                    <p>National Bank Building, Harambee Avenue, 2nd Floor, Nairobi</p>
+                    <p>Office: <a href="tel:0202632600" class="hover:text-brand-sky">020 2632600</a></p>
+                    <p><a href="mailto:info@ninatoursandtravel.com" class="hover:text-brand-sky">info@ninatoursandtravel.com</a></p>
+                </div>
+            </div>
+        </div>
+        <div class="lux-divider mt-12"></div>
+        <p class="mt-6 text-xs text-gray-500">&copy; {% now "Y" %} Nina Tours & Travel Ltd. All rights reserved.</p>
+    </div>
+</footer>

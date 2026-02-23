@@ -1,0 +1,61 @@
+{% load static %}
+
+
+<div class="fixed w-full z-50 top-0 left-0">
+    <div class="bg-secondary/90 text-gray-200 border-b border-white/10 hidden md:block">
+        <div class="w-full px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2 py-2 text-xs sm:text-sm">
+                <div class="flex flex-wrap items-center gap-x-6 gap-y-1">
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-location-dot text-primary"></i>View Park Towers, Seventeenth Floor, University way</span>
+                    <a href="tel:+254706625612" class="flex items-center gap-2 hover:text-primary transition-colors"><i class="fa-solid fa-phone text-primary"></i>+254 706 625612</a>
+                    <a href="tel:+254734552114" class="flex items-center gap-2 hover:text-primary transition-colors"><i class="fa-solid fa-phone text-primary"></i>+254 734 552114</a>
+                    <a href="mailto:info@ziadatoursandtravel.com" class="flex items-center gap-2 hover:text-primary transition-colors"><i class="fa-solid fa-envelope text-primary"></i>info@ziadatoursandtravel.com</a>
+                </div>
+                <div class="flex items-center gap-4">
+                    <a href="{% url 'contact' %}" class="flex items-center gap-2 text-primary font-semibold hover:text-orange-400 transition-colors"><i class="fa-solid fa-headset"></i>Quick Chat</a>
+                    <a href="{% url 'contact' %}" class="px-3 py-1 rounded-full bg-primary text-white font-semibold hover:bg-orange-600 transition-colors">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="glass">
+        <div class="w-full px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-24">
+                <a href="{% url 'home' %}" class="flex items-center cursor-pointer">
+                    <img src="{% static 'ziada-logo.png' %}" alt="Ziada Tours & Travels" class="h-20 w-auto object-contain" />
+                </a>
+
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="{% url 'home' %}" class="px-3 py-2 text-base font-semibold transition-colors text-gray-300 hover:text-primary">Home</a>
+                        <a href="{% url 'about' %}" class="px-3 py-2 text-base font-semibold transition-colors text-gray-300 hover:text-primary">About Us</a>
+                        <a href="{% url 'corporates' %}" class="px-3 py-2 text-base font-semibold transition-colors text-gray-300 hover:text-primary">Corporates</a>
+                        <a href="{% url 'packages' %}" class="px-3 py-2 text-base font-semibold transition-colors text-gray-300 hover:text-primary">Safaris & Packages</a>
+                        <a href="{% url 'hotels' %}" class="px-3 py-2 text-base font-semibold transition-colors text-gray-300 hover:text-primary">Luxury Hotels</a>
+                        <a href="{% url 'destinations' %}" class="px-3 py-2 text-base font-semibold transition-colors text-gray-300 hover:text-primary">Destinations</a>
+                        <a href="{% url 'blog-list' %}" class="px-3 py-2 text-base font-semibold transition-colors text-gray-300 hover:text-primary">News</a>
+                    </div>
+                </div>
+
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-gray-400 hover:text-white focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden glass border-t border-white/10">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="{% url 'home' %}" class="block w-full text-left px-3 py-2 text-base font-semibold text-gray-300 hover:text-primary">Home</a>
+                <a href="{% url 'about' %}" class="block w-full text-left px-3 py-2 text-base font-semibold text-gray-300 hover:text-primary">About Us</a>
+                <a href="{% url 'packages' %}" class="block w-full text-left px-3 py-2 text-base font-semibold text-gray-300 hover:text-primary">Safaris & Packages</a>
+                <a href="{% url 'hotels' %}" class="block w-full text-left px-3 py-2 text-base font-semibold text-gray-300 hover:text-primary">Luxury Hotels</a>
+                <a href="{% url 'destinations' %}" class="block w-full text-left px-3 py-2 text-base font-semibold text-gray-300 hover:text-primary">Destinations</a>
+                <a href="{% url 'corporates' %}" class="block w-full text-left px-3 py-2 text-base font-semibold text-gray-300 hover:text-primary">Corporates</a>
+                <a href="{% url 'blog-list' %}" class="block w-full text-left px-3 py-2 text-base font-semibold text-gray-300 hover:text-primary">News</a>
+            </div>
+        </div>
+    </nav>
+</div>

@@ -1,0 +1,382 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Ziada Tours & Travels | Premium African Safaris{% endblock %}
+
+{% block nav %}
+    {% include "partials/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+<br><br><br><br>
+    <div class="relative h-screen flex items-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <div class="hero-slide absolute inset-0 transition-opacity duration-1000 opacity-100">
+                <img src="https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?q=80&w=2000&auto=format&fit=crop" class="w-full h-full object-cover" alt="Giraffe">
+                <div class="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent"></div>
+            </div>
+            <div class="hero-slide absolute inset-0 transition-opacity duration-1000 opacity-0">
+                <img src="https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?q=80&w=2000&auto=format&fit=crop" class="w-full h-full object-cover" alt="Elephant">
+                <div class="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent"></div>
+            </div>
+            <div class="hero-slide absolute inset-0 transition-opacity duration-1000 opacity-0">
+                <img src="https://images.unsplash.com/photo-1489493887464-892be6d1daae?q=80&w=2000&auto=format&fit=crop" class="w-full h-full object-cover" alt="Savannah">
+                <div class="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent"></div>
+            </div>
+        </div>
+
+        <div class="relative z-10 w-full pr-4 sm:pr-6 lg:pr-8 pl-6 sm:pl-10 lg:pl-16 max-w-none mx-0">
+            <div class="grid grid-cols-12">
+                <div class="col-span-12 lg:col-span-12 animate-fade-in-up text-left">
+                    <h2 id="hero-kicker" class="text-primary font-bold tracking-widest uppercase mb-4 text-sm sm:text-base">Unveiling the World One Journey at a Time</h2>
+                    <h1 id="hero-title" class="text-5xl sm:text-7xl font-serif font-black text-white mb-6 leading-tight">Premium African <br /> <span class="text-primary italic">Safaris & Tours</span></h1>
+                    <p id="hero-subtitle" class="text-gray-300 text-lg mb-10 max-w-lg leading-relaxed">From the golden plains of Maasai Mara to the turquoise waters of Diani, Ziada Tours & Travels creates unforgettable lifelong memories through world-class travel services.</p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-start">
+                        <a href="{% url 'packages' %}" class="px-8 py-4 bg-primary hover:bg-orange-600 text-white font-bold rounded-lg transition-all flex items-center justify-center gap-2 group">Explore Packages <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i></a>
+                        <a href="{% url 'about' %}" class="px-8 py-4 glass hover:bg-white/10 text-white font-bold rounded-lg transition-all block text-center">Our Story</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="py-24 bg-[#0c0c0c] overflow-hidden">
+        <div class="w-full pr-4 sm:pr-6 lg:pr-8 pl-6 sm:pl-10 lg:pl-16 max-w-none mx-0">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+                <div class="max-w-2xl">
+                    <h2 class="text-primary font-bold tracking-[0.3em] uppercase mb-4 text-xs">Curated Collections</h2>
+                    <h1 class="text-4xl md:text-5xl font-serif font-black text-white leading-tight">Featured Safaris <br /><span class="text-primary italic">&amp; Signature Packages</span></h1>
+                </div>
+
+                <div class="flex gap-4">
+                    <button id="prev-slide" class="w-14 h-14 rounded-full border border-white/10 glass flex items-center justify-center text-white hover:border-primary hover:text-primary transition-all group">
+                        <i class="fa-solid fa-arrow-left transition-transform group-active:-translate-x-1"></i>
+                    </button>
+                    <button id="next-slide" class="w-14 h-14 rounded-full border border-white/10 glass flex items-center justify-center text-white hover:border-primary hover:text-primary transition-all group">
+                        <i class="fa-solid fa-arrow-right transition-transform group-active:translate-x-1"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="relative">
+                <div class="overflow-hidden">
+                    <div id="carousel-track" class="flex transition-transform duration-700 ease-in-out gap-8" style="width: 100%;">
+                        <div class="flex-shrink-0 w-full md:w-[48%] lg:w-[32%]">
+                            <div class="group relative glass rounded-3xl overflow-hidden hover:border-primary/50 transition-all duration-500 flex flex-col h-full bg-[#151515]/40" style="min-height: 500px;">
+                                <div class="relative h-72 overflow-hidden flex-shrink-0">
+                                    <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&q=80&w=1200" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                                    <div class="absolute top-5 left-5"><span class="bg-primary text-white text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full shadow-lg">Safari</span></div>
+                                </div>
+                                <div class="p-6 flex flex-col flex-grow">
+                                    <h3 class="text-xl font-serif font-bold text-white mb-2">7-Day Maasai Mara Great Migration</h3>
+                                    <p class="text-gray-400 text-sm mb-4 flex-grow">Experience the world-renowned Great Migration. Luxury tents, daily game drives, and unforgettable wildlife moments.</p>
+                                    <div class="flex items-center justify-between mt-auto">
+                                        <span class="text-primary font-black text-lg">$2450</span>
+                                        <a href="{% url 'package-detail' '7-day-maasai-mara-great-migration' %}" class="bg-primary text-white text-xs px-4 py-2 rounded-full font-bold uppercase tracking-widest">View</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex-shrink-0 w-full md:w-[48%] lg:w-[32%]">
+                            <div class="group relative glass rounded-3xl overflow-hidden hover:border-primary/50 transition-all duration-500 flex flex-col h-full bg-[#151515]/40" style="min-height: 500px;">
+                                <div class="relative h-72 overflow-hidden flex-shrink-0">
+                                    <img src="https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&q=80&w=1200" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                                    <div class="absolute top-5 left-5"><span class="bg-primary text-white text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full shadow-lg">Safari</span></div>
+                                </div>
+                                <div class="p-6 flex flex-col flex-grow">
+                                    <h3 class="text-xl font-serif font-bold text-white mb-2">5-Day Amboseli & Tsavo Adventure</h3>
+                                    <p class="text-gray-400 text-sm mb-4 flex-grow">Witness elephants under Kilimanjaro and explore red-soil Tsavo with guided drives and luxury stays.</p>
+                                    <div class="flex items-center justify-between mt-auto">
+                                        <span class="text-primary font-black text-lg">$1850</span>
+                                        <a href="{% url 'package-detail' '5-day-amboseli-tsavo-adventure' %}" class="bg-primary text-white text-xs px-4 py-2 rounded-full font-bold uppercase tracking-widest">View</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex-shrink-0 w-full md:w-[48%] lg:w-[32%]">
+                            <div class="group relative glass rounded-3xl overflow-hidden hover:border-primary/50 transition-all duration-500 flex flex-col h-full bg-[#151515]/40" style="min-height: 500px;">
+                                <div class="relative h-72 overflow-hidden flex-shrink-0">
+                                    <img src="https://images.unsplash.com/photo-1533035353720-f1c6a75cd8ab?auto=format&fit=crop&q=80&w=1200" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                                    <div class="absolute top-5 left-5"><span class="bg-primary text-white text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full shadow-lg">Beach</span></div>
+                                </div>
+                                <div class="p-6 flex flex-col flex-grow">
+                                    <h3 class="text-xl font-serif font-bold text-white mb-2">Diani Beach Luxury Escape</h3>
+                                    <p class="text-gray-400 text-sm mb-4 flex-grow">Unwind in a private villa, enjoy sunset cruises and immerse in the turquoise Indian Ocean breeze.</p>
+                                    <div class="flex items-center justify-between mt-auto">
+                                        <span class="text-primary font-black text-lg">$950</span>
+                                        <a href="{% url 'package-detail' 'diani-beach-luxury-escape' %}" class="bg-primary text-white text-xs px-4 py-2 rounded-full font-bold uppercase tracking-widest">View</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-secondary text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-12">
+                <div class="max-w-2xl">
+                    <h2 class="text-primary font-bold tracking-[0.3em] uppercase mb-4 text-xs">Why Choose Us</h2>
+                    <h1 class="text-4xl md:text-5xl font-serif font-black mb-6">A Seamless, Luxurious Journey From Start to Finish</h1>
+                    <p class="text-gray-400 text-lg leading-relaxed">We blend deep local expertise with modern luxury to craft journeys that are as authentic as they are unforgettable. Every detail is carefully curated for discerning travelers who value comfort, safety, and once-in-a-lifetime moments.</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full">
+                    <div class="glass p-6 rounded-2xl">
+                        <i class="fa-solid fa-star text-primary text-2xl mb-4"></i>
+                        <h4 class="text-lg font-bold mb-2">Elite Experiences</h4>
+                        <p class="text-sm text-gray-400">Handpicked luxury lodges, personalized safaris, and private excursions.</p>
+                    </div>
+                    <div class="glass p-6 rounded-2xl">
+                        <i class="fa-solid fa-shield-halved text-primary text-2xl mb-4"></i>
+                        <h4 class="text-lg font-bold mb-2">Trusted & Secure</h4>
+                        <p class="text-sm text-gray-400">We ensure safe, reliable travel with 24/7 support and vetted partners.</p>
+                    </div>
+                    <div class="glass p-6 rounded-2xl">
+                        <i class="fa-solid fa-map-location-dot text-primary text-2xl mb-4"></i>
+                        <h4 class="text-lg font-bold mb-2">Local Mastery</h4>
+                        <p class="text-sm text-gray-400">Authentic cultural immersion guided by experienced local experts.</p>
+                    </div>
+                    <div class="glass p-6 rounded-2xl">
+                        <i class="fa-solid fa-handshake text-primary text-2xl mb-4"></i>
+                        <h4 class="text-lg font-bold mb-2">Personal Touch</h4>
+                        <p class="text-sm text-gray-400">Dedicated travel consultants ensure every detail is perfect.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-[#0c0c0c] text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-primary font-bold tracking-[0.3em] uppercase mb-4 text-xs">Signature Experiences</h2>
+                <h1 class="text-4xl md:text-5xl font-serif font-black mb-6">Curated Moments That Stay With You Forever</h1>
+                <p class="text-gray-400 text-lg leading-relaxed">From sunrise hot air balloon rides to luxury bush dinners under the stars, Ziada crafts immersive experiences that become lifelong memories.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <div class="group relative overflow-hidden rounded-3xl">
+                    <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&q=80&w=1200" class="w-full h-80 object-cover transition-transform duration-700 group-hover:scale-110" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                    <div class="absolute bottom-6 left-6">
+                        <h3 class="text-2xl font-serif font-bold">Sunrise Safari Drives</h3>
+                        <p class="text-gray-300 text-sm">Witness the Big Five at dawn.</p>
+                    </div>
+                </div>
+
+                <div class="group relative overflow-hidden rounded-3xl">
+                    <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&q=80&w=1200" class="w-full h-80 object-cover transition-transform duration-700 group-hover:scale-110" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                    <div class="absolute bottom-6 left-6">
+                        <h3 class="text-2xl font-serif font-bold">Luxury Tented Camps</h3>
+                        <p class="text-gray-300 text-sm">Sleep in the heart of the wild.</p>
+                    </div>
+                </div>
+
+                <div class="group relative overflow-hidden rounded-3xl">
+                    <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&q=80&w=1200" class="w-full h-80 object-cover transition-transform duration-700 group-hover:scale-110" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                    <div class="absolute bottom-6 left-6">
+                        <h3 class="text-2xl font-serif font-bold">Cultural Immersions</h3>
+                        <p class="text-gray-300 text-sm">Connect with authentic Maasai heritage.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-secondary text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-primary font-bold tracking-[0.3em] uppercase mb-4 text-xs">Client Stories</h2>
+                <h1 class="text-4xl md:text-5xl font-serif font-black">What Our Guests Say</h1>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass p-8 rounded-3xl">
+                    <p class="text-gray-400 text-sm leading-relaxed">"A breathtaking safari. The team planned every detail flawlessly. We felt pampered and safe throughout."</p>
+                    <div class="mt-6">
+                        <h4 class="text-white font-bold">Amelia W.</h4>
+                        <p class="text-xs text-gray-500">London, UK</p>
+                    </div>
+                </div>
+
+                <div class="glass p-8 rounded-3xl">
+                    <p class="text-gray-400 text-sm leading-relaxed">"Ziada exceeded all expectations. From Nairobi to the Mara, everything was seamless and unforgettable."</p>
+                    <div class="mt-6">
+                        <h4 class="text-white font-bold">Carlos M.</h4>
+                        <p class="text-xs text-gray-500">Madrid, Spain</p>
+                    </div>
+                </div>
+
+                <div class="glass p-8 rounded-3xl">
+                    <p class="text-gray-400 text-sm leading-relaxed">"Luxury, adventure, and a genuine African welcome. We can't wait to return!"</p>
+                    <div class="mt-6">
+                        <h4 class="text-white font-bold">Zhang L.</h4>
+                        <p class="text-xs text-gray-500">Beijing, China</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-[#0c0c0c] text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-primary font-bold tracking-[0.3em] uppercase mb-4 text-xs">Our Legacy</h2>
+                <h1 class="text-4xl md:text-5xl font-serif font-black mb-6">Travel With Purpose &amp; Passion</h1>
+                <p class="text-gray-400 text-lg leading-relaxed">Ziada Tours & Travels is a luxury tour operator that specializes in bespoke African safaris. We curate experiences with deep respect for nature, culture, and your personal sense of adventure.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center p-8 rounded-3xl border border-white/5 hover:bg-white/[0.02] transition-all">
+                    <div class="w-16 h-16 rounded-full border border-primary/20 flex items-center justify-center mx-auto mb-6">
+                        <i class="fa-solid fa-wand-magic-sparkles text-primary text-2xl"></i>
+                    </div>
+                    <h4 class="text-xl font-bold mb-4">Bespoke Curations</h4>
+                    <p class="text-gray-500 text-sm leading-relaxed">No two journeys are identical. We tailor every detail to your pace, taste, and curiosity.</p>
+                </div>
+
+                <div class="text-center p-8 rounded-3xl border border-white/5 hover:bg-white/[0.02] transition-all">
+                    <div class="w-16 h-16 rounded-full border border-primary/20 flex items-center justify-center mx-auto mb-6">
+                        <i class="fa-solid fa-user-tie text-primary text-2xl"></i>
+                    </div>
+                    <h4 class="text-xl font-bold mb-4">Local Intelligence</h4>
+                    <p class="text-gray-500 text-sm leading-relaxed">Our guides are elders and experts of the land, offering insights you won't find in any book.</p>
+                </div>
+
+                <div class="text-center p-8 rounded-3xl border border-white/5 hover:bg-white/[0.02] transition-all">
+                    <div class="w-16 h-16 rounded-full border border-primary/20 flex items-center justify-center mx-auto mb-6">
+                        <i class="fa-solid fa-leaf text-primary text-2xl"></i>
+                    </div>
+                    <h4 class="text-xl font-bold mb-4">Sustainable Luxury</h4>
+                    <p class="text-gray-500 text-sm leading-relaxed">We partner only with eco-conscious lodges that prioritize the preservation of our wild heritage.</p>
+                </div>
+
+                <div class="text-center p-8 rounded-3xl border border-white/5 hover:bg-white/[0.02] transition-all">
+                    <div class="w-16 h-16 rounded-full border border-primary/20 flex items-center justify-center mx-auto mb-6">
+                        <i class="fa-solid fa-headset text-primary text-2xl"></i>
+                    </div>
+                    <h4 class="text-xl font-bold mb-4">24/7 Concierge</h4>
+                    <p class="text-gray-500 text-sm leading-relaxed">From the moment you land until your departure, our team is always just a heartbeat away.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 text-center">
+        <div class="max-w-3xl mx-auto px-4">
+            <h2 class="text-4xl md:text-5xl font-serif font-black mb-8 italic">Ready to write your next chapter?</h2>
+            <a href="{% url 'contact' %}" class="inline-block orange-gradient px-12 py-5 rounded-full font-bold uppercase tracking-widest hover:shadow-2xl hover:shadow-primary/40 transition-all transform hover:scale-105 text-white">Connect with an Expert</a>
+        </div>
+    </section>
+{% endblock %}
+
+{% block footer %}
+    {% include "partials/footer.html" %}
+{% endblock %}
+
+{% block chat_widget %}
+    <div class="fixed bottom-6 right-6 z-[100]">
+        <button id="open-chat-btn" class="bg-[#25D366] hover:bg-[#1ebe5a] w-14 h-14 rounded-full shadow-lg shadow-[#25D366]/30 flex items-center justify-center text-white text-2xl transition-all transform hover:scale-110 active:scale-95">
+            <i class="fa-brands fa-whatsapp"></i>
+            <span class="absolute -top-1 -right-1 flex h-3 w-3">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
+            </span>
+        </button>
+
+        <div id="chat-widget" class="hidden w-80 sm:w-96 glass rounded-2xl overflow-hidden shadow-2xl flex flex-col h-[500px] border border-primary/20">
+            <div class="bg-primary p-4 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center overflow-hidden p-1"><img src="{% static 'ziada-logo.png' %}" alt="Ziada logo" class="w-full h-full object-contain"></div>
+                    <span class="text-white font-bold">Ziada Travel Assistant</span>
+                </div>
+                <button id="close-chat-btn" class="text-white hover:rotate-90 transition-transform"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div id="chat-messages" class="flex-grow overflow-y-auto p-4 space-y-4"></div>
+
+            <div class="p-4 border-t border-white/10">
+                <div class="flex gap-2">
+                    <input type="text" id="chat-input" placeholder="Ask about Mara, migration..." class="flex-grow bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-primary" />
+                    <button id="send-chat-btn" class="bg-primary text-white w-10 h-10 rounded-xl flex items-center justify-center hover:bg-orange-600 transition-colors"><i class="fa-solid fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_scripts %}
+    <script>
+        (() => {
+            const startCarousel = () => {
+                const slides = Array.from(document.querySelectorAll('.hero-slide'));
+                if (slides.length < 2) return;
+
+                const heroKicker = document.getElementById('hero-kicker');
+                const heroTitle = document.getElementById('hero-title');
+                const heroSubtitle = document.getElementById('hero-subtitle');
+
+                const captions = [
+                    {
+                        kicker: 'Unveiling the World One Journey at a Time',
+                        title: 'Premium African <br /> <span class="text-primary italic">Safaris & Tours</span>',
+                        subtitle: 'From the golden plains of Maasai Mara to the turquoise waters of Diani, Ziada Tours & Travels creates unforgettable lifelong memories through world-class travel services.',
+                    },
+                    {
+                        kicker: 'Wildlife Encounters Crafted with Care',
+                        title: 'Luxury Game Drives <br /> <span class="text-primary italic">Across Kenya</span>',
+                        subtitle: 'Track the Big Five, witness sweeping savannahs, and enjoy curated lodges with expert local guides at every stop.',
+                    },
+                    {
+                        kicker: 'Coastal Bliss & Private Escapes',
+                        title: 'Beach Retreats <br /> <span class="text-primary italic">That Restore</span>',
+                        subtitle: 'Sail into sunsets, unwind in oceanfront suites, and experience refined comfort along Kenya’s stunning coastline.',
+                    },
+                ];
+
+                let index = 0;
+                slides.forEach((slide, i) => {
+                    slide.classList.toggle('opacity-100', i === 0);
+                    slide.classList.toggle('opacity-0', i !== 0);
+                    slide.style.zIndex = i === 0 ? '2' : '1';
+                });
+
+                const showSlide = (nextIndex) => {
+                    slides.forEach((slide, i) => {
+                        const isActive = i === nextIndex;
+                        slide.classList.toggle('opacity-100', isActive);
+                        slide.classList.toggle('opacity-0', !isActive);
+                        slide.style.zIndex = isActive ? '2' : '1';
+                    });
+                    if (heroKicker && heroTitle && heroSubtitle && captions[nextIndex]) {
+                        heroKicker.textContent = captions[nextIndex].kicker;
+                        heroTitle.innerHTML = captions[nextIndex].title;
+                        heroSubtitle.textContent = captions[nextIndex].subtitle;
+                    }
+                    index = nextIndex;
+                };
+
+                const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                const intervalMs = prefersReduced ? 12000 : 5000;
+
+                setInterval(() => {
+                    const nextIndex = (index + 1) % slides.length;
+                    showSlide(nextIndex);
+                }, intervalMs);
+            };
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', startCarousel, { once: true });
+            } else {
+                startCarousel();
+            }
+        })();
+    </script>
+{% endblock %}
