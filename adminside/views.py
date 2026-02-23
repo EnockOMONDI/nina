@@ -53,10 +53,29 @@ def package_detail(request, slug):
         .order_by("-is_recommended", "sort_order", "id")
     )
 
+    package_inclusions = package.inclusions
+    if not package_inclusions:
+        first_with_inclusions = package.itinerary_days.exclude(inclusions="").order_by("sort_order", "day_number", "id").first()
+        if first_with_inclusions:
+            package_inclusions = first_with_inclusions.inclusions
+
+    package_exclusions = package.exclusions
+    if not package_exclusions:
+        first_with_exclusions = package.itinerary_days.exclude(exclusions="").order_by("sort_order", "day_number", "id").first()
+        if first_with_exclusions:
+            package_exclusions = first_with_exclusions.exclusions
+
+    inclusion_items = [item.strip() for item in (package_inclusions or "").splitlines() if item.strip()]
+    exclusion_items = [item.strip() for item in (package_exclusions or "").splitlines() if item.strip()]
+
     context = {
         "package": package,
         "availability_chips": availability_chips,
         "hotel_options": hotel_options,
+        "package_inclusions": package_inclusions,
+        "package_exclusions": package_exclusions,
+        "inclusion_items": inclusion_items,
+        "exclusion_items": exclusion_items,
     }
     return render(request, 'ninatoursui/pages/package-detail.html', context)
 
@@ -85,7 +104,7 @@ def destinations(request):
     destinations_data = []
     for destination in visible_destinations:
         destination_packages = base_qs.filter(destination=destination)
-        top_packages = list(destination_packages.order_by("price", "-created_at")[:4])
+        top_packages = list(destination_packages.order_by("price", "-created_at")[:2])
         for pkg in top_packages:
             pkg.hotel_options_count = pkg.hotel_options.filter(active=True).count()
             month_rows = pkg.availability_months.filter(active=True).order_by("year", "month", "sort_order", "id")

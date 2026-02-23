@@ -21,7 +21,7 @@ def send_email_via_mailtrap(subject, html_message, from_email, recipient_list):
         from_name = from_email.split("<")[0].strip()
         from_email_addr = from_email.split("<")[1].split(">")[0].strip()
     else:
-        from_name = "Ziada Travel"
+        from_name = "Nina Tours & Travel Ltd"
         from_email_addr = from_email.strip()
 
     mail = Mail(
@@ -70,7 +70,7 @@ def send_email_via_brevo_api(subject, html_message, from_email, recipient_list):
         if "<" in from_email and ">" in from_email:
             sender_name = from_email.split("<")[0].strip()
         else:
-            sender_name = "Ziada Tours and Travel"
+            sender_name = "Nina Tours & Travel Ltd"
 
     payload = {
         "sender": {"email": sender_email, "name": sender_name},
@@ -95,8 +95,8 @@ def send_email_via_brevo_api(subject, html_message, from_email, recipient_list):
 
 
 def send_contact_emails(inquiry):
-    user_subject = "We received your request"
-    admin_subject = "New contact inquiry"
+    user_subject = "Nina Tours: We received your request"
+    admin_subject = "Nina Tours: New contact inquiry"
 
     extra_recipients = [
         email.strip()
@@ -125,8 +125,8 @@ def send_contact_emails(inquiry):
 
 
 def send_corporate_emails(inquiry):
-    user_subject = "We received your corporate travel inquiry"
-    admin_subject = "New corporate inquiry"
+    user_subject = "Nina Tours: We received your corporate travel inquiry"
+    admin_subject = "Nina Tours: New corporate inquiry"
 
     extra_recipients = [
         email.strip()
@@ -155,8 +155,8 @@ def send_corporate_emails(inquiry):
 
 
 def send_package_quote_emails(inquiry):
-    user_subject = f"We received your quote request for {inquiry.package_title}"
-    admin_subject = f"New package quote inquiry - {inquiry.package_title}"
+    user_subject = f"Nina Tours: We received your quote request for {inquiry.package_title}"
+    admin_subject = f"Nina Tours: New package quote inquiry - {inquiry.package_title}"
 
     extra_recipients = [
         email.strip()

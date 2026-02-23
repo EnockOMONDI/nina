@@ -9,20 +9,24 @@
 {% block content %}
 <main class="nina-landing pt-8 md:pt-44 pb-14">
     <section class="max-w-12xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="rounded-3xl border border-gray-200 bg-white p-6 sm:p-8 shadow-sm">
-            <p class="section-kicker">Nina Insights</p>
-            <h1 class="mt-2 text-3xl sm:text-4xl font-extrabold text-[#0f2f5f]">Travel News, Market Updates, and Practical Briefings</h1>
-            <p class="mt-3 text-gray-600 max-w-3xl">
-                Read our latest insights on aviation trends, destination updates, travel policy planning, and East African travel intelligence.
-            </p>
-            <form action="{% url 'blog-search' %}" method="get" class="mt-5 flex max-w-2xl">
-                <input name="q" type="text" placeholder="Search news and insights..." class="w-full rounded-l-xl border border-gray-300 bg-white px-4 py-3 text-sm text-slate-900 focus:border-[#da176e] focus:ring-2 focus:ring-[#da176e]/15 outline-none">
-                <button type="submit" class="rounded-r-xl bg-[#da176e] px-5 py-3 text-sm font-bold text-white hover:bg-[#bf125f] transition-colors">Search</button>
-            </form>
-            <div class="mt-5 flex flex-wrap gap-2">
-                {% for category in categories %}
-                    <a href="{% url 'category-detail' category.slug %}" class="inline-flex items-center rounded-full border border-gray-300 px-4 py-2 text-xs font-bold uppercase tracking-[0.1em] text-[#0f2f5f] hover:border-[#da176e] hover:text-[#da176e] transition-colors">{{ category.title }}</a>
-                {% endfor %}
+        <div class="relative overflow-hidden rounded-3xl border border-gray-200 bg-white p-6 sm:p-8 shadow-sm">
+            <div class="absolute -top-20 -right-16 h-48 w-48 rounded-full bg-[#8ccaff]/30 blur-3xl"></div>
+            <div class="absolute -bottom-20 -left-16 h-52 w-52 rounded-full bg-[#da176e]/20 blur-3xl"></div>
+            <div class="relative">
+                <p class="section-kicker">Nina Insights</p>
+                <h1 class="mt-2 text-3xl sm:text-5xl font-extrabold text-[#0f2f5f] leading-tight">Read Our Latest Travel News & Stories</h1>
+                <p class="mt-3 text-gray-600 max-w-3xl">
+                    Timely briefings on routes, destination conditions, visa readiness, and cost strategy so your travel decisions stay sharp and informed.
+                </p>
+                <form action="{% url 'blog-search' %}" method="get" class="mt-6 flex max-w-2xl">
+                    <input name="q" type="text" placeholder="Search news, routes, destinations..." class="w-full rounded-l-xl border border-gray-300 bg-white px-4 py-3 text-sm text-slate-900 focus:border-[#da176e] focus:ring-2 focus:ring-[#da176e]/15 outline-none">
+                    <button type="submit" class="rounded-r-xl bg-[#da176e] px-5 py-3 text-sm font-bold text-white hover:bg-[#bf125f] transition-colors">Search</button>
+                </form>
+                <div class="mt-5 flex flex-wrap gap-2">
+                    {% for category in categories %}
+                        <a href="{% url 'category-detail' category.slug %}" class="inline-flex items-center rounded-full border border-gray-300 px-4 py-2 text-xs font-bold uppercase tracking-[0.1em] text-[#0f2f5f] hover:border-[#da176e] hover:text-[#da176e] transition-colors">{{ category.title }}</a>
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </section>
@@ -31,19 +35,24 @@
         <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
             {% if featured_posts %}
                 {% with featured_posts.0 as featured %}
-                    <article class="xl:col-span-2 rounded-3xl border border-gray-200 bg-white overflow-hidden shadow-sm">
+                    <article class="xl:col-span-2 rounded-3xl border border-gray-200 bg-white overflow-hidden shadow-sm hover:shadow-[0_20px_40px_rgba(15,47,95,0.12)] transition-shadow">
                         <div class="grid grid-cols-1 lg:grid-cols-2">
                             <div class="relative min-h-[260px]">
                                 {% if featured.image %}
                                     <img src="{{ featured.image.url }}" alt="{{ featured.title }}" class="absolute inset-0 h-full w-full object-cover">
                                 {% else %}
-                                    <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1400&q=80" alt="{{ featured.title }}" class="absolute inset-0 h-full w-full object-cover">
+                                    <img src="https://picsum.photos/seed/{{ featured.slug }}/1400/900" alt="{{ featured.title }}" class="absolute inset-0 h-full w-full object-cover">
                                 {% endif %}
                             </div>
                             <div class="p-6 sm:p-7">
                                 <p class="text-xs uppercase tracking-[0.14em] font-bold text-[#da176e]">Featured News</p>
                                 <h2 class="mt-2 text-2xl font-extrabold text-[#0f2f5f] leading-snug">{{ featured.title }}</h2>
                                 <p class="mt-3 text-sm text-gray-600 line-clamp-4">{{ featured.excerpt|striptags }}</p>
+                                <div class="mt-4 flex items-center gap-3 text-xs text-gray-500">
+                                    <span>{{ featured.category.title|default:"Insight" }}</span>
+                                    <span>•</span>
+                                    <span>{{ featured.created|date:"M d, Y" }}</span>
+                                </div>
                                 <a href="{% url 'blog-detail' featured.slug %}" class="mt-5 inline-flex items-center rounded-full bg-[#da176e] px-5 py-2.5 text-sm font-bold text-white hover:bg-[#bf125f] transition-colors">Read Article</a>
                             </div>
                         </div>
@@ -52,7 +61,7 @@
             {% endif %}
 
             <aside class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
-                <h3 class="text-lg font-extrabold text-[#0f2f5f]">Trending</h3>
+                <h3 class="text-lg font-extrabold text-[#0f2f5f]">Trending Now</h3>
                 <div class="mt-4 space-y-4">
                     {% for post in trending_posts %}
                         <a href="{% url 'blog-detail' post.slug %}" class="block rounded-xl border border-gray-200 px-4 py-3 hover:border-[#da176e]/40 hover:bg-[#da176e]/[0.03] transition-colors">
@@ -62,6 +71,10 @@
                     {% empty %}
                         <p class="text-sm text-gray-500">No trending posts yet.</p>
                     {% endfor %}
+                </div>
+                <div class="mt-6 rounded-2xl bg-[#0f2f5f] p-4 text-white">
+                    <p class="text-xs uppercase tracking-[0.14em] text-[#8ccaff] font-bold">Why this matters</p>
+                    <p class="mt-2 text-sm text-white/90">Your team gets better outcomes when route updates, lead times, and destination requirements are tracked before ticketing.</p>
                 </div>
             </aside>
         </div>
@@ -75,7 +88,7 @@
                         {% if post.image %}
                             <img src="{{ post.image.url }}" alt="{{ post.title }}" class="absolute inset-0 h-full w-full object-cover">
                         {% else %}
-                            <img src="https://images.unsplash.com/photo-1529074963764-98f45c47344b?auto=format&fit=crop&w=1400&q=80" alt="{{ post.title }}" class="absolute inset-0 h-full w-full object-cover">
+                            <img src="https://picsum.photos/seed/{{ post.slug }}/1400/900" alt="{{ post.title }}" class="absolute inset-0 h-full w-full object-cover">
                         {% endif %}
                     </div>
                     <div class="p-5">

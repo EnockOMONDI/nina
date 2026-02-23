@@ -47,7 +47,14 @@ def blog_detail(request, slug):
     post = get_object_or_404(Post, slug=slug, status="published")
     Post.objects.filter(pk=post.pk).update(views=F("views") + 1)
     post.refresh_from_db(fields=["views"])
-    context = {"post": post}
+    related_posts = (
+        Post.objects.filter(status="published")
+        .exclude(pk=post.pk)
+        .filter(Q(category=post.category) | Q(trending=True))
+        .select_related("category")
+        .distinct()[:3]
+    )
+    context = {"post": post, "related_posts": related_posts}
     return render(request, "ninatoursui/blogs/blog_detail.html", context)
 
 

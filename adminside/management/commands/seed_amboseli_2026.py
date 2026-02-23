@@ -60,6 +60,23 @@ class Command(BaseCommand):
                     "<p>Validity: January to December 2026. "
                     "Travelers: minimum 1 pax.</p>"
                 ),
+                "inclusions": (
+                    "Transport in a pop-up roof 4 x 4 safari vehicle ideal for game viewing and photography\n"
+                    "Full board accommodation while on safari\n"
+                    "Accommodation in double room\n"
+                    "All park entrance fees to include government taxes\n"
+                    "Service of an English speaking professional driver guide\n"
+                    "All game drives as detailed in the itinerary\n"
+                    "Bottled water whilst on safari\n"
+                    "Personalized service"
+                ),
+                "exclusions": (
+                    "Tips\n"
+                    "Laundry\n"
+                    "Beverages\n"
+                    "Items of a personal nature\n"
+                    "Any other extras not detailed in the inclusions"
+                ),
                 "start_date": "2026-01-01",
                 "end_date": "2026-12-31",
                 "min_group_size": 1,
@@ -99,8 +116,8 @@ class Command(BaseCommand):
                 "Check-in and lunch, followed by an afternoon game drive with Mt. Kilimanjaro backdrop. "
                 "Dinner and overnight at your hotel/lodge."
             ),
-            inclusions="Transport, game drive, full board accommodation, park fees.",
-            exclusions="Tips, beverages, and personal expenses.",
+            inclusions="",
+            exclusions="",
             sort_order=1,
         )
         PackageItineraryDay.objects.create(
@@ -111,8 +128,8 @@ class Command(BaseCommand):
                 "Full day game drive in Amboseli with excellent chances to see elephants, big cats, and birdlife. "
                 "Optional Maasai village visit at extra cost."
             ),
-            inclusions="Full-day game drive, guide services, meals (FB).",
-            exclusions="Maasai village fee (USD 30), laundry, and personal extras.",
+            inclusions="",
+            exclusions="",
             sort_order=2,
         )
         PackageItineraryDay.objects.create(
@@ -123,8 +140,8 @@ class Command(BaseCommand):
                 "After breakfast and check-out, enjoy a final en-route game drive and return to Nairobi "
                 "for drop-off at the agreed point."
             ),
-            inclusions="Breakfast, transfer to Nairobi, en-route game drive.",
-            exclusions="Any other extras not detailed in the inclusions.",
+            inclusions="",
+            exclusions="",
             sort_order=3,
         )
 

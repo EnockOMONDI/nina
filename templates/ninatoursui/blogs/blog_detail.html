@@ -6,6 +6,91 @@
     {% include "ninatoursui/partials/navbar.html" %}
 {% endblock %}
 
+{% block extra_head %}
+<style>
+    .article-content {
+        color: #334155;
+        font-size: 1rem;
+        line-height: 1.85;
+    }
+    .article-content h1,
+    .article-content h2,
+    .article-content h3,
+    .article-content h4,
+    .article-content h5,
+    .article-content h6 {
+        color: #0f2f5f;
+        font-family: Poppins, sans-serif;
+        font-weight: 800;
+        line-height: 1.28;
+        margin-top: 1.4rem;
+        margin-bottom: 0.75rem;
+    }
+    .article-content h1 { font-size: 2rem; }
+    .article-content h2 { font-size: 1.6rem; }
+    .article-content h3 { font-size: 1.3rem; }
+    .article-content p { margin: 0.85rem 0; }
+    .article-content ul,
+    .article-content ol {
+        margin: 0.9rem 0;
+        padding-left: 1.25rem;
+    }
+    .article-content li {
+        margin: 0.35rem 0;
+        padding-left: 0.2rem;
+    }
+    .article-content a {
+        color: #da176e;
+        font-weight: 700;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+    }
+    .article-content blockquote {
+        margin: 1.2rem 0;
+        padding: 0.9rem 1rem;
+        border-left: 4px solid #da176e;
+        background: rgba(218, 23, 110, 0.05);
+        border-radius: 0.5rem;
+        color: #475569;
+        font-style: italic;
+    }
+    .article-content img {
+        display: block;
+        width: 100%;
+        height: auto;
+        border-radius: 0.9rem;
+        margin: 1rem 0;
+    }
+    .article-content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1.1rem 0;
+        font-size: 0.95rem;
+    }
+    .article-content th,
+    .article-content td {
+        border: 1px solid #e2e8f0;
+        padding: 0.65rem 0.75rem;
+        text-align: left;
+        vertical-align: top;
+    }
+    .article-content th {
+        background: #f8fafc;
+        color: #0f2f5f;
+        font-weight: 700;
+    }
+    .article-content hr {
+        border: 0;
+        border-top: 1px solid #e2e8f0;
+        margin: 1.3rem 0;
+    }
+    .article-content strong {
+        color: #0f2f5f;
+        font-weight: 800;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <main class="nina-landing pt-8 md:pt-44 pb-14">
     <section class="max-w-12xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -14,19 +99,59 @@
                 {% if post.image %}
                     <img src="{{ post.image.url }}" alt="{{ post.title }}" class="absolute inset-0 h-full w-full object-cover">
                 {% else %}
-                    <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1800&q=80" alt="{{ post.title }}" class="absolute inset-0 h-full w-full object-cover">
+                    <img src="https://picsum.photos/seed/{{ post.slug }}/1800/1000" alt="{{ post.title }}" class="absolute inset-0 h-full w-full object-cover">
                 {% endif %}
                 <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+                <div class="absolute bottom-6 left-6 right-6">
+                    <p class="text-xs uppercase tracking-[0.12em] text-white/90">{{ post.category.title|default:"Insight" }} • {{ post.created|date:"M d, Y" }}</p>
+                    <h1 class="mt-2 text-2xl sm:text-4xl font-extrabold text-white leading-tight max-w-4xl">{{ post.title }}</h1>
+                </div>
             </div>
             <div class="p-6 sm:p-8">
                 <a href="{% url 'blog-list' %}" class="inline-flex items-center text-sm font-bold text-[#da176e] hover:text-[#bf125f]">&larr; Back to Insights</a>
-                <p class="mt-4 text-xs uppercase tracking-[0.12em] text-gray-500">{{ post.category.title|default:"Insight" }} • {{ post.created|date:"M d, Y" }} • {{ post.views }} views</p>
-                <h1 class="mt-2 text-3xl sm:text-4xl font-extrabold text-[#0f2f5f] leading-tight">{{ post.title }}</h1>
-                <div class="mt-6 prose max-w-none prose-headings:text-[#0f2f5f] prose-a:text-[#da176e] prose-p:text-gray-700">
-                    {{ post.content|safe }}
+                <div class="mt-4 flex flex-wrap items-center gap-2 text-xs">
+                    <span class="rounded-full bg-[#8ccaff]/20 px-3 py-1 font-semibold text-[#0f2f5f]">{{ post.category.title|default:"Insight" }}</span>
+                    <span class="rounded-full bg-gray-100 px-3 py-1 font-semibold text-gray-600">{{ post.views }} views</span>
+                </div>
+                <div class="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <div class="lg:col-span-8">
+                        <div class="article-content">
+                            {{ post.content|safe }}
+                        </div>
+                    </div>
+                    <aside class="lg:col-span-4 space-y-4">
+                        <div class="rounded-2xl border border-gray-200 bg-gray-50 p-5">
+                            <p class="text-xs uppercase tracking-[0.12em] text-gray-500 font-bold">Article Snapshot</p>
+                            <ul class="mt-3 space-y-2 text-sm text-gray-700">
+                                <li>Category: {{ post.category.title|default:"Insight" }}</li>
+                                <li>Published: {{ post.created|date:"M d, Y" }}</li>
+                                <li>Last updated: {{ post.updated|date:"M d, Y" }}</li>
+                            </ul>
+                        </div>
+                        <div class="rounded-2xl border border-[#da176e]/20 bg-[#da176e]/[0.03] p-5">
+                            <p class="text-sm font-bold text-[#0f2f5f]">Need help planning around this update?</p>
+                            <a href="{% url 'contact' %}" class="mt-3 inline-flex rounded-full bg-[#da176e] px-4 py-2 text-xs font-bold text-white hover:bg-[#bf125f] transition-colors">Talk to Nina Team</a>
+                        </div>
+                    </aside>
                 </div>
             </div>
         </article>
     </section>
+
+    {% if related_posts %}
+    <section class="max-w-12xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+        <div class="rounded-3xl border border-gray-200 bg-white p-6 sm:p-8 shadow-sm">
+            <h2 class="text-2xl font-extrabold text-[#0f2f5f]">Related Insights</h2>
+            <div class="mt-5 grid grid-cols-1 md:grid-cols-3 gap-5">
+                {% for item in related_posts %}
+                    <a href="{% url 'blog-detail' item.slug %}" class="rounded-2xl border border-gray-200 p-4 hover:border-[#da176e]/40 hover:bg-[#da176e]/[0.03] transition-colors">
+                        <p class="text-xs uppercase tracking-[0.12em] text-gray-500">{{ item.category.title|default:"Insight" }}</p>
+                        <p class="mt-2 text-sm font-extrabold text-[#0f2f5f] leading-snug">{{ item.title }}</p>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
 </main>
 {% endblock %}

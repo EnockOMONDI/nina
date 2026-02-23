@@ -53,7 +53,7 @@ services:
       - key: DB_CONN_HEALTH_CHECKS
         value: True
       - key: EMAIL_PROVIDER
-        value: brevo_api
+        value: smtp
       - key: DEFAULT_FROM_EMAIL
         value: Ziada Tours and Travel <info@ziadatoursandtravel.com>
       - key: ADMIN_EMAIL
@@ -63,7 +63,7 @@ services:
       - key: SITE_URL
         value: https://www.ziadatoursandtravel.com
       - key: EMAIL_HOST
-        value: smtp-relay.brevo.com
+        value: smtp.gmail.com
       - key: EMAIL_PORT
         value: 587
       - key: EMAIL_USE_TLS
@@ -77,9 +77,9 @@ services:
       - key: BREVO_API_KEY
         sync: false
       - key: BREVO_SENDER_EMAIL
-        value: info@ziadatoursandtravel.com
+        value: ""
       - key: BREVO_SENDER_NAME
-        value: Ziada Tours and Travel
+        value: ""
       - key: EMAIL_TIMEOUT
         value: 10
 

@@ -59,6 +59,24 @@ class Command(BaseCommand):
                     "</ul>"
                     "<p>Validity: 01 Jan 2026 to 01 Jan 2027.</p>"
                 ),
+                "inclusions": (
+                    "Transport in a pop-up roof 4 x 4 Land Cruiser safari vehicle ideal for game viewing and photography\n"
+                    "Full board accommodation while on safari\n"
+                    "Accommodation in double room\n"
+                    "All park entrance fees to include government taxes\n"
+                    "Service of an English speaking professional driver guide\n"
+                    "All game drives as detailed in the itinerary\n"
+                    "Bottled water whilst on safari\n"
+                    "Personalized service"
+                ),
+                "exclusions": (
+                    "Tips\n"
+                    "Laundry\n"
+                    "Beverages\n"
+                    "Items of a personal nature\n"
+                    "Any other extras not detailed in the inclusions\n"
+                    "Easter supplement where applicable"
+                ),
                 "start_date": "2026-01-01",
                 "end_date": "2027-01-01",
                 "min_group_size": 1,
@@ -133,8 +151,8 @@ class Command(BaseCommand):
                 day_number=sort_order,
                 title=title,
                 description=description,
-                inclusions="Accommodation, transport, game drives, and meals as per plan.",
-                exclusions="Tips, laundry, beverages, personal items, and extra optional activities.",
+                inclusions="",
+                exclusions="",
                 sort_order=sort_order,
             )
 
