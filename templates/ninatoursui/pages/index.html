@@ -1,5 +1,6 @@
 {% extends "ninatoursui/base.html" %}
 {% load static %}
+{% load humanize %}
 {% block title %}Nina Tours & Travel | Corporate Travel Management{% endblock %}
 
 {% block nav %}
@@ -70,6 +71,17 @@
         <div class="section-head flex-wrap gap-4">
             <div>
                 <h1 class="text-3xl sm:text-4xl font-extrabold text-[#0f2f5f] tracking-tight">Explore Polular Trips </h1>
+                <div class="mt-4 flex flex-wrap items-center gap-2">
+                    <a href="{% url 'home' %}?market=all" class="inline-flex items-center rounded-full px-4 py-2 text-sm font-bold transition-colors {% if selected_market == 'all' %}bg-[#da176e] text-white{% else %}bg-[#f8f4f8] text-[#0f2f5f] hover:bg-[#fde8f3]{% endif %}">
+                        All Packages
+                    </a>
+                    <a href="{% url 'home' %}?market=local" class="inline-flex items-center rounded-full px-4 py-2 text-sm font-bold transition-colors {% if selected_market == 'local' %}bg-[#da176e] text-white{% else %}bg-[#f8f4f8] text-[#0f2f5f] hover:bg-[#fde8f3]{% endif %}">
+                        Local Safaris (KES)
+                    </a>
+                    <a href="{% url 'home' %}?market=international" class="inline-flex items-center rounded-full px-4 py-2 text-sm font-bold transition-colors {% if selected_market == 'international' %}bg-[#da176e] text-white{% else %}bg-[#f8f4f8] text-[#0f2f5f] hover:bg-[#fde8f3]{% endif %}">
+                        International (USD)
+                    </a>
+                </div>
             </div>
             <div class="carousel-controls">
                 <button class="control-btn" id="pkg-prev" type="button" aria-label="Previous packages">&#8592;</button>
@@ -99,10 +111,30 @@
                     <div class="package-content">
                         <p class="package-meta">{{ pkg.duration|default:"Flexible duration" }}</p>
                         <div class="package-footer">
-                            {% if pkg.price and pkg.price > 0 %}
-                                <p class="package-price">From ${{ pkg.price }}</p>
+                            {% if selected_market == 'local' %}
+                                {% if pkg.local_market_price %}
+                                    <p class="package-price">From KES {{ pkg.local_market_price.amount|floatformat:0|intcomma }}</p>
+                                {% else %}
+                                    <p class="package-price">Price on request</p>
+                                {% endif %}
+                            {% elif selected_market == 'international' %}
+                                {% if pkg.international_market_price %}
+                                    <p class="package-price">From USD {{ pkg.international_market_price.amount|floatformat:2|intcomma }}</p>
+                                {% else %}
+                                    <p class="package-price">Price on request</p>
+                                {% endif %}
                             {% else %}
-                                <p class="package-price">Price on request</p>
+                                {% if pkg.local_market_price and pkg.international_market_price %}
+                                    <p class="package-price">KES {{ pkg.local_market_price.amount|floatformat:0|intcomma }} | USD {{ pkg.international_market_price.amount|floatformat:2|intcomma }}</p>
+                                {% elif pkg.local_market_price %}
+                                    <p class="package-price">From KES {{ pkg.local_market_price.amount|floatformat:0|intcomma }}</p>
+                                {% elif pkg.international_market_price %}
+                                    <p class="package-price">From USD {{ pkg.international_market_price.amount|floatformat:2|intcomma }}</p>
+                                {% elif pkg.price and pkg.price > 0 %}
+                                    <p class="package-price">From USD {{ pkg.price|floatformat:2|intcomma }}</p>
+                                {% else %}
+                                    <p class="package-price">Price on request</p>
+                                {% endif %}
                             {% endif %}
                             <a href="{% url 'package-detail' pkg.slug %}" class="package-link">View Package</a>
                         </div>

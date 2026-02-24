@@ -381,6 +381,126 @@ h6 {
     box-shadow: 0 18px 35px rgba(218, 23, 110, 0.22);
 }
 
+.nina-rate-table-wrap {
+    border: 1px solid rgba(218, 23, 110, 0.2);
+    background: linear-gradient(180deg, #ffffff, #fff7fc);
+    border-radius: 1rem;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.nina-rate-table-title {
+    margin: 0 0 0.8rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 800;
+    color: #da176e;
+}
+
+.nina-rate-table-content {
+    overflow-x: auto;
+    border-radius: 0.75rem;
+}
+
+.nina-rate-table-content > * + * {
+    margin-top: 0.9rem;
+}
+
+.nina-rate-table-content h4 {
+    margin: 0.25rem 0 0.55rem;
+    font-size: 0.98rem;
+    color: #0f2f5f;
+    font-weight: 800;
+    line-height: 1.35;
+}
+
+.nina-rate-table-content figure.table {
+    margin: 0;
+}
+
+.nina-rate-table-content figure.table + h4 {
+    margin-top: 1rem;
+}
+
+.nina-rate-table-content table,
+.nina-rate-table-content figure.table table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 720px;
+    table-layout: fixed;
+    border: 1px solid #f3d7e7;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 10px 22px rgba(218, 23, 110, 0.08);
+}
+
+.nina-rate-table-content th,
+.nina-rate-table-content td,
+.nina-rate-table-content figure.table th,
+.nina-rate-table-content figure.table td {
+    border: 1px solid #f7ddeb;
+    padding: 0.66rem 0.72rem;
+    text-align: left;
+    font-size: 0.82rem;
+    color: #1f2937;
+    line-height: 1.4;
+    vertical-align: top;
+    word-break: break-word;
+}
+
+.nina-rate-table-content th {
+    background: linear-gradient(180deg, #fde8f3, #fbd8ea);
+    color: #0f2f5f;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+}
+
+.nina-rate-table-content tr:nth-child(even) td {
+    background: #fff9fd;
+}
+
+.nina-rate-table-content th:first-child,
+.nina-rate-table-content td:first-child {
+    width: 48%;
+    font-weight: 700;
+    color: #0f2f5f;
+}
+
+.nina-rate-table-content th:not(:first-child),
+.nina-rate-table-content td:not(:first-child) {
+    width: 13%;
+    text-align: right;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+.nina-rate-table-content p {
+    margin: 0.35rem 0 0.55rem;
+    font-size: 0.78rem;
+    color: #64748b;
+}
+
+@media (max-width: 768px) {
+    .nina-rate-table-wrap {
+        padding: 0.78rem;
+    }
+
+    .nina-rate-table-content table,
+    .nina-rate-table-content figure.table table {
+        min-width: 660px;
+    }
+
+    .nina-rate-table-content th,
+    .nina-rate-table-content td,
+    .nina-rate-table-content figure.table th,
+    .nina-rate-table-content figure.table td {
+        font-size: 0.76rem;
+        padding: 0.56rem 0.55rem;
+    }
+}
+
 .package-media-wrap {
     position: relative;
 }

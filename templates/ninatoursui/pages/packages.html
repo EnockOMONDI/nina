@@ -1,5 +1,6 @@
 {% extends "ninatoursui/base.html" %}
 {% load static %}
+{% load humanize %}
 {% block title %}Safaris & Holidays | Nina Tours & Travel{% endblock %}
 
 {% block nav %}
@@ -15,6 +16,17 @@
             <p class="mt-3 text-gray-600 max-w-3xl">
                 Explore premium safari and holiday experiences. Open any package to view itinerary, hotel options, monthly availability, and request a quote.
             </p>
+            <div class="mt-5 flex flex-wrap items-center gap-2">
+                <a href="{% url 'packages' %}?market=all" class="inline-flex items-center rounded-full px-4 py-2 text-sm font-bold transition-colors {% if selected_market == 'all' %}bg-[#da176e] text-white{% else %}bg-[#f8f4f8] text-[#0f2f5f] hover:bg-[#fde8f3]{% endif %}">
+                    All Packages
+                </a>
+                <a href="{% url 'packages' %}?market=local" class="inline-flex items-center rounded-full px-4 py-2 text-sm font-bold transition-colors {% if selected_market == 'local' %}bg-[#da176e] text-white{% else %}bg-[#f8f4f8] text-[#0f2f5f] hover:bg-[#fde8f3]{% endif %}">
+                    Local Safaris (KES)
+                </a>
+                <a href="{% url 'packages' %}?market=international" class="inline-flex items-center rounded-full px-4 py-2 text-sm font-bold transition-colors {% if selected_market == 'international' %}bg-[#da176e] text-white{% else %}bg-[#f8f4f8] text-[#0f2f5f] hover:bg-[#fde8f3]{% endif %}">
+                    International (USD)
+                </a>
+            </div>
         </div>
     </section>
 
@@ -42,11 +54,40 @@
 
                             <div class="mt-5 flex items-center justify-between border-t border-gray-100 pt-4">
                                 <div>
-                                    {% if pkg.price and pkg.price > 0 %}
-                                        <p class="text-xs text-gray-500">From</p>
-                                        <p class="text-xl font-extrabold text-[#da176e]">${{ pkg.price }}</p>
+                                    {% if selected_market == 'local' %}
+                                        {% if pkg.local_market_price %}
+                                            <p class="text-xs text-gray-500">From</p>
+                                            <p class="text-xl font-extrabold text-[#da176e]">KES {{ pkg.local_market_price.amount|floatformat:0|intcomma }}</p>
+                                        {% else %}
+                                            <p class="text-sm font-bold text-[#0f2f5f]">Quote on request</p>
+                                        {% endif %}
+                                    {% elif selected_market == 'international' %}
+                                        {% if pkg.international_market_price %}
+                                            <p class="text-xs text-gray-500">From</p>
+                                            <p class="text-xl font-extrabold text-[#da176e]">USD {{ pkg.international_market_price.amount|floatformat:2|intcomma }}</p>
+                                        {% else %}
+                                            <p class="text-sm font-bold text-[#0f2f5f]">Quote on request</p>
+                                        {% endif %}
                                     {% else %}
-                                        <p class="text-sm font-bold text-[#0f2f5f]">Quote on request</p>
+                                        {% if pkg.local_market_price and pkg.international_market_price %}
+                                            <p class="text-xs text-gray-500">From</p>
+                                            <p class="text-sm font-bold text-[#0f2f5f]">
+                                                KES {{ pkg.local_market_price.amount|floatformat:0|intcomma }}
+                                                <span class="text-gray-400">|</span>
+                                                USD {{ pkg.international_market_price.amount|floatformat:2|intcomma }}
+                                            </p>
+                                        {% elif pkg.local_market_price %}
+                                            <p class="text-xs text-gray-500">From</p>
+                                            <p class="text-xl font-extrabold text-[#da176e]">KES {{ pkg.local_market_price.amount|floatformat:0|intcomma }}</p>
+                                        {% elif pkg.international_market_price %}
+                                            <p class="text-xs text-gray-500">From</p>
+                                            <p class="text-xl font-extrabold text-[#da176e]">USD {{ pkg.international_market_price.amount|floatformat:2|intcomma }}</p>
+                                        {% elif pkg.price and pkg.price > 0 %}
+                                            <p class="text-xs text-gray-500">From</p>
+                                            <p class="text-xl font-extrabold text-[#da176e]">USD {{ pkg.price|floatformat:2|intcomma }}</p>
+                                        {% else %}
+                                            <p class="text-sm font-bold text-[#0f2f5f]">Quote on request</p>
+                                        {% endif %}
                                     {% endif %}
                                 </div>
                                 <a href="{% url 'package-detail' pkg.slug %}" class="inline-flex items-center rounded-full bg-[#da176e] px-4 py-2 text-sm font-bold text-white hover:bg-[#bf125f] transition-colors">

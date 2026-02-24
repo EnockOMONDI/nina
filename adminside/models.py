@@ -63,6 +63,48 @@ class Package(models.Model):
         return self.title
 
 
+class PackageMarketPrice(models.Model):
+    MARKET_LOCAL = "local"
+    MARKET_INTERNATIONAL = "international"
+    MARKET_CHOICES = [
+        (MARKET_LOCAL, "Local"),
+        (MARKET_INTERNATIONAL, "International"),
+    ]
+
+    CURRENCY_KES = "KES"
+    CURRENCY_USD = "USD"
+    CURRENCY_CHOICES = [
+        (CURRENCY_KES, "KES"),
+        (CURRENCY_USD, "USD"),
+    ]
+
+    package = models.ForeignKey(
+        Package,
+        on_delete=models.CASCADE,
+        related_name="market_prices",
+    )
+    market = models.CharField(max_length=20, choices=MARKET_CHOICES)
+    currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES)
+    amount = models.DecimalField(max_digits=12, decimal_places=2)
+    notes = models.CharField(max_length=200, blank=True, default="")
+    active = models.BooleanField(default=True)
+    sort_order = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["sort_order", "id"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["package", "market"],
+                name="uniq_package_market_price_market",
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.package.title} - {self.get_market_display()} ({self.currency} {self.amount})"
+
+
 class PackageFeature(models.Model):
     package = models.ForeignKey(Package, on_delete=models.CASCADE, related_name="feature_items")
     text = models.CharField(max_length=200)
@@ -206,6 +248,7 @@ class PackageHotelOption(models.Model):
         blank=True,
         null=True,
     )
+    pricing_table_html = CKEditor5Field(config_name="default", blank=True, default="")
     is_recommended = models.BooleanField(default=False)
     sort_order = models.PositiveIntegerField(default=0)
     active = models.BooleanField(default=True)

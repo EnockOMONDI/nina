@@ -56,7 +56,7 @@ def corporate_view(request):
 
 def inquiry_success_view(request):
     inquiry_id = request.GET.get("id", "").strip()
-    return render(request, "pages/inquiry-success.html", {"inquiry_id": inquiry_id})
+    return render(request, "ninatoursui/pages/inquiry-success.html", {"inquiry_id": inquiry_id})
 
 
 def package_quote_view(request):

@@ -8,6 +8,7 @@ from .models import (
     PackageFeature,
     PackageHotelOption,
     PackageItineraryDay,
+    PackageMarketPrice,
 )
 
 
@@ -25,7 +26,7 @@ class PackageItineraryDayInline(admin.StackedInline):
     ordering = ("sort_order", "day_number", "id")
 
 
-class PackageHotelOptionInline(admin.TabularInline):
+class PackageHotelOptionInline(admin.StackedInline):
     model = PackageHotelOption
     extra = 1
     fields = (
@@ -34,6 +35,7 @@ class PackageHotelOptionInline(admin.TabularInline):
         "board_basis",
         "nights",
         "price_adjustment",
+        "pricing_table_html",
         "is_recommended",
         "sort_order",
         "active",
@@ -46,6 +48,13 @@ class PackageAvailabilityMonthInline(admin.TabularInline):
     extra = 1
     fields = ("month", "year", "status", "notes", "sort_order", "active")
     ordering = ("year", "month", "sort_order", "id")
+
+
+class PackageMarketPriceInline(admin.TabularInline):
+    model = PackageMarketPrice
+    extra = 1
+    fields = ("market", "currency", "amount", "notes", "sort_order", "active")
+    ordering = ("sort_order", "id")
 
 
 @admin.register(Package)
@@ -67,6 +76,7 @@ class PackageAdmin(admin.ModelAdmin):
     search_fields = ("title", "destination__name", "location", "category", "slug")
     prepopulated_fields = {"slug": ("title",)}
     inlines = (
+        PackageMarketPriceInline,
         PackageFeatureInline,
         PackageItineraryDayInline,
         PackageHotelOptionInline,

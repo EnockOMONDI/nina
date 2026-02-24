@@ -102,6 +102,14 @@
                                         </span>
                                     {% endif %}
                                 </div>
+                                {% if option.pricing_table_html %}
+                                    <div class="nina-rate-table-wrap mt-4">
+                                        <p class="nina-rate-table-title">Rate Table</p>
+                                        <div class="nina-rate-table-content">
+                                            {{ option.pricing_table_html|safe }}
+                                        </div>
+                                    </div>
+                                {% endif %}
                             </div>
                         {% empty %}
                             <p class="text-sm text-gray-500">Hotel options are available on request for this package.</p>
