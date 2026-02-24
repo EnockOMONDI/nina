@@ -98,11 +98,17 @@ class Command(BaseCommand):
             action="store_true",
             help="Overwrite existing package/hotel image URLs.",
         )
+        parser.add_argument(
+            "--skip-existing",
+            action="store_true",
+            help="Skip packages whose slug already exists (import only remaining).",
+        )
 
     def handle(self, *args, **options):
         dry_run = options["dry_run"]
         limit = options["limit"]
         overwrite_images = options["overwrite_images"]
+        skip_existing = options["skip_existing"]
 
         if not SOURCE_DIR.exists():
             self.stdout.write(self.style.ERROR(f"Folder not found: {SOURCE_DIR}"))
@@ -119,21 +125,48 @@ class Command(BaseCommand):
         self.stdout.write(self.style.NOTICE(f"Processing {len(files)} package document(s)..."))
 
         imported = 0
+        skipped = 0
         failed = 0
+        stats = {
+            "packages_created": 0,
+            "packages_updated": 0,
+            "market_prices_upserted": 0,
+            "hotels_created": 0,
+            "hotel_options_upserted": 0,
+            "itinerary_days_written": 0,
+        }
         for file_path in files:
             try:
                 parsed = self._parse_docx(file_path)
+                if skip_existing and not dry_run and Package.objects.filter(slug=parsed.slug).exists():
+                    skipped += 1
+                    self.stdout.write(self.style.WARNING(f"SKIPPED existing: {parsed.source_file} ({parsed.slug})"))
+                    continue
                 if dry_run:
                     self._print_preview(parsed)
                 else:
-                    self._upsert_package(parsed, overwrite_images=overwrite_images)
+                    row = self._upsert_package(parsed, overwrite_images=overwrite_images)
+                    for key in stats:
+                        stats[key] += row.get(key, 0)
                 imported += 1
             except Exception as exc:
                 failed += 1
                 self.stdout.write(self.style.ERROR(f"FAILED: {file_path.name} -> {exc}"))
 
         mode = "DRY RUN" if dry_run else "IMPORT"
-        self.stdout.write(self.style.SUCCESS(f"{mode} complete. Success: {imported}, Failed: {failed}"))
+        self.stdout.write(self.style.SUCCESS(f"{mode} complete. Success: {imported}, Skipped: {skipped}, Failed: {failed}"))
+        if not dry_run:
+            self.stdout.write(
+                self.style.NOTICE(
+                    "Counter Check -> "
+                    f"packages created={stats['packages_created']}, "
+                    f"packages updated={stats['packages_updated']}, "
+                    f"market prices upserted={stats['market_prices_upserted']}, "
+                    f"hotels created={stats['hotels_created']}, "
+                    f"hotel options upserted={stats['hotel_options_upserted']}, "
+                    f"itinerary days written={stats['itinerary_days_written']}"
+                )
+            )
 
     def _parse_docx(self, file_path: Path) -> ParsedPackage:
         with zipfile.ZipFile(file_path) as zf:
@@ -450,6 +483,14 @@ class Command(BaseCommand):
 
     @transaction.atomic
     def _upsert_package(self, parsed: ParsedPackage, overwrite_images: bool):
+        row_stats = {
+            "packages_created": 0,
+            "packages_updated": 0,
+            "market_prices_upserted": 0,
+            "hotels_created": 0,
+            "hotel_options_upserted": 0,
+            "itinerary_days_written": 0,
+        }
         destination, _ = Destination.objects.get_or_create(
             slug=slugify(parsed.destination_name),
             defaults={"name": parsed.destination_name, "active": True},
@@ -457,7 +498,7 @@ class Command(BaseCommand):
 
         base_price = parsed.usd_price or parsed.kes_price or Decimal("0.00")
 
-        package, _ = Package.objects.update_or_create(
+        package, package_created = Package.objects.update_or_create(
             slug=parsed.slug,
             defaults={
                 "title": parsed.title,
@@ -473,6 +514,10 @@ class Command(BaseCommand):
                 "active": True,
             },
         )
+        if package_created:
+            row_stats["packages_created"] += 1
+        else:
+            row_stats["packages_updated"] += 1
 
         if overwrite_images or not package.image_url:
             package.image_url = parsed.image_url
@@ -491,6 +536,7 @@ class Command(BaseCommand):
                     exclusions="",
                     sort_order=day_number,
                 )
+                row_stats["itinerary_days_written"] += 1
 
         # create a few lightweight features from inclusions
         PackageFeature.objects.filter(package=package).delete()
@@ -511,6 +557,7 @@ class Command(BaseCommand):
                     "sort_order": 2,
                 },
             )
+            row_stats["market_prices_upserted"] += 1
         if parsed.kes_price:
             PackageMarketPrice.objects.update_or_create(
                 package=package,
@@ -523,12 +570,13 @@ class Command(BaseCommand):
                     "sort_order": 1,
                 },
             )
+            row_stats["market_prices_upserted"] += 1
 
         # hotels and package options
         option_ids = []
         for idx, hotel_name in enumerate(parsed.hotels, start=1):
             hotel_slug = slugify(hotel_name)[:220]
-            hotel, _ = Hotel.objects.get_or_create(
+            hotel, hotel_created = Hotel.objects.get_or_create(
                 slug=hotel_slug,
                 defaults={
                     "name": hotel_name,
@@ -540,6 +588,8 @@ class Command(BaseCommand):
                     "active": True,
                 },
             )
+            if hotel_created:
+                row_stats["hotels_created"] += 1
 
             if overwrite_images or not hotel.image_url:
                 hotel.image_url = self._pick_hotel_image(hotel.name, hotel.location)
@@ -564,6 +614,7 @@ class Command(BaseCommand):
             option.active = True
             option.is_recommended = idx == 1
             option.save()
+            row_stats["hotel_options_upserted"] += 1
             option_ids.append(option.id)
 
         if option_ids:
@@ -574,6 +625,7 @@ class Command(BaseCommand):
                 f"Imported: {parsed.source_file} -> {package.title} | USD={parsed.usd_price} KES={parsed.kes_price} | Hotels={len(parsed.hotels)}"
             )
         )
+        return row_stats
 
     def _print_preview(self, parsed: ParsedPackage):
         self.stdout.write(f"[DRY] {parsed.source_file}")

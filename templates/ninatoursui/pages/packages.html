@@ -90,7 +90,7 @@
                                         {% endif %}
                                     {% endif %}
                                 </div>
-                                <a href="{% url 'package-detail' pkg.slug %}" class="inline-flex items-center rounded-full bg-[#da176e] px-4 py-2 text-sm font-bold text-white hover:bg-[#bf125f] transition-colors">
+                                <a href="{% url 'package-detail' pkg.slug %}?market={{ selected_market }}" class="inline-flex items-center rounded-full bg-[#da176e] px-4 py-2 text-sm font-bold text-white hover:bg-[#bf125f] transition-colors">
                                     View Package
                                 </a>
                             </div>

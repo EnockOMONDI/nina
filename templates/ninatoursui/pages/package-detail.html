@@ -1,5 +1,6 @@
 {% extends "ninatoursui/base.html" %}
 {% load static %}
+{% load humanize %}
 {% block title %}{{ package.title }} | Nina Tours & Travel{% endblock %}
 
 {% block nav %}
@@ -18,7 +19,7 @@
             <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/35 to-black/25"></div>
 
             <div class="relative h-full flex flex-col justify-end p-6 sm:p-8 md:p-10 text-white">
-                <a href="{% url 'packages' %}" class="mb-5 inline-flex items-center gap-2 text-sm font-semibold text-white/90 hover:text-white transition-colors">
+                <a href="{% url 'packages' %}?market={{ selected_market }}" class="mb-5 inline-flex items-center gap-2 text-sm font-semibold text-white/90 hover:text-white transition-colors">
                     <span>&larr;</span> Back to Packages
                 </a>
                 <span class="inline-flex w-max rounded-full bg-white/20 backdrop-blur px-3 py-1 text-[11px] uppercase tracking-[0.14em] font-bold border border-white/30">
@@ -38,8 +39,8 @@
     </section>
 
     <section class="max-w-12xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
-        <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
-            <div class="xl:col-span-2 space-y-8">
+        <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 xl:gap-8">
+            <div class="xl:col-span-9 space-y-8">
                 <article class="rounded-2xl border border-gray-200 bg-white p-6 sm:p-7 shadow-sm">
                     <h2 class="text-2xl font-bold text-[#0f2f5f]">Overview</h2>
                     <div class="mt-4 prose max-w-none prose-p:text-gray-700 prose-headings:text-[#0f2f5f] prose-a:text-[#da176e]">
@@ -173,28 +174,35 @@
                 </article>
             </div>
 
-            <aside class="xl:col-span-1">
-                <div class="sticky top-36 rounded-2xl border border-[#da176e]/30 bg-white p-6 shadow-[0_18px_36px_rgba(218,23,110,0.12)]">
+            <aside class="xl:col-span-3">
+                <div class="sticky top-36 rounded-2xl border border-[#da176e]/30 bg-white p-5 shadow-[0_18px_36px_rgba(218,23,110,0.12)]">
                     <p class="text-xs uppercase tracking-[0.18em] font-bold text-[#8ccaff]">Booking</p>
-                    {% if package.is_featured and package.price > 0 %}
+                    {% if display_price %}
                         <p class="mt-3 text-sm font-semibold text-gray-500">Starting from</p>
-                        <p class="text-4xl font-extrabold text-[#0f2f5f]">${{ package.price }}</p>
+                        <p class="text-3xl font-extrabold text-[#0f2f5f]">
+                            {{ display_currency }}
+                            {% if display_currency == "KES" %}
+                                {{ display_price|floatformat:0|intcomma }}
+                            {% else %}
+                                {{ display_price|floatformat:2|intcomma }}
+                            {% endif %}
+                        </p>
                         {% if package.starting_price_note %}
                             <p class="mt-1 text-xs text-gray-500">{{ package.starting_price_note }}</p>
                         {% endif %}
                         <p class="text-xs text-gray-500">per person</p>
-                        <a href="{% url 'package-quote' %}?package={{ package.slug }}" class="mt-6 inline-flex w-full items-center justify-center rounded-full bg-[#da176e] px-5 py-3.5 text-white font-extrabold text-base shadow-[0_10px_24px_rgba(218,23,110,0.25)] hover:bg-[#bf125f] transition-colors">
+                        <a href="{% url 'package-quote' %}?package={{ package.slug }}" class="mt-5 inline-flex w-full items-center justify-center rounded-full bg-[#da176e] px-4 py-2.5 text-white font-bold text-sm shadow-[0_10px_24px_rgba(218,23,110,0.25)] hover:bg-[#bf125f] transition-colors">
                             Get Quote
                         </a>
                     {% else %}
                         <p class="mt-3 text-sm font-semibold text-gray-500">Pricing</p>
                         <p class="text-3xl font-extrabold text-[#0f2f5f]">Quote on request</p>
-                        <a href="{% url 'package-quote' %}?package={{ package.slug }}" class="mt-6 inline-flex w-full items-center justify-center rounded-full bg-[#da176e] px-5 py-3.5 text-white font-extrabold text-base shadow-[0_10px_24px_rgba(218,23,110,0.25)] hover:bg-[#bf125f] transition-colors">
+                        <a href="{% url 'package-quote' %}?package={{ package.slug }}" class="mt-5 inline-flex w-full items-center justify-center rounded-full bg-[#da176e] px-4 py-2.5 text-white font-bold text-sm shadow-[0_10px_24px_rgba(218,23,110,0.25)] hover:bg-[#bf125f] transition-colors">
                             Get Quote
                         </a>
                     {% endif %}
 
-                    <a href="{% url 'contact' %}" class="mt-3 inline-flex w-full items-center justify-center rounded-full border border-gray-300 px-5 py-3 text-[#0f2f5f] font-bold hover:border-[#da176e] hover:text-[#da176e] transition-colors">
+                    <a href="{% url 'contact' %}" class="mt-3 inline-flex w-full items-center justify-center rounded-full border border-gray-300 px-4 py-2.5 text-[#0f2f5f] text-sm font-bold hover:border-[#da176e] hover:text-[#da176e] transition-colors">
                         Talk to Consultant
                     </a>
 

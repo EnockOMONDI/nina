@@ -136,7 +136,7 @@
                                     <p class="package-price">Price on request</p>
                                 {% endif %}
                             {% endif %}
-                            <a href="{% url 'package-detail' pkg.slug %}" class="package-link">View Package</a>
+                            <a href="{% url 'package-detail' pkg.slug %}?market={{ selected_market }}" class="package-link">View Package</a>
                         </div>
                     </div>
                 </article>

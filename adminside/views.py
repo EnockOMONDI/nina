@@ -93,7 +93,31 @@ def packages(request):
 
 
 def package_detail(request, slug):
-    package = get_object_or_404(Package, slug=slug, active=True)
+    selected_market = _resolve_market(request)
+    package = get_object_or_404(
+        Package.objects.filter(active=True).prefetch_related("market_prices"),
+        slug=slug,
+    )
+    _attach_market_prices([package])
+
+    display_price = None
+    display_currency = ""
+    if selected_market == "local" and package.local_market_price:
+        display_price = package.local_market_price.amount
+        display_currency = "KES"
+    elif selected_market == "international" and package.international_market_price:
+        display_price = package.international_market_price.amount
+        display_currency = "USD"
+    elif selected_market == "all":
+        if package.local_market_price:
+            display_price = package.local_market_price.amount
+            display_currency = "KES"
+        elif package.international_market_price:
+            display_price = package.international_market_price.amount
+            display_currency = "USD"
+    if display_price is None and package.price and package.price > 0:
+        display_price = package.price
+        display_currency = "USD"
     availability_rows = list(
         package.availability_months.filter(active=True).order_by("year", "month", "sort_order", "id")
     )
@@ -132,6 +156,9 @@ def package_detail(request, slug):
 
     context = {
         "package": package,
+        "selected_market": selected_market,
+        "display_price": display_price,
+        "display_currency": display_currency,
         "availability_chips": availability_chips,
         "hotel_options": hotel_options,
         "package_inclusions": package_inclusions,
