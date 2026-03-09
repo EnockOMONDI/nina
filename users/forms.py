@@ -396,8 +396,13 @@ class CareerApplicationForm(forms.ModelForm):
         if not file_uuid or not uuid_pattern.match(file_uuid):
             raise forms.ValidationError(f"{label}: invalid file reference.")
 
-        parsed = urlparse(file_url or "")
-        if parsed.scheme not in {"https"} or "ucarecdn.com" not in parsed.netloc:
+        normalized_url = (file_url or "").strip()
+        if normalized_url.startswith("//"):
+            normalized_url = f"https:{normalized_url}"
+
+        parsed = urlparse(normalized_url)
+        host = parsed.netloc.lower()
+        if parsed.scheme not in {"https"} or ("ucarecdn.com" not in host and "uploadcare.com" not in host):
             raise forms.ValidationError(f"{label}: invalid Uploadcare URL.")
 
         filename = (file_name or "").lower().strip()
@@ -409,6 +414,8 @@ class CareerApplicationForm(forms.ModelForm):
         max_size = getattr(settings, "CAREERS_MAX_FILE_SIZE_BYTES", 10 * 1024 * 1024)
         if file_size and int(file_size) > max_size:
             raise forms.ValidationError(f"{label}: file exceeds 10MB limit.")
+
+        return normalized_url
 
     def clean_honeypot(self):
         value = (self.cleaned_data.get("honeypot") or "").strip()
@@ -426,7 +433,7 @@ class CareerApplicationForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        self._validate_uploadcare_file(
+        cleaned_data["cv_file_url"] = self._validate_uploadcare_file(
             cleaned_data.get("cv_file_uuid"),
             cleaned_data.get("cv_file_url"),
             cleaned_data.get("cv_file_name"),
@@ -441,7 +448,7 @@ class CareerApplicationForm(forms.ModelForm):
         cover_text = (cleaned_data.get("cover_letter_text") or "").strip()
 
         if cover_file_uuid or cover_file_url:
-            self._validate_uploadcare_file(
+            cleaned_data["cover_file_url"] = self._validate_uploadcare_file(
                 cover_file_uuid,
                 cover_file_url,
                 cover_file_name,
