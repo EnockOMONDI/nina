@@ -1,0 +1,13 @@
+<!doctype html>
+<html>
+  <body style="font-family: Arial, sans-serif; color: #1f2937; line-height: 1.5;">
+    <h2 style="margin: 0 0 12px; color: #0f2f5f;">Application Received</h2>
+    <p>Hi {{ application.full_name }},</p>
+    <p>Thank you for applying for <strong>{{ application.job.title }}</strong>. We have received your application and our team will review it.</p>
+    <p>If your profile matches our requirements, we will contact you using the details you provided.</p>
+    <p style="margin-top: 24px;">Nina Tours &amp; Travel</p>
+    {% if site_url %}
+      <p><a href="{{ site_url }}" style="color: #0f2f5f;">{{ site_url }}</a></p>
+    {% endif %}
+  </body>
+</html>

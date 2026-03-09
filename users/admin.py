@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from .models import (
+    CareerApplication,
     ContactInquiry,
     CorporateInquiry,
     MICEInquiry,
@@ -56,3 +57,28 @@ class PackageQuoteInquiryAdmin(admin.ModelAdmin):
     )
     list_filter = ("is_resolved", "created_at", "travel_date")
     search_fields = ("package_title", "package_slug", "full_name", "email", "phone")
+
+
+@admin.register(CareerApplication)
+class CareerApplicationAdmin(admin.ModelAdmin):
+    list_display = (
+        "job",
+        "full_name",
+        "email",
+        "primary_phone",
+        "status",
+        "created_at",
+    )
+    list_filter = ("status", "job", "created_at")
+    search_fields = ("job__title", "full_name", "email", "primary_phone", "alt_phone")
+    readonly_fields = (
+        "cv_file_uuid",
+        "cv_file_url",
+        "cv_file_name",
+        "cv_file_size",
+        "cover_file_uuid",
+        "cover_file_url",
+        "cover_file_name",
+        "cover_file_size",
+        "created_at",
+    )

@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+  <body style="font-family: Arial, sans-serif; color: #111827; line-height: 1.5;">
+    <h2 style="margin: 0 0 12px; color: #0f2f5f;">New Career Application</h2>
+    <p><strong>Job:</strong> {{ application.job.title }}</p>
+    <p><strong>Name:</strong> {{ application.full_name }}</p>
+    <p><strong>Email:</strong> {{ application.email }}</p>
+    <p><strong>Primary Phone:</strong> {{ application.primary_phone }}</p>
+    {% if application.alt_phone %}<p><strong>Alternative Phone:</strong> {{ application.alt_phone }}</p>{% endif %}
+    {% if application.years_experience is not None %}<p><strong>Years of Experience:</strong> {{ application.years_experience }}</p>{% endif %}
+    {% if application.availability_date %}<p><strong>Availability Date:</strong> {{ application.availability_date }}</p>{% endif %}
+
+    <h3 style="margin: 20px 0 8px; color: #0f2f5f;">Documents</h3>
+    <p><strong>CV:</strong> <a href="{{ application.cv_file_url }}">{{ application.cv_file_name|default:application.cv_file_url }}</a></p>
+    {% if application.cover_file_url %}
+      <p><strong>Cover Letter File:</strong> <a href="{{ application.cover_file_url }}">{{ application.cover_file_name|default:application.cover_file_url }}</a></p>
+    {% endif %}
+
+    {% if application.cover_letter_text %}
+      <h3 style="margin: 20px 0 8px; color: #0f2f5f;">Cover Letter Text</h3>
+      <p style="white-space: pre-wrap;">{{ application.cover_letter_text }}</p>
+    {% endif %}
+
+    <p style="margin-top: 20px; color: #6b7280;">Submitted at {{ application.created_at }}</p>
+  </body>
+</html>

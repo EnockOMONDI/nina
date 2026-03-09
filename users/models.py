@@ -81,6 +81,53 @@ class CorporateInquiry(models.Model):
         return f"{self.company_name} - {self.full_name}"
 
 
+class CareerApplication(models.Model):
+    STATUS_NEW = "new"
+    STATUS_REVIEWING = "reviewing"
+    STATUS_SHORTLISTED = "shortlisted"
+    STATUS_REJECTED = "rejected"
+    STATUS_HIRED = "hired"
+    STATUS_CHOICES = (
+        (STATUS_NEW, "New"),
+        (STATUS_REVIEWING, "Reviewing"),
+        (STATUS_SHORTLISTED, "Shortlisted"),
+        (STATUS_REJECTED, "Rejected"),
+        (STATUS_HIRED, "Hired"),
+    )
+
+    job = models.ForeignKey(
+        "adminside.CareerJob",
+        on_delete=models.PROTECT,
+        related_name="applications",
+    )
+    full_name = models.CharField(max_length=100)
+    email = models.EmailField()
+    primary_phone = models.CharField(max_length=20)
+    alt_phone = models.CharField(max_length=20, blank=True, default="")
+    years_experience = models.PositiveIntegerField(blank=True, null=True)
+    availability_date = models.DateField(blank=True, null=True)
+    cover_letter_text = models.TextField(blank=True, default="")
+
+    cv_file_uuid = models.CharField(max_length=64)
+    cv_file_url = models.URLField(max_length=500)
+    cv_file_name = models.CharField(max_length=255, blank=True, default="")
+    cv_file_size = models.PositiveIntegerField(blank=True, null=True)
+
+    cover_file_uuid = models.CharField(max_length=64, blank=True, default="")
+    cover_file_url = models.URLField(max_length=500, blank=True, default="")
+    cover_file_name = models.CharField(max_length=255, blank=True, default="")
+    cover_file_size = models.PositiveIntegerField(blank=True, null=True)
+
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=STATUS_NEW)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.full_name} - {self.job.title}"
+
+
 class MICEInquiry(models.Model):
     company_name = models.CharField(max_length=200)
     contact_person = models.CharField(max_length=100)

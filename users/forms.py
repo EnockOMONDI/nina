@@ -1,8 +1,13 @@
+import re
+from urllib.parse import urlparse
+
 from django import forms
+from django.conf import settings
+from django.utils import timezone
 
-from adminside.models import Hotel, PackageHotelOption
+from adminside.models import CareerJob, Hotel, PackageHotelOption
 
-from .models import ContactInquiry, CorporateInquiry, PackageQuoteInquiry
+from .models import CareerApplication, ContactInquiry, CorporateInquiry, PackageQuoteInquiry
 
 
 TRAVEL_CATEGORY_CHOICES = (
@@ -304,3 +309,150 @@ class PackageQuoteInquiryForm(forms.ModelForm):
                 "rows": 5,
             }
         )
+
+
+class CareerApplicationForm(forms.ModelForm):
+    job = forms.ModelChoiceField(
+        queryset=CareerJob.objects.none(),
+        empty_label="Select position",
+    )
+    cv_file_uuid = forms.CharField(widget=forms.HiddenInput())
+    cv_file_url = forms.URLField(widget=forms.HiddenInput())
+    cv_file_name = forms.CharField(required=False, widget=forms.HiddenInput())
+    cv_file_size = forms.IntegerField(required=False, widget=forms.HiddenInput())
+
+    cover_file_uuid = forms.CharField(required=False, widget=forms.HiddenInput())
+    cover_file_url = forms.URLField(required=False, widget=forms.HiddenInput())
+    cover_file_name = forms.CharField(required=False, widget=forms.HiddenInput())
+    cover_file_size = forms.IntegerField(required=False, widget=forms.HiddenInput())
+
+    honeypot = forms.CharField(required=False, widget=forms.HiddenInput())
+
+    class Meta:
+        model = CareerApplication
+        fields = [
+            "job",
+            "full_name",
+            "email",
+            "primary_phone",
+            "alt_phone",
+            "years_experience",
+            "availability_date",
+            "cover_letter_text",
+            "cv_file_uuid",
+            "cv_file_url",
+            "cv_file_name",
+            "cv_file_size",
+            "cover_file_uuid",
+            "cover_file_url",
+            "cover_file_name",
+            "cover_file_size",
+            "honeypot",
+        ]
+        widgets = {
+            "availability_date": forms.DateInput(attrs={"type": "date"}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        selected_job = kwargs.pop("selected_job", None)
+        super().__init__(*args, **kwargs)
+
+        open_jobs = CareerJob.objects.filter(
+            active=True,
+            status=CareerJob.STATUS_OPEN,
+        ).order_by("sort_order", "-created_at")
+        self.fields["job"].queryset = open_jobs
+        if selected_job:
+            self.fields["job"].queryset = open_jobs.filter(id=selected_job.id)
+            self.initial["job"] = selected_job
+
+        text_input_class = "w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-slate-900 focus:border-[#da176e] focus:ring-2 focus:ring-[#da176e]/15 outline-none"
+        select_input_class = "w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-slate-900 focus:border-[#da176e] focus:ring-2 focus:ring-[#da176e]/15 outline-none appearance-none"
+
+        self.fields["job"].widget.attrs.update({"class": select_input_class})
+        self.fields["full_name"].widget.attrs.update({"class": text_input_class, "placeholder": "Your full name"})
+        self.fields["email"].widget.attrs.update({"class": text_input_class, "placeholder": "your@email.com"})
+        self.fields["primary_phone"].widget.attrs.update({"class": text_input_class, "placeholder": "+254 7xx xxx xxx"})
+        self.fields["alt_phone"].required = False
+        self.fields["alt_phone"].widget.attrs.update({"class": text_input_class, "placeholder": "Alternative number (optional)"})
+        self.fields["years_experience"].required = False
+        self.fields["years_experience"].widget.attrs.update({"class": text_input_class, "placeholder": "e.g. 3", "min": "0"})
+        self.fields["availability_date"].required = False
+        self.fields["availability_date"].widget.attrs.update({"class": text_input_class})
+        self.fields["cover_letter_text"].required = False
+        self.fields["cover_letter_text"].widget = forms.Textarea(
+            attrs={
+                "class": text_input_class,
+                "placeholder": "Optional: paste your cover letter text here.",
+                "rows": 6,
+            }
+        )
+
+    def _validate_uploadcare_file(self, file_uuid, file_url, file_name, file_size, label):
+        if not file_uuid and not file_url:
+            return
+
+        uuid_pattern = re.compile(r"^[0-9a-fA-F-]{10,64}$")
+        if not file_uuid or not uuid_pattern.match(file_uuid):
+            raise forms.ValidationError(f"{label}: invalid file reference.")
+
+        parsed = urlparse(file_url or "")
+        if parsed.scheme not in {"https"} or "ucarecdn.com" not in parsed.netloc:
+            raise forms.ValidationError(f"{label}: invalid Uploadcare URL.")
+
+        filename = (file_name or "").lower().strip()
+        if filename:
+            allowed_exts = getattr(settings, "CAREERS_ALLOWED_EXTENSIONS", ["pdf", "doc", "docx"])
+            if "." not in filename or filename.rsplit(".", 1)[1] not in allowed_exts:
+                raise forms.ValidationError(f"{label}: only PDF, DOC, and DOCX are allowed.")
+
+        max_size = getattr(settings, "CAREERS_MAX_FILE_SIZE_BYTES", 10 * 1024 * 1024)
+        if file_size and int(file_size) > max_size:
+            raise forms.ValidationError(f"{label}: file exceeds 10MB limit.")
+
+    def clean_honeypot(self):
+        value = (self.cleaned_data.get("honeypot") or "").strip()
+        if value:
+            raise forms.ValidationError("Invalid submission.")
+        return ""
+
+    def clean_job(self):
+        job = self.cleaned_data["job"]
+        if not job.active or job.status != CareerJob.STATUS_OPEN:
+            raise forms.ValidationError("This position is currently closed.")
+        if job.deadline and job.deadline < timezone.localdate():
+            raise forms.ValidationError("Application deadline for this position has passed.")
+        return job
+
+    def clean(self):
+        cleaned_data = super().clean()
+        self._validate_uploadcare_file(
+            cleaned_data.get("cv_file_uuid"),
+            cleaned_data.get("cv_file_url"),
+            cleaned_data.get("cv_file_name"),
+            cleaned_data.get("cv_file_size"),
+            "CV",
+        )
+
+        cover_file_uuid = cleaned_data.get("cover_file_uuid")
+        cover_file_url = cleaned_data.get("cover_file_url")
+        cover_file_name = cleaned_data.get("cover_file_name")
+        cover_file_size = cleaned_data.get("cover_file_size")
+        cover_text = (cleaned_data.get("cover_letter_text") or "").strip()
+
+        if cover_file_uuid or cover_file_url:
+            self._validate_uploadcare_file(
+                cover_file_uuid,
+                cover_file_url,
+                cover_file_name,
+                cover_file_size,
+                "Cover letter file",
+            )
+
+        if not cover_text and not cover_file_uuid:
+            self.add_error(
+                "cover_letter_text",
+                "Add a cover letter text or upload a cover letter file.",
+            )
+
+        return cleaned_data

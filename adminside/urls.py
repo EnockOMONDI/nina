@@ -1,13 +1,22 @@
 from django.urls import path
 
 from . import views
-from users.views import contact_view, corporate_view, inquiry_success_view, package_quote_view
+from users.views import (
+    career_application_submit_view,
+    contact_view,
+    corporate_view,
+    inquiry_success_view,
+    package_quote_view,
+)
 
 urlpatterns = [
     path('', views.home, name='home'),
     path('packages/', views.packages, name='packages'),
     path('package/<slug:slug>/', views.package_detail, name='package-detail'),
     path('hotels/', views.hotels, name='hotels'),
+    path('careers/', views.careers, name='careers'),
+    path('careers/<slug:slug>/', views.career_detail, name='career-detail'),
+    path('careers/apply/', career_application_submit_view, name='career-apply'),
     path('destinations/', views.destinations, name='destinations'),
     path('about/', views.about, name='about'),
     path('corporates/', corporate_view, name='corporates'),

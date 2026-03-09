@@ -1,0 +1,100 @@
+{% extends "ninatoursui/base.html" %}
+{% load static %}
+
+{% block title %}{{ job.title }} | Careers{% endblock %}
+
+{% block nav %}
+    {% include "ninatoursui/partials/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+<main class="nina-landing pt-8 md:pt-36 pb-14 bg-[#f5f3fb]">
+    <section class="max-w-12xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="rounded-3xl overflow-hidden bg-[#0f2f5f] text-white p-8 md:p-12">
+            <h1 class="text-3xl sm:text-5xl font-extrabold">{{ job.title }}</h1>
+            <div class="mt-4 flex flex-wrap gap-2">
+                <span class="rounded-full bg-white/20 px-3 py-1 text-xs font-semibold">{{ job.get_job_type_display }}</span>
+                <span class="rounded-full {% if job.status == 'open' %}bg-green-500/90{% else %}bg-red-500/90{% endif %} px-3 py-1 text-xs font-semibold">{{ job.get_status_display }}</span>
+                {% if job.location %}<span class="rounded-full bg-white/20 px-3 py-1 text-xs font-semibold">{{ job.location }}</span>{% endif %}
+            </div>
+            <div class="mt-6">
+                {% if job.is_open_for_application %}
+                    <a href="#apply" class="inline-flex rounded-full bg-white px-6 py-3 text-sm font-bold text-[#0f2f5f]">Apply Now</a>
+                {% else %}
+                    <span class="inline-flex rounded-full bg-gray-400 px-6 py-3 text-sm font-bold text-white">Applications Closed</span>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-12xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 grid grid-cols-1 lg:grid-cols-3 gap-7">
+        <div class="lg:col-span-2 space-y-7">
+            <article class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
+                <h2 class="text-4xl font-extrabold text-[#0f2f5f]">Job Description</h2>
+                <div class="mt-4 text-gray-700 prose max-w-none">{{ job.description|safe }}</div>
+            </article>
+            <article class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
+                <h2 class="text-4xl font-extrabold text-[#0f2f5f]">Key Responsibilities</h2>
+                <div class="mt-4 text-gray-700 prose max-w-none">{{ job.responsibilities|safe }}</div>
+            </article>
+            <article class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
+                <h2 class="text-4xl font-extrabold text-[#0f2f5f]">Requirements & Qualifications</h2>
+                <div class="mt-4 text-gray-700 prose max-w-none">{{ job.requirements|safe }}</div>
+            </article>
+        </div>
+
+        <aside class="space-y-6">
+            <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
+                <h3 class="text-2xl font-extrabold text-[#0f2f5f]">Quick Apply</h3>
+                <p class="mt-2 text-sm text-gray-600">Ready to join our team? Submit your application.</p>
+                <div class="mt-4">
+                    {% if job.is_open_for_application %}
+                        <a href="#apply" class="inline-flex w-full justify-center rounded-full bg-[#0f2f5f] px-4 py-3 text-sm font-bold text-white">Apply Now</a>
+                    {% else %}
+                        <span class="inline-flex w-full justify-center rounded-full bg-gray-300 px-4 py-3 text-sm font-bold text-white">Applications Closed</span>
+                    {% endif %}
+                </div>
+                <a href="{% url 'careers' %}" class="mt-3 inline-flex w-full justify-center rounded-full border border-[#0f2f5f] px-4 py-3 text-sm font-bold text-[#0f2f5f]">View All Jobs</a>
+            </div>
+
+            <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
+                <h3 class="text-2xl font-extrabold text-[#0f2f5f]">Job Information</h3>
+                <div class="mt-3 text-sm text-gray-700 space-y-3">
+                    <div class="flex items-center justify-between"><span>Type</span><span class="font-semibold">{{ job.get_job_type_display }}</span></div>
+                    <div class="flex items-center justify-between"><span>Status</span><span class="font-semibold">{{ job.get_status_display }}</span></div>
+                    <div class="flex items-center justify-between"><span>Location</span><span class="font-semibold">{{ job.location|default:"N/A" }}</span></div>
+                    <div class="flex items-center justify-between"><span>Posted</span><span class="font-semibold">{{ job.posted_on|date:"M d, Y"|default:"N/A" }}</span></div>
+                    <div class="flex items-center justify-between"><span>Deadline</span><span class="font-semibold">{{ job.deadline|date:"M d, Y"|default:"N/A" }}</span></div>
+                </div>
+            </div>
+        </aside>
+    </section>
+
+    <section class="max-w-12xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+        <h3 class="text-4xl font-extrabold text-[#0f2f5f] text-center">Related Opportunities</h3>
+        <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+            {% for related in related_jobs %}
+                <article class="rounded-3xl border border-gray-200 bg-white p-5 shadow-sm">
+                    <h4 class="text-xl font-extrabold text-[#0f2f5f]">{{ related.title }}</h4>
+                    <p class="mt-2 text-sm text-gray-600">{{ related.summary|default:related.description|striptags|truncatechars:110 }}</p>
+                    <p class="mt-3 text-xs text-gray-500">{{ related.location|default:"Location shared on request" }}</p>
+                    <a href="{% url 'career-detail' related.slug %}" class="mt-4 inline-flex w-full justify-center rounded-full border border-[#0f2f5f] px-4 py-2 text-sm font-semibold text-[#0f2f5f]">View Details</a>
+                </article>
+            {% empty %}
+                <div class="md:col-span-3 rounded-3xl border border-gray-200 bg-white p-6 text-center text-gray-600">No related opportunities at the moment.</div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+        {% if messages %}
+            <div class="mb-4 space-y-2">
+                {% for message in messages %}
+                    <div class="rounded-xl px-4 py-3 text-sm {% if message.tags == 'success' %}bg-green-50 text-green-700 border border-green-200{% elif message.tags == 'error' %}bg-red-50 text-red-700 border border-red-200{% else %}bg-blue-50 text-blue-700 border border-blue-200{% endif %}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% include "ninatoursui/pages/partials/career-application-form.html" %}
+    </section>
+</main>
+{% endblock %}

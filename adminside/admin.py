@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from .models import (
+    CareerJob,
     Destination,
     Hotel,
     Package,
@@ -90,6 +91,24 @@ class HotelAdmin(admin.ModelAdmin):
     list_filter = ("rating", "active", "created_at")
     search_fields = ("name", "location", "slug")
     prepopulated_fields = {"slug": ("name",)}
+
+
+@admin.register(CareerJob)
+class CareerJobAdmin(admin.ModelAdmin):
+    list_display = (
+        "title",
+        "department",
+        "location",
+        "job_type",
+        "status",
+        "posted_on",
+        "deadline",
+        "active",
+    )
+    list_filter = ("job_type", "status", "active", "department", "posted_on", "deadline")
+    search_fields = ("title", "department", "location", "slug")
+    prepopulated_fields = {"slug": ("title",)}
+    ordering = ("sort_order", "-created_at")
 
 
 @admin.register(Destination)

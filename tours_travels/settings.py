@@ -154,6 +154,12 @@ ANALYTICS_TRACK_ADMIN = config("ANALYTICS_TRACK_ADMIN", default=False, cast=bool
 
 UPLOADCARE_PUBLIC_KEY = config("UPLOADCARE_PUBLIC_KEY", default="")
 UPLOADCARE_SECRET_KEY = config("UPLOADCARE_SECRET_KEY", default="")
+CAREERS_MAX_FILE_SIZE_BYTES = config("CAREERS_MAX_FILE_SIZE_BYTES", default=10 * 1024 * 1024, cast=int)
+CAREERS_ALLOWED_EXTENSIONS = [
+    ext.strip().lower()
+    for ext in config("CAREERS_ALLOWED_EXTENSIONS", default="pdf,doc,docx").split(",")
+    if ext.strip()
+]
 
 CKEDITOR_5_CONFIGS = {
     "default": {
@@ -208,6 +214,7 @@ UNFOLD = {
                 "items": [
                     {"title": "Packages", "link": admin_nav.adminside_package_list},
                     {"title": "Hotels", "link": admin_nav.adminside_hotel_list},
+                    {"title": "Career Jobs", "link": admin_nav.adminside_career_job_list},
                     {"title": "Blog Posts", "link": admin_nav.blog_post_list},
                     {"title": "Blog Categories", "link": admin_nav.blog_category_list},
                 ],
@@ -217,6 +224,7 @@ UNFOLD = {
                 "items": [
                     {"title": "Contact Inquiries", "link": admin_nav.users_contact_list},
                     {"title": "Corporate Inquiries", "link": admin_nav.users_corporate_list},
+                    {"title": "Career Applications", "link": admin_nav.users_career_application_list},
                     {"title": "MICE Inquiries", "link": admin_nav.users_mice_list},
                     {"title": "Student Travel", "link": admin_nav.users_student_list},
                     {"title": "NGO Travel", "link": admin_nav.users_ngo_list},

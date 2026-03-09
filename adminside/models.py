@@ -157,6 +157,63 @@ class Hotel(models.Model):
         return self.name
 
 
+class CareerJob(models.Model):
+    JOB_TYPE_FULL_TIME = "full_time"
+    JOB_TYPE_PART_TIME = "part_time"
+    JOB_TYPE_CONTRACT = "contract"
+    JOB_TYPE_INTERNSHIP = "internship"
+    JOB_TYPE_CHOICES = [
+        (JOB_TYPE_FULL_TIME, "Full-time"),
+        (JOB_TYPE_PART_TIME, "Part-time"),
+        (JOB_TYPE_CONTRACT, "Contract"),
+        (JOB_TYPE_INTERNSHIP, "Internship"),
+    ]
+
+    STATUS_OPEN = "open"
+    STATUS_CLOSED = "closed"
+    STATUS_CHOICES = [
+        (STATUS_OPEN, "Open"),
+        (STATUS_CLOSED, "Closed"),
+    ]
+
+    title = models.CharField(max_length=220)
+    slug = models.SlugField(max_length=240, unique=True)
+    department = models.CharField(max_length=120, blank=True, default="")
+    location = models.CharField(max_length=150, blank=True, default="")
+    job_type = models.CharField(
+        max_length=20,
+        choices=JOB_TYPE_CHOICES,
+        default=JOB_TYPE_FULL_TIME,
+    )
+    status = models.CharField(
+        max_length=10,
+        choices=STATUS_CHOICES,
+        default=STATUS_OPEN,
+    )
+    hero_image_url = models.URLField(blank=True, default="")
+    summary = models.TextField(blank=True, default="")
+    description = CKEditor5Field(config_name="default", blank=True, default="")
+    responsibilities = CKEditor5Field(config_name="default", blank=True, default="")
+    requirements = CKEditor5Field(config_name="default", blank=True, default="")
+    posted_on = models.DateField(blank=True, null=True)
+    deadline = models.DateField(blank=True, null=True)
+    sort_order = models.PositiveIntegerField(default=0)
+    active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["sort_order", "-created_at"]
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)[:240]
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title
+
+
 class PackageAvailabilityMonth(models.Model):
     STATUS_AVAILABLE = "available"
     STATUS_LIMITED = "limited"

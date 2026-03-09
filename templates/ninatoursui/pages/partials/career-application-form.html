@@ -1,0 +1,172 @@
+<form method="post" action="{% url 'career-apply' %}" class="rounded-3xl border border-gray-200 bg-white p-6 sm:p-8 shadow-sm" id="apply">
+    {% csrf_token %}
+
+    {% if application_form.non_field_errors %}
+        <div class="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            {% for error in application_form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+        </div>
+    {% endif %}
+
+    <h3 class="text-2xl font-extrabold text-[#0f2f5f]">Apply Now</h3>
+    <p class="mt-2 text-sm text-gray-600">Submit your profile and documents. Fields marked * are required.</p>
+
+    <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="md:col-span-2">
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Position Applied For *</label>
+            {{ application_form.job }}
+            {% for error in application_form.job.errors %}<p class="mt-1 text-xs text-red-600">{{ error }}</p>{% endfor %}
+        </div>
+
+        <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Full Name *</label>
+            {{ application_form.full_name }}
+            {% for error in application_form.full_name.errors %}<p class="mt-1 text-xs text-red-600">{{ error }}</p>{% endfor %}
+        </div>
+        <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Email *</label>
+            {{ application_form.email }}
+            {% for error in application_form.email.errors %}<p class="mt-1 text-xs text-red-600">{{ error }}</p>{% endfor %}
+        </div>
+
+        <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Primary Phone *</label>
+            {{ application_form.primary_phone }}
+            {% for error in application_form.primary_phone.errors %}<p class="mt-1 text-xs text-red-600">{{ error }}</p>{% endfor %}
+        </div>
+        <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Alternative Phone</label>
+            {{ application_form.alt_phone }}
+            {% for error in application_form.alt_phone.errors %}<p class="mt-1 text-xs text-red-600">{{ error }}</p>{% endfor %}
+        </div>
+
+        <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Years of Experience</label>
+            {{ application_form.years_experience }}
+            {% for error in application_form.years_experience.errors %}<p class="mt-1 text-xs text-red-600">{{ error }}</p>{% endfor %}
+        </div>
+        <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Availability Date</label>
+            {{ application_form.availability_date }}
+            {% for error in application_form.availability_date.errors %}<p class="mt-1 text-xs text-red-600">{{ error }}</p>{% endfor %}
+        </div>
+
+        <div class="md:col-span-2">
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Cover Letter Text (optional)</label>
+            {{ application_form.cover_letter_text }}
+            <p class="mt-1 text-xs text-gray-500">You can paste text here, upload a file, or both.</p>
+            {% for error in application_form.cover_letter_text.errors %}<p class="mt-1 text-xs text-red-600">{{ error }}</p>{% endfor %}
+        </div>
+
+        <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">CV / Resume * (PDF, DOC, DOCX)</label>
+            <input type="hidden" id="cv-uploadcare-widget" role="uploadcare-uploader" data-public-key="{{ uploadcare_public_key }}" data-multiple="false" data-images-only="false" data-clearable="true" data-tabs="file url" />
+            <p id="cv-upload-label" class="mt-1 text-xs text-gray-600">No file selected</p>
+            {% for error in application_form.cv_file_uuid.errors %}<p class="mt-1 text-xs text-red-600">{{ error }}</p>{% endfor %}
+            {% for error in application_form.cv_file_url.errors %}<p class="mt-1 text-xs text-red-600">{{ error }}</p>{% endfor %}
+            {% for error in application_form.cv_file_size.errors %}<p class="mt-1 text-xs text-red-600">{{ error }}</p>{% endfor %}
+        </div>
+
+        <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Cover Letter File (optional)</label>
+            <input type="hidden" id="cover-uploadcare-widget" role="uploadcare-uploader" data-public-key="{{ uploadcare_public_key }}" data-multiple="false" data-images-only="false" data-clearable="true" data-tabs="file url" />
+            <p id="cover-upload-label" class="mt-1 text-xs text-gray-600">No file selected</p>
+            {% for error in application_form.cover_file_uuid.errors %}<p class="mt-1 text-xs text-red-600">{{ error }}</p>{% endfor %}
+            {% for error in application_form.cover_file_url.errors %}<p class="mt-1 text-xs text-red-600">{{ error }}</p>{% endfor %}
+            {% for error in application_form.cover_file_size.errors %}<p class="mt-1 text-xs text-red-600">{{ error }}</p>{% endfor %}
+        </div>
+    </div>
+
+    {{ application_form.cv_file_uuid }}
+    {{ application_form.cv_file_url }}
+    {{ application_form.cv_file_name }}
+    {{ application_form.cv_file_size }}
+    {{ application_form.cover_file_uuid }}
+    {{ application_form.cover_file_url }}
+    {{ application_form.cover_file_name }}
+    {{ application_form.cover_file_size }}
+    {{ application_form.honeypot }}
+
+    <div class="mt-6">
+        <button type="submit" class="inline-flex items-center justify-center rounded-full bg-[#0f2f5f] px-6 py-3 text-sm font-bold text-white hover:bg-[#0c2449] transition-colors">
+            Submit Application
+        </button>
+    </div>
+</form>
+
+<script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script>
+<script>
+    (function () {
+        const allowedExts = ["pdf", "doc", "docx"];
+        const maxBytes = {{ careers_max_file_size_mb|default:10 }} * 1024 * 1024;
+
+        function setHidden(prefix, info) {
+            document.getElementById(`id_${prefix}_file_uuid`).value = info.uuid || "";
+            document.getElementById(`id_${prefix}_file_url`).value = info.cdnUrl || "";
+            document.getElementById(`id_${prefix}_file_name`).value = info.name || "";
+            document.getElementById(`id_${prefix}_file_size`).value = info.size || "";
+            const label = document.getElementById(`${prefix}-upload-label`);
+            if (label) {
+                label.textContent = info.name ? `${info.name} (${Math.round((info.size || 0) / 1024)}KB)` : "No file selected";
+            }
+        }
+
+        function resetHidden(prefix) {
+            setHidden(prefix, { uuid: "", cdnUrl: "", name: "", size: "" });
+        }
+
+        function validateInfo(info, fieldLabel) {
+            const filename = (info.name || "").toLowerCase();
+            const ext = filename.includes(".") ? filename.split(".").pop() : "";
+            if (!allowedExts.includes(ext)) {
+                alert(`${fieldLabel}: only PDF, DOC, and DOCX files are allowed.`);
+                return false;
+            }
+            if ((info.size || 0) > maxBytes) {
+                alert(`${fieldLabel}: maximum file size is {{ careers_max_file_size_mb|default:10 }}MB.`);
+                return false;
+            }
+            return true;
+        }
+
+        if (!window.uploadcare) {
+            return;
+        }
+
+        const cvWidget = uploadcare.Widget('#cv-uploadcare-widget');
+        cvWidget.onUploadComplete(function (info) {
+            if (!validateInfo(info, "CV")) {
+                cvWidget.value(null);
+                resetHidden("cv");
+                return;
+            }
+            setHidden("cv", info);
+        });
+        cvWidget.onChange(function (file) {
+            if (!file) {
+                resetHidden("cv");
+            }
+        });
+
+        const coverWidget = uploadcare.Widget('#cover-uploadcare-widget');
+        coverWidget.onUploadComplete(function (info) {
+            if (!validateInfo(info, "Cover letter")) {
+                coverWidget.value(null);
+                resetHidden("cover");
+                return;
+            }
+            setHidden("cover", info);
+        });
+        coverWidget.onChange(function (file) {
+            if (!file) {
+                resetHidden("cover");
+            }
+        });
+
+        {% if application_form.cv_file_name.value %}
+        document.getElementById("cv-upload-label").textContent = "{{ application_form.cv_file_name.value|escapejs }}";
+        {% endif %}
+        {% if application_form.cover_file_name.value %}
+        document.getElementById("cover-upload-label").textContent = "{{ application_form.cover_file_name.value|escapejs }}";
+        {% endif %}
+    })();
+</script>

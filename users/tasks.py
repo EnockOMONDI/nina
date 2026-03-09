@@ -182,3 +182,37 @@ def send_package_quote_emails(inquiry):
 
     send_email(user_subject, user_html, [inquiry.email] + extra_recipients)
     send_email(admin_subject, admin_html, [settings.ADMIN_EMAIL] + extra_recipients)
+
+
+def send_career_application_emails(application):
+    user_subject = f"Nina Tours: We received your application for {application.job.title}"
+    admin_subject = f"Nina Tours: New career application - {application.job.title}"
+
+    extra_recipients = [
+        email.strip()
+        for email in getattr(settings, "EXTRA_EMAIL_RECIPIENTS", [])
+        if email.strip()
+    ]
+
+    site_url = getattr(settings, "SITE_URL", "").rstrip("/")
+    user_html = render_to_string(
+        "users/emails/career_application_user_confirmation.html",
+        {
+            "application": application,
+            "site_url": site_url,
+        },
+    )
+    admin_html = render_to_string(
+        "users/emails/career_application_admin_notification.html",
+        {
+            "application": application,
+            "site_url": site_url,
+        },
+    )
+
+    send_email(user_subject, user_html, [application.email] + extra_recipients)
+    send_email(
+        admin_subject,
+        admin_html,
+        [getattr(settings, "JOBS_EMAIL", settings.ADMIN_EMAIL)] + extra_recipients,
+    )

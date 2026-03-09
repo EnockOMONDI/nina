@@ -1,6 +1,10 @@
+from django.conf import settings
 from django.shortcuts import get_object_or_404, render
+from django.utils import timezone
 
-from .models import Destination, Hotel, Package
+from users.forms import CareerApplicationForm
+
+from .models import CareerJob, Destination, Hotel, Package
 
 
 def _resolve_market(request):
@@ -262,3 +266,60 @@ def destinations(request):
 
 def contact(request):
     return render(request, 'ninatoursui/pages/contact.html')
+
+
+def careers(request):
+    selected_type = request.GET.get("type", "all").strip().lower()
+    selected_status = request.GET.get("status", "all").strip().lower()
+
+    jobs = CareerJob.objects.filter(active=True).order_by("sort_order", "-created_at")
+    if selected_type != "all":
+        jobs = jobs.filter(job_type=selected_type)
+    if selected_status != "all":
+        jobs = jobs.filter(status=selected_status)
+
+    today = timezone.localdate()
+    jobs = list(jobs)
+    for job in jobs:
+        deadline_open = not job.deadline or job.deadline >= today
+        job.is_open_for_application = job.status == CareerJob.STATUS_OPEN and deadline_open
+    application_form = CareerApplicationForm()
+
+    context = {
+        "jobs": jobs,
+        "selected_type": selected_type,
+        "selected_status": selected_status,
+        "job_type_choices": CareerJob.JOB_TYPE_CHOICES,
+        "job_status_choices": CareerJob.STATUS_CHOICES,
+        "today": today,
+        "application_form": application_form,
+        "uploadcare_public_key": settings.UPLOADCARE_PUBLIC_KEY,
+        "careers_max_file_size_mb": int(getattr(settings, "CAREERS_MAX_FILE_SIZE_BYTES", 10 * 1024 * 1024) / (1024 * 1024)),
+    }
+    return render(request, "ninatoursui/pages/careers.html", context)
+
+
+def career_detail(request, slug):
+    job = get_object_or_404(CareerJob.objects.filter(active=True), slug=slug)
+    today = timezone.localdate()
+    deadline_open = not job.deadline or job.deadline >= today
+    job.is_open_for_application = job.status == CareerJob.STATUS_OPEN and deadline_open
+    related_jobs = list(
+        CareerJob.objects.filter(active=True)
+        .exclude(id=job.id)
+        .order_by("sort_order", "-created_at")[:3]
+    )
+    for related in related_jobs:
+        related_deadline_open = not related.deadline or related.deadline >= today
+        related.is_open_for_application = related.status == CareerJob.STATUS_OPEN and related_deadline_open
+    application_form = CareerApplicationForm(selected_job=job)
+
+    context = {
+        "job": job,
+        "related_jobs": related_jobs,
+        "today": today,
+        "application_form": application_form,
+        "uploadcare_public_key": settings.UPLOADCARE_PUBLIC_KEY,
+        "careers_max_file_size_mb": int(getattr(settings, "CAREERS_MAX_FILE_SIZE_BYTES", 10 * 1024 * 1024) / (1024 * 1024)),
+    }
+    return render(request, "ninatoursui/pages/career-detail.html", context)
