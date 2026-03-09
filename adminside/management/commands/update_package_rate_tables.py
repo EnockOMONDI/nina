@@ -37,6 +37,16 @@ STOPWORDS = {
     "spa",
 }
 
+HEADER_NORMALIZATIONS = (
+    (
+        re.compile(
+            r"COST\s+PER\s+PERSON\s+SHARING\s+IN\s+A\s+DOUBLE\s+ROOM",
+            flags=re.IGNORECASE,
+        ),
+        "COST PER PERSON SHARING",
+    ),
+)
+
 SPECIAL_KEYWORDS = [
     "sopa",
     "sentrim",
@@ -217,6 +227,7 @@ class Command(BaseCommand):
         col_count = max(len(r) for r in rows)
         normalized = [r + [""] * (col_count - len(r)) for r in rows]
         header = normalized[0]
+        header = [self._normalize_header_cell(cell) for cell in header]
         body = normalized[1:]
 
         html_parts = ["<table><thead><tr>"]
@@ -230,6 +241,12 @@ class Command(BaseCommand):
             html_parts.append("</tr>")
         html_parts.append("</tbody></table>")
         return "".join(html_parts)
+
+    def _normalize_header_cell(self, cell):
+        normalized = cell
+        for pattern, replacement in HEADER_NORMALIZATIONS:
+            normalized = pattern.sub(replacement, normalized)
+        return normalized
 
     def _resolve_package(self, title, stem):
         candidates = []

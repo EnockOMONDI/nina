@@ -463,17 +463,22 @@ h6 {
 
 .nina-rate-table-content th:first-child,
 .nina-rate-table-content td:first-child {
-    width: 48%;
+    width: 34%;
     font-weight: 700;
     color: #0f2f5f;
 }
 
 .nina-rate-table-content th:not(:first-child),
 .nina-rate-table-content td:not(:first-child) {
-    width: 13%;
+    width: 16.5%;
     text-align: right;
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
+}
+
+.nina-rate-table-content th:first-child {
+    font-size: 0.74rem;
+    letter-spacing: 0;
 }
 
 .nina-rate-table-content p {
