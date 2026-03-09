@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "🚀 Starting Ziada Travel build process..."
+echo "🚀 Starting Nina tours build process..."
 python3 -m pip install --upgrade pip
 pip install -r requirements.txt
 echo "📦 Dependencies installed successfully"
