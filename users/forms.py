@@ -402,7 +402,9 @@ class CareerApplicationForm(forms.ModelForm):
 
         parsed = urlparse(normalized_url)
         host = parsed.netloc.lower()
-        if parsed.scheme not in {"https"} or ("ucarecdn.com" not in host and "uploadcare.com" not in host):
+        allowed_hosts = ("ucarecdn.com", "uploadcare.com", "ucarecd.net")
+        host_allowed = any(host == domain or host.endswith(f".{domain}") for domain in allowed_hosts)
+        if parsed.scheme not in {"https"} or not host_allowed:
             raise forms.ValidationError(f"{label}: invalid Uploadcare URL.")
 
         filename = (file_name or "").lower().strip()
