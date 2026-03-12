@@ -1,5 +1,4 @@
 import logging
-import threading
 
 from django.conf import settings
 from django.contrib import messages
@@ -21,14 +20,11 @@ logger = logging.getLogger(__name__)
 
 
 def _dispatch_email_async(send_fn, inquiry, label):
-    def _runner():
-        try:
-            send_fn(inquiry)
-            logger.info("%s %s emails sent successfully.", label, inquiry.id)
-        except Exception:
-            logger.exception("%s %s email send failed.", label, inquiry.id)
-
-    threading.Thread(target=_runner, daemon=True).start()
+    try:
+        send_fn(inquiry)
+        logger.info("%s %s emails sent successfully.", label, inquiry.id)
+    except Exception:
+        logger.exception("%s %s email send failed.", label, inquiry.id)
 
 
 def contact_view(request):
