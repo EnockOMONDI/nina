@@ -81,42 +81,52 @@
                     </div>
                 </article>
 
-                <article class="rounded-2xl border border-gray-200 bg-white p-6 sm:p-7 shadow-sm">
-                    <h2 class="text-2xl font-bold text-[#0f2f5f]">Hotel Options</h2>
-                    <div class="mt-5 space-y-3">
-                        {% for option in hotel_options %}
-                            <div class="rounded-xl border border-[#da176e]/20 bg-[#da176e]/[0.04] px-4 py-3 shadow-[0_8px_20px_rgba(218,23,110,0.08)]">
-                                <div class="flex flex-wrap items-center justify-between gap-2">
-                                    <p class="font-bold text-[#0f2f5f]">{{ option.hotel.name }}</p>
-                                    {% if option.is_recommended %}
-                                        <span class="rounded-full bg-[#da176e] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-white">Recommended</span>
-                                    {% endif %}
+                {% if hotel_options %}
+                    <article class="rounded-2xl border border-gray-200 bg-white p-6 sm:p-7 shadow-sm">
+                        <h2 class="text-2xl font-bold text-[#0f2f5f]">Hotel Options</h2>
+                        <div class="mt-5 space-y-3">
+                            {% for option in hotel_options %}
+                                <div class="rounded-xl border border-[#da176e]/20 bg-[#da176e]/[0.04] px-4 py-3 shadow-[0_8px_20px_rgba(218,23,110,0.08)]">
+                                    <div class="flex flex-wrap items-center justify-between gap-2">
+                                        <p class="font-bold text-[#0f2f5f]">{{ option.hotel.name }}</p>
+                                        {% if option.is_recommended %}
+                                            <span class="rounded-full bg-[#da176e] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-white">Recommended</span>
+                                        {% endif %}
+                                    </div>
+                                    <div class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-600">
+                                        {% if option.room_type %}<span>Room: {{ option.room_type }}</span>{% endif %}
+                                        {% if option.board_basis %}<span>Board: {{ option.board_basis }}</span>{% endif %}
+                                        {% if option.nights %}<span>Nights: {{ option.nights }}</span>{% endif %}
+                                        {% if option.price_adjustment %}
+                                            <span>
+                                                Price adjustment:
+                                                {% if option.price_adjustment > 0 %}+{% endif %}${{ option.price_adjustment|floatformat:2 }}
+                                            </span>
+                                        {% endif %}
+                                    </div>
                                 </div>
-                                <div class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-600">
-                                    {% if option.room_type %}<span>Room: {{ option.room_type }}</span>{% endif %}
-                                    {% if option.board_basis %}<span>Board: {{ option.board_basis }}</span>{% endif %}
-                                    {% if option.nights %}<span>Nights: {{ option.nights }}</span>{% endif %}
-                                    {% if option.price_adjustment %}
-                                        <span>
-                                            Price adjustment:
-                                            {% if option.price_adjustment > 0 %}+{% endif %}${{ option.price_adjustment|floatformat:2 }}
-                                        </span>
-                                    {% endif %}
+                            {% endfor %}
+                        </div>
+                        {% if package_pricing_table_html %}
+                            <div class="nina-rate-table-wrap mt-5">
+                                <p class="nina-rate-table-title">Rate Table</p>
+                                <div class="nina-rate-table-content">
+                                    {{ package_pricing_table_html|safe }}
                                 </div>
                             </div>
-                        {% empty %}
-                            <p class="text-sm text-gray-500">Hotel options are available on request for this package.</p>
-                        {% endfor %}
-                    </div>
-                    {% if package_pricing_table_html %}
+                        {% endif %}
+                    </article>
+                {% elif package_pricing_table_html %}
+                    <article class="rounded-2xl border border-gray-200 bg-white p-6 sm:p-7 shadow-sm">
+                        <h2 class="text-2xl font-bold text-[#0f2f5f]">Availability & Rates</h2>
+                        <p class="mt-2 text-sm text-gray-600">Rates vary by travel period and room plan.</p>
                         <div class="nina-rate-table-wrap mt-5">
-                            <p class="nina-rate-table-title">Rate Table</p>
                             <div class="nina-rate-table-content">
                                 {{ package_pricing_table_html|safe }}
                             </div>
                         </div>
-                    {% endif %}
-                </article>
+                    </article>
+                {% endif %}
 
                 <article class="rounded-2xl border border-gray-200 bg-white p-6 sm:p-7 shadow-sm">
                     <h2 class="text-2xl font-bold text-[#0f2f5f]">Itinerary</h2>
