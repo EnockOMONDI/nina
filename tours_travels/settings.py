@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 from decouple import config
@@ -9,7 +10,26 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
 
 SECRET_KEY = config('SECRET_KEY', default='change-me')
-DEBUG = config('DEBUG', default=True, cast=bool)
+
+
+def env_bool(name, default=False):
+    value = os.getenv(name)
+    if value is None:
+        return default
+
+    normalized = str(value).strip().lower()
+    truthy = {"1", "true", "t", "yes", "y", "on", "debug", "development", "dev"}
+    falsy = {"0", "false", "f", "no", "n", "off", "", "release", "production", "prod"}
+
+    if normalized in truthy:
+        return True
+    if normalized in falsy:
+        return False
+
+    return default
+
+
+DEBUG = env_bool("DEBUG", default=True)
 
 ALLOWED_HOSTS = ["*"]
 
