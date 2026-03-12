@@ -142,6 +142,14 @@ def package_detail(request, slug):
         .select_related("hotel")
         .order_by("-is_recommended", "sort_order", "id")
     )
+    package_pricing_table_html = package.pricing_table_html or ""
+    if not package_pricing_table_html:
+        first_option_with_table = next(
+            (option for option in hotel_options if option.pricing_table_html),
+            None,
+        )
+        if first_option_with_table:
+            package_pricing_table_html = first_option_with_table.pricing_table_html
 
     package_inclusions = package.inclusions
     if not package_inclusions:
@@ -165,6 +173,7 @@ def package_detail(request, slug):
         "display_currency": display_currency,
         "availability_chips": availability_chips,
         "hotel_options": hotel_options,
+        "package_pricing_table_html": package_pricing_table_html,
         "package_inclusions": package_inclusions,
         "package_exclusions": package_exclusions,
         "inclusion_items": inclusion_items,

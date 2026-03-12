@@ -36,7 +36,6 @@ class PackageHotelOptionInline(admin.StackedInline):
         "board_basis",
         "nights",
         "price_adjustment",
-        "pricing_table_html",
         "is_recommended",
         "sort_order",
         "active",
@@ -60,6 +59,27 @@ class PackageMarketPriceInline(admin.TabularInline):
 
 @admin.register(Package)
 class PackageAdmin(admin.ModelAdmin):
+    fields = (
+        "title",
+        "slug",
+        "duration",
+        "price",
+        "destination",
+        "location",
+        "category",
+        "image_url",
+        "description",
+        "pricing_table_html",
+        "inclusions",
+        "exclusions",
+        "start_date",
+        "end_date",
+        "min_group_size",
+        "max_group_size",
+        "starting_price_note",
+        "is_featured",
+        "active",
+    )
     list_display = (
         "title",
         "slug",

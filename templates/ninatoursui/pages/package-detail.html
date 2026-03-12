@@ -103,19 +103,19 @@
                                         </span>
                                     {% endif %}
                                 </div>
-                                {% if option.pricing_table_html %}
-                                    <div class="nina-rate-table-wrap mt-4">
-                                        <p class="nina-rate-table-title">Rate Table</p>
-                                        <div class="nina-rate-table-content">
-                                            {{ option.pricing_table_html|safe }}
-                                        </div>
-                                    </div>
-                                {% endif %}
                             </div>
                         {% empty %}
                             <p class="text-sm text-gray-500">Hotel options are available on request for this package.</p>
                         {% endfor %}
                     </div>
+                    {% if package_pricing_table_html %}
+                        <div class="nina-rate-table-wrap mt-5">
+                            <p class="nina-rate-table-title">Rate Table</p>
+                            <div class="nina-rate-table-content">
+                                {{ package_pricing_table_html|safe }}
+                            </div>
+                        </div>
+                    {% endif %}
                 </article>
 
                 <article class="rounded-2xl border border-gray-200 bg-white p-6 sm:p-7 shadow-sm">

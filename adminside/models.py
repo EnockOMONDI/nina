@@ -39,6 +39,7 @@ class Package(models.Model):
     category = models.CharField(max_length=100, blank=True, default="")
     image_url = models.URLField(blank=True, default="")
     description = CKEditor5Field(config_name="default", blank=True, default="")
+    pricing_table_html = CKEditor5Field(config_name="default", blank=True, default="")
     inclusions = models.TextField(blank=True, default="")
     exclusions = models.TextField(blank=True, default="")
     start_date = models.DateField(blank=True, null=True)
