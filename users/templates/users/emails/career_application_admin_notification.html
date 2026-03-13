@@ -1,26 +1,64 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-  <body style="font-family: Arial, sans-serif; color: #111827; line-height: 1.5;">
-    <h2 style="margin: 0 0 12px; color: #0f2f5f;">New Career Application</h2>
-    <p><strong>Job:</strong> {{ application.job.title }}</p>
-    <p><strong>Name:</strong> {{ application.full_name }}</p>
-    <p><strong>Email:</strong> {{ application.email }}</p>
-    <p><strong>Primary Phone:</strong> {{ application.primary_phone }}</p>
-    {% if application.alt_phone %}<p><strong>Alternative Phone:</strong> {{ application.alt_phone }}</p>{% endif %}
-    {% if application.years_experience is not None %}<p><strong>Years of Experience:</strong> {{ application.years_experience }}</p>{% endif %}
-    {% if application.availability_date %}<p><strong>Availability Date:</strong> {{ application.availability_date }}</p>{% endif %}
+  <body style="margin:0;padding:0;background-color:#f5f7fb;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color:#f5f7fb;padding:24px 0;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="640" cellspacing="0" cellpadding="0" style="background-color:#ffffff;border:1px solid #e6eaf0;border-radius:16px;overflow:hidden;">
+            <tr>
+              <td style="padding:22px 28px;background:#0f1e36;color:#ffffff;font-family:Arial,Helvetica,sans-serif;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td valign="middle">
+                      <h1 style="margin:0;font-size:20px;">New Career Application</h1>
+                      <p style="margin:6px 0 0 0;font-size:13px;color:#dbe7ff;">Nina Tours &amp; Travel Ltd</p>
+                    </td>
+                    <td align="right" valign="middle">
+                      <img src="{{ site_url }}/static/ninatours/ninatourslogo.png" alt="Nina Tours &amp; Travel" width="76" style="display:block;max-width:76px;height:auto;">
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:24px 28px;color:#1f2937;font-family:Arial,Helvetica,sans-serif;">
+                <p style="margin:0 0 12px 0;color:#475569;">A new career application has been submitted.</p>
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;">
+                  <tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;width:180px;">Job</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{{ application.job.title }}</td></tr>
+                  <tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;">Applicant Name</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{{ application.full_name }}</td></tr>
+                  <tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;">Email</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{{ application.email }}</td></tr>
+                  <tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;">Primary Phone</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{{ application.primary_phone }}</td></tr>
+                  <tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;">Alternative Phone</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{{ application.alt_phone|default:"-" }}</td></tr>
+                  <tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;">Experience</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{% if application.years_experience is not None %}{{ application.years_experience }} years{% else %}-{% endif %}</td></tr>
+                  <tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;">Availability Date</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{{ application.availability_date|default:"-" }}</td></tr>
+                  <tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;">Submitted At</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{{ application.created_at }}</td></tr>
+                </table>
 
-    <h3 style="margin: 20px 0 8px; color: #0f2f5f;">Documents</h3>
-    <p><strong>CV:</strong> <a href="{{ application.cv_file_url }}">{{ application.cv_file_name|default:application.cv_file_url }}</a></p>
-    {% if application.cover_file_url %}
-      <p><strong>Cover Letter File:</strong> <a href="{{ application.cover_file_url }}">{{ application.cover_file_name|default:application.cover_file_url }}</a></p>
-    {% endif %}
+                <div style="margin:18px 0 0 0;padding:14px;border:1px solid #edf2f7;border-radius:10px;background-color:#fbfcff;">
+                  <p style="margin:0 0 8px 0;color:#da176e;font-weight:bold;">Application Documents</p>
+                  <p style="margin:0 0 8px 0;color:#334155;">
+                    <strong>CV:</strong>
+                    <a href="{{ application.cv_file_url }}" style="color:#0f2f5f;text-decoration:none;">{{ application.cv_file_name|default:application.cv_file_url }}</a>
+                  </p>
+                  {% if application.cover_file_url %}
+                    <p style="margin:0;color:#334155;">
+                      <strong>Cover Letter File:</strong>
+                      <a href="{{ application.cover_file_url }}" style="color:#0f2f5f;text-decoration:none;">{{ application.cover_file_name|default:application.cover_file_url }}</a>
+                    </p>
+                  {% endif %}
+                </div>
 
-    {% if application.cover_letter_text %}
-      <h3 style="margin: 20px 0 8px; color: #0f2f5f;">Cover Letter Text</h3>
-      <p style="white-space: pre-wrap;">{{ application.cover_letter_text }}</p>
-    {% endif %}
-
-    <p style="margin-top: 20px; color: #6b7280;">Submitted at {{ application.created_at }}</p>
+                {% if application.cover_letter_text %}
+                  <div style="margin:16px 0 0 0;padding:14px;border:1px solid #edf2f7;border-radius:10px;background-color:#ffffff;">
+                    <p style="margin:0 0 8px 0;color:#da176e;font-weight:bold;">Cover Letter Text</p>
+                    <p style="margin:0;color:#334155;white-space:pre-wrap;line-height:1.6;">{{ application.cover_letter_text }}</p>
+                  </div>
+                {% endif %}
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
   </body>
 </html>
