@@ -183,8 +183,45 @@ def package_detail(request, slug):
 
 
 def hotels(request):
-    hotel_list = Hotel.objects.filter(active=True).order_by("-created_at")
-    return render(request, 'ninatoursui/pages/hotels.html', {"hotels": hotel_list})
+    search_query = request.GET.get("q", "").strip()
+    selected_city = request.GET.get("city", "").strip()
+    selected_region = request.GET.get("region", "").strip()
+
+    hotel_list = Hotel.objects.filter(active=True).order_by("name")
+    if search_query:
+        hotel_list = hotel_list.filter(name__icontains=search_query)
+    if selected_city:
+        hotel_list = hotel_list.filter(city__iexact=selected_city)
+    if selected_region:
+        hotel_list = hotel_list.filter(region__iexact=selected_region)
+
+    cities = list(
+        Hotel.objects.filter(active=True)
+        .exclude(city="")
+        .values_list("city", flat=True)
+        .distinct()
+        .order_by("city")
+    )
+    regions = list(
+        Hotel.objects.filter(active=True)
+        .exclude(region="")
+        .values_list("region", flat=True)
+        .distinct()
+        .order_by("region")
+    )
+
+    return render(
+        request,
+        "ninatoursui/pages/hotels.html",
+        {
+            "hotels": hotel_list,
+            "search_query": search_query,
+            "selected_city": selected_city,
+            "selected_region": selected_region,
+            "cities": cities,
+            "regions": regions,
+        },
+    )
 
 
 def about(request):

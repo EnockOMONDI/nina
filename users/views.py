@@ -37,7 +37,12 @@ def contact_view(request):
         messages.error(request, "Please check the form and try again.")
         logger.warning("Contact form validation failed. Errors: %s", form.errors.as_json())
     else:
-        form = ContactForm()
+        initial = {}
+        inquiry_hotel = request.GET.get("hotel", "").strip()
+        if inquiry_hotel:
+            initial["subject"] = "General Inquiry"
+            initial["message"] = f"Hotel inquiry: {inquiry_hotel}"
+        form = ContactForm(initial=initial)
 
     return render(request, "ninatoursui/pages/contact.html", {"form": form})
 

@@ -107,9 +107,19 @@ class PackageAdmin(admin.ModelAdmin):
 
 @admin.register(Hotel)
 class HotelAdmin(admin.ModelAdmin):
-    list_display = ("name", "slug", "location", "rating", "price_per_night", "active", "created_at")
-    list_filter = ("rating", "active", "created_at")
-    search_fields = ("name", "location", "slug")
+    list_display = (
+        "name",
+        "slug",
+        "city",
+        "region",
+        "country",
+        "rating",
+        "price_per_night",
+        "active",
+        "created_at",
+    )
+    list_filter = ("region", "country", "rating", "active", "created_at")
+    search_fields = ("name", "location", "city", "region", "country", "slug")
     prepopulated_fields = {"slug": ("name",)}
 
 
