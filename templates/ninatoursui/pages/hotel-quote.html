@@ -1,0 +1,141 @@
+{% extends "ninatoursui/base.html" %}
+{% load static %}
+{% block title %}Hotel Inquiry | Nina Tours & Travel{% endblock %}
+
+{% block nav %}
+    {% include "ninatoursui/partials/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+<main class="pt-8 md:pt-44 pb-14 bg-white min-h-screen">
+    <section class="max-w-12xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 xl:grid-cols-12 gap-8">
+            <aside class="xl:col-span-5">
+                <div class="rounded-3xl border border-gray-200 bg-gradient-to-br from-[#0f2f5f] via-[#17437f] to-[#0f2f5f] p-7 sm:p-8 text-white shadow-xl">
+                    <p class="text-xs uppercase tracking-[0.18em] font-bold text-[#8ccaff]">Hotel Inquiry</p>
+                    <h1 class="mt-3 text-3xl sm:text-4xl font-extrabold leading-tight">Plan Your Stay With Our Team</h1>
+                    <p class="mt-4 text-white/90 leading-relaxed">
+                        Tell us your stay dates and preferences and we will share a tailored offer for your selected hotel.
+                    </p>
+
+                    <div class="mt-7 rounded-2xl border border-white/20 bg-white/10 backdrop-blur p-5">
+                        <p class="text-[11px] uppercase tracking-[0.18em] font-bold text-[#8ccaff]">Selected Hotel</p>
+                        <h2 class="mt-2 text-2xl font-bold">{{ selected_hotel.name|default:form.initial.hotel_name }}</h2>
+                        <div class="mt-4 space-y-2 text-sm text-white/90">
+                            <p>Location: {{ selected_hotel.city|default:form.initial.hotel_location }}{% if selected_hotel.region %}, {{ selected_hotel.region }}{% endif %}</p>
+                            <p>Price from: ${{ selected_hotel.price_per_night|default:"On request" }}</p>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <div class="xl:col-span-7">
+                <div class="rounded-3xl border border-gray-200 bg-white p-6 sm:p-8 shadow-[0_14px_30px_rgba(218,23,110,0.10)]">
+                    <form method="post" class="space-y-6">
+                        {% csrf_token %}
+                        {{ form.hotel_name }}
+                        {{ form.hotel_slug }}
+                        {{ form.hotel_location }}
+
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+
+                        {% if form.non_field_errors %}
+                            <div class="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">{{ form.non_field_errors }}</div>
+                        {% endif %}
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-[0.14em] text-[#0f2f5f] mb-2">Full Name</label>
+                                {{ form.full_name }}
+                                {% if form.full_name.errors %}<p class="mt-1 text-xs text-rose-600">{{ form.full_name.errors.0 }}</p>{% endif %}
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-[0.14em] text-[#0f2f5f] mb-2">Email</label>
+                                {{ form.email }}
+                                {% if form.email.errors %}<p class="mt-1 text-xs text-rose-600">{{ form.email.errors.0 }}</p>{% endif %}
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-[0.14em] text-[#0f2f5f] mb-2">Phone</label>
+                                {{ form.phone }}
+                                {% if form.phone.errors %}<p class="mt-1 text-xs text-rose-600">{{ form.phone.errors.0 }}</p>{% endif %}
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-[0.14em] text-[#0f2f5f] mb-2">Budget Range</label>
+                                {{ form.budget_range }}
+                                {% if form.budget_range.errors %}<p class="mt-1 text-xs text-rose-600">{{ form.budget_range.errors.0 }}</p>{% endif %}
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-[0.14em] text-[#0f2f5f] mb-2">Check-in Date</label>
+                                {{ form.check_in_date }}
+                                {% if form.check_in_date.errors %}<p class="mt-1 text-xs text-rose-600">{{ form.check_in_date.errors.0 }}</p>{% endif %}
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-[0.14em] text-[#0f2f5f] mb-2">Check-out Date</label>
+                                {{ form.check_out_date }}
+                                {% if form.check_out_date.errors %}<p class="mt-1 text-xs text-rose-600">{{ form.check_out_date.errors.0 }}</p>{% endif %}
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-[0.14em] text-[#0f2f5f] mb-2">Guests</label>
+                                {{ form.number_of_guests }}
+                                {% if form.number_of_guests.errors %}<p class="mt-1 text-xs text-rose-600">{{ form.number_of_guests.errors.0 }}</p>{% endif %}
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-[0.14em] text-[#0f2f5f] mb-2">Rooms</label>
+                                {{ form.number_of_rooms }}
+                                {% if form.number_of_rooms.errors %}<p class="mt-1 text-xs text-rose-600">{{ form.number_of_rooms.errors.0 }}</p>{% endif %}
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-[0.14em] text-[#0f2f5f] mb-2">Room Preference</label>
+                                {{ form.room_preference }}
+                                {% if form.room_preference.errors %}<p class="mt-1 text-xs text-rose-600">{{ form.room_preference.errors.0 }}</p>{% endif %}
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-[0.14em] text-[#0f2f5f] mb-2">Meal Plan</label>
+                                {{ form.meal_plan_preference }}
+                                {% if form.meal_plan_preference.errors %}<p class="mt-1 text-xs text-rose-600">{{ form.meal_plan_preference.errors.0 }}</p>{% endif %}
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <label class="flex items-center gap-3 rounded-xl border border-gray-200 px-4 py-3">
+                                {{ form.airport_transfer_needed }}
+                                <span class="text-sm font-medium text-[#0f2f5f]">Need airport transfer</span>
+                            </label>
+                            <label class="flex items-center gap-3 rounded-xl border border-gray-200 px-4 py-3">
+                                {{ form.flexible_dates }}
+                                <span class="text-sm font-medium text-[#0f2f5f]">Dates are flexible</span>
+                            </label>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-[0.14em] text-[#0f2f5f] mb-2">Special Requests</label>
+                            {{ form.special_requests }}
+                            {% if form.special_requests.errors %}<p class="mt-1 text-xs text-rose-600">{{ form.special_requests.errors.0 }}</p>{% endif %}
+                        </div>
+
+                        <button type="submit" class="inline-flex w-full items-center justify-center rounded-full bg-[#da176e] px-6 py-3.5 text-white font-extrabold text-base shadow-[0_10px_24px_rgba(218,23,110,0.26)] hover:bg-[#bf125f] transition-colors">
+                            Submit Hotel Inquiry
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

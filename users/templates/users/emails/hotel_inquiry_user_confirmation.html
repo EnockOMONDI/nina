@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <body style="margin:0;padding:0;background-color:#f5f7fb;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color:#f5f7fb;padding:24px 0;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="640" cellspacing="0" cellpadding="0" style="background-color:#ffffff;border:1px solid #e6eaf0;border-radius:16px;overflow:hidden;">
+            <tr>
+              <td style="padding:22px 28px;background:linear-gradient(135deg,#da176e 0%,#f04f96 100%);color:#ffffff;font-family:Arial,Helvetica,sans-serif;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td valign="middle">
+                      <h1 style="margin:0;font-size:23px;">Nina Tours &amp; Travel Ltd</h1>
+                      <p style="margin:6px 0 0 0;font-size:14px;opacity:0.95;">Hotel Inquiry Received</p>
+                    </td>
+                    <td align="right" valign="middle">
+                      <img src="{{ site_url }}/static/ninatours/ninatourslogo.png" alt="Nina Tours & Travel" width="82" style="display:block;max-width:82px;height:auto;">
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:28px;color:#1f2937;font-family:Arial,Helvetica,sans-serif;">
+                <p style="margin:0 0 12px 0;font-size:16px;">Hello {{ inquiry.full_name }},</p>
+                <p style="margin:0 0 16px 0;line-height:1.65;color:#475569;">
+                  Thank you for your hotel inquiry. We are reviewing your request and will contact you within
+                  <strong>2 to 24 hours</strong> with options.
+                </p>
+
+                <div style="margin:18px 0;padding:16px;border:1px solid #e9edf5;border-radius:12px;background-color:#fbfcff;">
+                  <p style="margin:0 0 10px 0;color:#da176e;font-weight:bold;">Your Hotel Inquiry</p>
+                  <p style="margin:0 0 8px 0;color:#334155;"><strong>Inquiry ID:</strong> {{ inquiry.id }}</p>
+                  <p style="margin:0 0 8px 0;color:#334155;"><strong>Hotel:</strong> {{ inquiry.hotel_name }}</p>
+                  {% if inquiry.hotel_location %}<p style="margin:0 0 8px 0;color:#334155;"><strong>Location:</strong> {{ inquiry.hotel_location }}</p>{% endif %}
+                  <p style="margin:0 0 8px 0;color:#334155;"><strong>Check-in:</strong> {{ inquiry.check_in_date }}</p>
+                  <p style="margin:0 0 8px 0;color:#334155;"><strong>Check-out:</strong> {{ inquiry.check_out_date }}</p>
+                  <p style="margin:0 0 8px 0;color:#334155;"><strong>Guests:</strong> {{ inquiry.number_of_guests }}</p>
+                  <p style="margin:0 0 8px 0;color:#334155;"><strong>Rooms:</strong> {{ inquiry.number_of_rooms }}</p>
+                  {% if inquiry.room_preference %}<p style="margin:0 0 8px 0;color:#334155;"><strong>Room Preference:</strong> {{ inquiry.get_room_preference_display }}</p>{% endif %}
+                  {% if inquiry.meal_plan_preference %}<p style="margin:0 0 8px 0;color:#334155;"><strong>Meal Plan:</strong> {{ inquiry.get_meal_plan_preference_display }}</p>{% endif %}
+                  {% if inquiry.budget_range %}<p style="margin:0 0 8px 0;color:#334155;"><strong>Budget:</strong> {{ inquiry.budget_range }}</p>{% endif %}
+                  <p style="margin:0 0 8px 0;color:#334155;"><strong>Airport Transfer:</strong> {% if inquiry.airport_transfer_needed %}Yes{% else %}No{% endif %}</p>
+                  <p style="margin:0;color:#334155;"><strong>Flexible Dates:</strong> {% if inquiry.flexible_dates %}Yes{% else %}No{% endif %}</p>
+                  {% if inquiry.special_requests %}<p style="margin:8px 0 0 0;color:#334155;"><strong>Special Requests:</strong> {{ inquiry.special_requests }}</p>{% endif %}
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:16px 28px;border-top:1px solid #e9edf5;color:#64748b;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.6;">
+                <div><strong style="color:#334155;">Nina Tours &amp; Travel Ltd</strong></div>
+                <div>National Bank Building, Harambee Avenue, 2nd Floor, Nairobi, Kenya</div>
+                <div>
+                  <a href="tel:+254713461800" style="color:#da176e;text-decoration:none;">+254 713 461 800</a> |
+                  <a href="tel:+254733815269" style="color:#da176e;text-decoration:none;">+254 733 815 269</a> |
+                  <a href="tel:+254722870681" style="color:#da176e;text-decoration:none;">+254 722 870 681</a> |
+                  <a href="tel:+254750787364" style="color:#da176e;text-decoration:none;">+254 750 787 364</a>
+                </div>
+                <div>
+                  <a href="mailto:info@ninatoursandtravel.com" style="color:#da176e;text-decoration:none;">info@ninatoursandtravel.com</a>
+                  {% if site_url %}| <a href="{{ site_url }}" style="color:#da176e;text-decoration:none;">Visit Website</a>{% endif %}
+                </div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

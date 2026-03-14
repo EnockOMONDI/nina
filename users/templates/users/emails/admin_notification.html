@@ -27,6 +27,32 @@
                   <p style="margin:0 0 8px 0;color:#da176e;font-weight:bold;">Message</p>
                   <p style="margin:0;color:#334155;line-height:1.6;">{{ inquiry.message }}</p>
                 </div>
+
+                <div style="margin:18px 0 0 0;padding:14px;border:1px solid #e9edf5;border-radius:10px;background-color:#ffffff;">
+                  <p style="margin:0 0 8px 0;color:#da176e;font-weight:bold;">Admin Next Steps</p>
+                  <p style="margin:0 0 6px 0;color:#334155;">1. Please send a first response within 2–6 hours.</p>
+                  <p style="margin:0 0 6px 0;color:#334155;">2. Confirm the traveler's request and preferred travel dates.</p>
+                  <p style="margin:0;color:#334155;">3. After responding, update status in Admin (resolved / follow-up needed).</p>
+                  <p style="margin:10px 0 0 0;">
+                    <a href="{{ admin_change_url }}" style="color:#0f2f5f;text-decoration:none;font-weight:bold;">Open This Inquiry in Admin</a>
+                  </p>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:16px 28px;border-top:1px solid #e9edf5;color:#64748b;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.6;">
+                <div><strong style="color:#334155;">Nina Tours &amp; Travel Ltd</strong></div>
+                <div>National Bank Building, Harambee Avenue, 2nd Floor, Nairobi, Kenya</div>
+                <div>
+                  <a href="tel:+254713461800" style="color:#da176e;text-decoration:none;">+254 713 461 800</a> |
+                  <a href="tel:+254733815269" style="color:#da176e;text-decoration:none;">+254 733 815 269</a> |
+                  <a href="tel:+254722870681" style="color:#da176e;text-decoration:none;">+254 722 870 681</a> |
+                  <a href="tel:+254750787364" style="color:#da176e;text-decoration:none;">+254 750 787 364</a>
+                </div>
+                <div>
+                  <a href="mailto:info@ninatoursandtravel.com" style="color:#da176e;text-decoration:none;">info@ninatoursandtravel.com</a>
+                  {% if site_url %}| <a href="{{ site_url }}" style="color:#da176e;text-decoration:none;">Visit Website</a>{% endif %}
+                </div>
               </td>
             </tr>
           </table>

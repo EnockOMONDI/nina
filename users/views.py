@@ -8,11 +8,12 @@ from django.utils import timezone
 
 from adminside.models import CareerJob, Hotel, Package, PackageHotelOption
 
-from .forms import CareerApplicationForm, ContactForm, CorporateInquiryForm, PackageQuoteInquiryForm
+from .forms import CareerApplicationForm, ContactForm, CorporateInquiryForm, HotelInquiryForm, PackageQuoteInquiryForm
 from .tasks import (
     send_career_application_emails,
     send_contact_emails,
     send_corporate_emails,
+    send_hotel_inquiry_emails,
     send_package_quote_emails,
 )
 
@@ -152,6 +153,57 @@ def package_quote_view(request):
         "selected_package": package,
     }
     return render(request, "ninatoursui/pages/package-quote.html", context)
+
+
+def hotel_quote_view(request):
+    hotel = None
+    hotel_slug = request.GET.get("hotel", "").strip()
+
+    if request.method == "POST":
+        posted_slug = request.POST.get("hotel_slug", "").strip()
+        if posted_slug:
+            hotel = Hotel.objects.filter(slug=posted_slug, active=True).first()
+
+        form = HotelInquiryForm(request.POST, hotel=hotel)
+        if form.is_valid():
+            inquiry = form.save(commit=False)
+
+            posted_slug = form.cleaned_data.get("hotel_slug", "").strip()
+            if posted_slug:
+                hotel = Hotel.objects.filter(slug=posted_slug, active=True).first()
+                if hotel:
+                    inquiry.hotel = hotel
+
+            inquiry.save()
+            _dispatch_email_async(send_hotel_inquiry_emails, inquiry, "Hotel inquiry")
+            return redirect(f"{reverse('inquiry-success')}?id={inquiry.id}")
+
+        messages.error(request, "Please check the hotel inquiry form and try again.")
+        logger.warning("Hotel inquiry form validation failed. Errors: %s", form.errors.as_json())
+    else:
+        if not hotel_slug:
+            messages.info(request, "Please choose a hotel before sending an inquiry.")
+            return redirect("hotels")
+
+        hotel = get_object_or_404(Hotel, slug=hotel_slug, active=True)
+        location = ", ".join([part for part in [hotel.city, hotel.region, hotel.country] if part]) or hotel.location
+        initial_data = {
+            "hotel_name": hotel.name,
+            "hotel_slug": hotel.slug,
+            "hotel_location": location,
+            "number_of_guests": 2,
+            "number_of_rooms": 1,
+        }
+        form = HotelInquiryForm(initial=initial_data, hotel=hotel)
+
+    return render(
+        request,
+        "ninatoursui/pages/hotel-quote.html",
+        {
+            "form": form,
+            "selected_hotel": hotel,
+        },
+    )
 
 
 def career_application_submit_view(request):

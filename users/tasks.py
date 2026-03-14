@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
+from django.urls import reverse
 import requests
 
 try:
@@ -50,6 +51,12 @@ def send_email(subject, html_message, recipient_list):
     return True
 
 
+def _admin_change_url(route_name, obj_id):
+    base = getattr(settings, "SITE_URL", "").rstrip("/")
+    path = reverse(route_name, args=[obj_id])
+    return f"{base}{path}" if base else path
+
+
 def send_email_via_brevo_api(subject, html_message, from_email, recipient_list):
     api_key = getattr(settings, "BREVO_API_KEY", "").strip()
     if not api_key:
@@ -96,7 +103,7 @@ def send_email_via_brevo_api(subject, html_message, from_email, recipient_list):
 
 def send_contact_emails(inquiry):
     user_subject = "Nina Tours: We received your request"
-    admin_subject = "Nina Tours: New contact inquiry"
+    admin_subject = "NEW CONTACT INQUIRY"
 
     extra_recipients = [
         email.strip()
@@ -117,6 +124,7 @@ def send_contact_emails(inquiry):
         {
             "inquiry": inquiry,
             "site_url": site_url,
+            "admin_change_url": _admin_change_url("admin:users_contactinquiry_change", inquiry.id),
         },
     )
 
@@ -126,7 +134,7 @@ def send_contact_emails(inquiry):
 
 def send_corporate_emails(inquiry):
     user_subject = "Nina Tours: We received your corporate travel inquiry"
-    admin_subject = "Nina Tours: New corporate inquiry"
+    admin_subject = "NEW CORPORATE INQUIRY"
 
     extra_recipients = [
         email.strip()
@@ -147,6 +155,7 @@ def send_corporate_emails(inquiry):
         {
             "inquiry": inquiry,
             "site_url": site_url,
+            "admin_change_url": _admin_change_url("admin:users_corporateinquiry_change", inquiry.id),
         },
     )
 
@@ -156,7 +165,7 @@ def send_corporate_emails(inquiry):
 
 def send_package_quote_emails(inquiry):
     user_subject = f"Nina Tours: We received your quote request for {inquiry.package_title}"
-    admin_subject = f"Nina Tours: New package quote inquiry - {inquiry.package_title}"
+    admin_subject = f"NEW PACKAGE QUOTE INQUIRY - {inquiry.package_title}"
 
     extra_recipients = [
         email.strip()
@@ -177,6 +186,38 @@ def send_package_quote_emails(inquiry):
         {
             "inquiry": inquiry,
             "site_url": site_url,
+            "admin_change_url": _admin_change_url("admin:users_packagequoteinquiry_change", inquiry.id),
+        },
+    )
+
+    send_email(user_subject, user_html, [inquiry.email] + extra_recipients)
+    send_email(admin_subject, admin_html, [settings.ADMIN_EMAIL] + extra_recipients)
+
+
+def send_hotel_inquiry_emails(inquiry):
+    user_subject = f"Nina Tours: We received your hotel inquiry for {inquiry.hotel_name}"
+    admin_subject = f"NEW HOTEL INQUIRY - {inquiry.hotel_name}"
+
+    extra_recipients = [
+        email.strip()
+        for email in getattr(settings, "EXTRA_EMAIL_RECIPIENTS", [])
+        if email.strip()
+    ]
+
+    site_url = getattr(settings, "SITE_URL", "").rstrip("/")
+    user_html = render_to_string(
+        "users/emails/hotel_inquiry_user_confirmation.html",
+        {
+            "inquiry": inquiry,
+            "site_url": site_url,
+        },
+    )
+    admin_html = render_to_string(
+        "users/emails/hotel_inquiry_admin_notification.html",
+        {
+            "inquiry": inquiry,
+            "site_url": site_url,
+            "admin_change_url": _admin_change_url("admin:users_hotelinquiry_change", inquiry.id),
         },
     )
 
@@ -186,7 +227,7 @@ def send_package_quote_emails(inquiry):
 
 def send_career_application_emails(application):
     user_subject = f"Nina Tours: We received your application for {application.job.title}"
-    admin_subject = f"Nina Tours: New career application - {application.job.title}"
+    admin_subject = f"NEW CAREER APPLICATION - {application.job.title}"
 
     extra_recipients = [
         email.strip()
@@ -207,6 +248,7 @@ def send_career_application_emails(application):
         {
             "application": application,
             "site_url": site_url,
+            "admin_change_url": _admin_change_url("admin:users_careerapplication_change", application.id),
         },
     )
 

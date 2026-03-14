@@ -7,7 +7,7 @@ from django.utils import timezone
 
 from adminside.models import CareerJob, Hotel, PackageHotelOption
 
-from .models import CareerApplication, ContactInquiry, CorporateInquiry, PackageQuoteInquiry
+from .models import CareerApplication, ContactInquiry, CorporateInquiry, HotelInquiry, PackageQuoteInquiry
 
 
 TRAVEL_CATEGORY_CHOICES = (
@@ -266,6 +266,14 @@ class PackageQuoteInquiryForm(forms.ModelForm):
                 "class": "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-primary outline-none appearance-none",
             },
         )
+        self.fields["special_requests"].required = False
+        self.fields["special_requests"].widget.attrs.update(
+            {
+                "class": "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-primary outline-none",
+                "placeholder": "Share preferred dates, room setup, meal needs, or any custom requests.",
+                "rows": 5,
+            }
+        )
 
         hotel_choices = [("", "Select hotel option (optional)")]
         if package:
@@ -301,14 +309,83 @@ class PackageQuoteInquiryForm(forms.ModelForm):
             }
         )
 
-        self.fields["special_requests"].required = False
+
+class HotelInquiryForm(forms.ModelForm):
+    class Meta:
+        model = HotelInquiry
+        fields = [
+            "hotel_name",
+            "hotel_slug",
+            "hotel_location",
+            "full_name",
+            "email",
+            "phone",
+            "check_in_date",
+            "check_out_date",
+            "number_of_guests",
+            "number_of_rooms",
+            "room_preference",
+            "meal_plan_preference",
+            "budget_range",
+            "airport_transfer_needed",
+            "flexible_dates",
+            "special_requests",
+        ]
+        widgets = {
+            "hotel_name": forms.HiddenInput(),
+            "hotel_slug": forms.HiddenInput(),
+            "hotel_location": forms.HiddenInput(),
+            "check_in_date": forms.DateInput(attrs={"type": "date"}),
+            "check_out_date": forms.DateInput(attrs={"type": "date"}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        hotel = kwargs.pop("hotel", None)
+        super().__init__(*args, **kwargs)
+
+        self.fields["budget_range"].required = False
+        self.fields["budget_range"].widget = forms.Select(choices=[("", "Select budget range (optional)")] + list(BUDGET_RANGE_CHOICES))
+
+        text_input_class = (
+            "w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-slate-900 "
+            "focus:border-[#da176e] focus:ring-2 focus:ring-[#da176e]/15 outline-none"
+        )
+        select_class = text_input_class + " appearance-none"
+
+        self.fields["full_name"].widget.attrs.update({"class": text_input_class, "placeholder": "Enock Omondi"})
+        self.fields["email"].widget.attrs.update({"class": text_input_class, "placeholder": "you@example.com"})
+        self.fields["phone"].widget.attrs.update({"class": text_input_class, "placeholder": "+254 7XX XXX XXX"})
+        self.fields["check_in_date"].widget.attrs.update({"class": text_input_class})
+        self.fields["check_out_date"].widget.attrs.update({"class": text_input_class})
+        self.fields["number_of_guests"].widget.attrs.update({"class": text_input_class, "min": 1})
+        self.fields["number_of_rooms"].widget.attrs.update({"class": text_input_class, "min": 1})
+        self.fields["room_preference"].widget.attrs.update({"class": select_class})
+        self.fields["meal_plan_preference"].widget.attrs.update({"class": select_class})
+        self.fields["budget_range"].widget.attrs.update({"class": select_class})
         self.fields["special_requests"].widget.attrs.update(
             {
-                "class": "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-primary outline-none",
-                "placeholder": "Share preferred dates, room setup, meal needs, or any custom requests.",
-                "rows": 5,
+                "class": text_input_class,
+                "rows": 4,
+                "placeholder": "Any room preference, transfer notes, celebrations, or special requests.",
             }
         )
+
+        self.fields["airport_transfer_needed"].widget.attrs.update({"class": "h-4 w-4 rounded border-gray-300 text-[#da176e] focus:ring-[#da176e]"})
+        self.fields["flexible_dates"].widget.attrs.update({"class": "h-4 w-4 rounded border-gray-300 text-[#da176e] focus:ring-[#da176e]"})
+
+        if hotel:
+            self.initial.setdefault("hotel_name", hotel.name)
+            self.initial.setdefault("hotel_slug", hotel.slug)
+            location = ", ".join([part for part in [hotel.city, hotel.region, hotel.country] if part]) or hotel.location
+            self.initial.setdefault("hotel_location", location)
+
+    def clean(self):
+        cleaned = super().clean()
+        check_in = cleaned.get("check_in_date")
+        check_out = cleaned.get("check_out_date")
+        if check_in and check_out and check_out < check_in:
+            self.add_error("check_out_date", "Check-out date cannot be earlier than check-in date.")
+        return cleaned
 
 
 class CareerApplicationForm(forms.ModelForm):

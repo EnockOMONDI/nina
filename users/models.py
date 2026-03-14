@@ -53,6 +53,59 @@ class PackageQuoteInquiry(models.Model):
         return f"Quote: {self.package_title} - {self.full_name}"
 
 
+class HotelInquiry(models.Model):
+    ROOM_PREFERENCE_CHOICES = (
+        ("single", "Single"),
+        ("double", "Double"),
+        ("twin", "Twin"),
+        ("family", "Family"),
+        ("suite", "Suite"),
+    )
+    MEAL_PLAN_CHOICES = (
+        ("room_only", "Room Only"),
+        ("bb", "Bed & Breakfast (BB)"),
+        ("hb", "Half Board (HB)"),
+        ("fb", "Full Board (FB)"),
+        ("ai", "All Inclusive (AI)"),
+    )
+
+    hotel = models.ForeignKey(
+        "adminside.Hotel",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="inquiries",
+    )
+
+    hotel_name = models.CharField(max_length=220)
+    hotel_slug = models.CharField(max_length=220, blank=True, default="")
+    hotel_location = models.CharField(max_length=200, blank=True, default="")
+
+    full_name = models.CharField(max_length=100)
+    email = models.EmailField()
+    phone = models.CharField(max_length=20)
+
+    check_in_date = models.DateField()
+    check_out_date = models.DateField()
+    number_of_guests = models.PositiveIntegerField(default=1)
+    number_of_rooms = models.PositiveIntegerField(default=1)
+    room_preference = models.CharField(max_length=20, choices=ROOM_PREFERENCE_CHOICES, blank=True, default="")
+    meal_plan_preference = models.CharField(max_length=20, choices=MEAL_PLAN_CHOICES, blank=True, default="")
+    budget_range = models.CharField(max_length=120, blank=True, default="")
+    airport_transfer_needed = models.BooleanField(default=False)
+    flexible_dates = models.BooleanField(default=False)
+    special_requests = models.TextField(blank=True, default="")
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_resolved = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"Hotel Inquiry: {self.hotel_name} - {self.full_name}"
+
+
 class CorporateInquiry(models.Model):
     SERVICE_NEEDS_CHOICES = (
         ("Managed Corporate Travel", "Managed Corporate Travel"),

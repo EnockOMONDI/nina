@@ -7,25 +7,29 @@
           <table role="presentation" width="640" cellspacing="0" cellpadding="0" style="background-color:#ffffff;border:1px solid #e6eaf0;border-radius:16px;overflow:hidden;">
             <tr>
               <td style="padding:22px 28px;background:#0f1e36;color:#ffffff;font-family:Arial,Helvetica,sans-serif;">
-                <h1 style="margin:0;font-size:20px;">New Package Quote Inquiry</h1>
+                <h1 style="margin:0;font-size:20px;">New Hotel Inquiry</h1>
                 <p style="margin:6px 0 0 0;font-size:13px;color:#dbe7ff;">Nina Tours &amp; Travel Ltd</p>
               </td>
             </tr>
             <tr>
               <td style="padding:24px 28px;color:#1f2937;font-family:Arial,Helvetica,sans-serif;">
-                <p style="margin:0 0 12px 0;color:#475569;">A new quote request has been submitted.</p>
+                <p style="margin:0 0 12px 0;color:#475569;">A new hotel inquiry has been submitted.</p>
                 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;">
-                  <tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;width:170px;">Inquiry ID</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{{ inquiry.id }}</td></tr>
-                  <tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;">Package</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{{ inquiry.package_title }}</td></tr>
-                  {% if inquiry.package_location %}<tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;">Location</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{{ inquiry.package_location }}</td></tr>{% endif %}
-                  {% if inquiry.package_duration %}<tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;">Duration</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{{ inquiry.package_duration }}</td></tr>{% endif %}
-                  {% if inquiry.package_price %}<tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;">Starting Price</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">${{ inquiry.package_price }}</td></tr>{% endif %}
+                  <tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;width:190px;">Inquiry ID</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{{ inquiry.id }}</td></tr>
+                  <tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;">Hotel</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{{ inquiry.hotel_name }}</td></tr>
+                  {% if inquiry.hotel_location %}<tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;">Location</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{{ inquiry.hotel_location }}</td></tr>{% endif %}
                   <tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;">Name</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{{ inquiry.full_name }}</td></tr>
                   <tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;">Email</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{{ inquiry.email }}</td></tr>
                   <tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;">Phone</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{{ inquiry.phone }}</td></tr>
-                  <tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;">Travelers</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{{ inquiry.number_of_travelers }}</td></tr>
-                  {% if inquiry.travel_date %}<tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;">Travel Date</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{{ inquiry.travel_date }}</td></tr>{% endif %}
+                  <tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;">Check-in</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{{ inquiry.check_in_date }}</td></tr>
+                  <tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;">Check-out</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{{ inquiry.check_out_date }}</td></tr>
+                  <tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;">Guests</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{{ inquiry.number_of_guests }}</td></tr>
+                  <tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;">Rooms</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{{ inquiry.number_of_rooms }}</td></tr>
+                  {% if inquiry.room_preference %}<tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;">Room Preference</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{{ inquiry.get_room_preference_display }}</td></tr>{% endif %}
+                  {% if inquiry.meal_plan_preference %}<tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;">Meal Plan</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{{ inquiry.get_meal_plan_preference_display }}</td></tr>{% endif %}
                   {% if inquiry.budget_range %}<tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;">Budget Range</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{{ inquiry.budget_range }}</td></tr>{% endif %}
+                  <tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;">Airport Transfer</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{% if inquiry.airport_transfer_needed %}Yes{% else %}No{% endif %}</td></tr>
+                  <tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;">Flexible Dates</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{% if inquiry.flexible_dates %}Yes{% else %}No{% endif %}</td></tr>
                 </table>
 
                 {% if inquiry.special_requests %}
@@ -38,8 +42,8 @@
                 <div style="margin:18px 0 0 0;padding:14px;border:1px solid #e9edf5;border-radius:10px;background-color:#ffffff;">
                   <p style="margin:0 0 8px 0;color:#da176e;font-weight:bold;">Admin Next Steps</p>
                   <p style="margin:0 0 6px 0;color:#334155;">1. Please respond within 2–6 hours.</p>
-                  <p style="margin:0 0 6px 0;color:#334155;">2. Validate availability, inclusions, and rate validity for requested dates.</p>
-                  <p style="margin:0;color:#334155;">3. Send best-fit and upgrade quote options, then update status in Admin.</p>
+                  <p style="margin:0 0 6px 0;color:#334155;">2. Confirm stay dates, room setup, and meal plan availability.</p>
+                  <p style="margin:0;color:#334155;">3. Share rate options, transfer details, and booking terms, then update status in Admin.</p>
                   <p style="margin:10px 0 0 0;">
                     <a href="{{ admin_change_url }}" style="color:#0f2f5f;text-decoration:none;font-weight:bold;">Open This Inquiry in Admin</a>
                   </p>

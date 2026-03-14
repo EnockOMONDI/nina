@@ -5,6 +5,7 @@ from users.views import (
     career_application_submit_view,
     contact_view,
     corporate_view,
+    hotel_quote_view,
     inquiry_success_view,
     package_quote_view,
 )
@@ -23,4 +24,5 @@ urlpatterns = [
     path('inquiry-success/', inquiry_success_view, name='inquiry-success'),
     path('contact/', contact_view, name='contact'),
     path('quote/package/', package_quote_view, name='package-quote'),
+    path('quote/hotel/', hotel_quote_view, name='hotel-quote'),
 ]

@@ -4,6 +4,7 @@ from .models import (
     CareerApplication,
     ContactInquiry,
     CorporateInquiry,
+    HotelInquiry,
     MICEInquiry,
     StudentTravelInquiry,
     NGOTravelInquiry,
@@ -57,6 +58,23 @@ class PackageQuoteInquiryAdmin(admin.ModelAdmin):
     )
     list_filter = ("is_resolved", "created_at", "travel_date")
     search_fields = ("package_title", "package_slug", "full_name", "email", "phone")
+
+
+@admin.register(HotelInquiry)
+class HotelInquiryAdmin(admin.ModelAdmin):
+    list_display = (
+        "hotel_name",
+        "full_name",
+        "email",
+        "phone",
+        "check_in_date",
+        "check_out_date",
+        "number_of_guests",
+        "is_resolved",
+        "created_at",
+    )
+    list_filter = ("is_resolved", "created_at", "check_in_date", "check_out_date", "airport_transfer_needed")
+    search_fields = ("hotel_name", "hotel_slug", "full_name", "email", "phone")
 
 
 @admin.register(CareerApplication)
