@@ -228,6 +228,10 @@ def about(request):
     return render(request, 'ninatoursui/pages/aboutus.html')
 
 
+def admin_tutorial(request):
+    return render(request, "ninatoursui/pages/admin-tutorial.html")
+
+
 def corporates(request):
     return render(request, 'ninatoursui/pages/corporate.html')
 

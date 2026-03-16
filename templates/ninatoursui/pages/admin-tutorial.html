@@ -1,0 +1,133 @@
+{% extends "ninatoursui/base.html" %}
+{% block title %}Admin Team Tutorial | Nina Tours & Travel{% endblock %}
+
+{% block nav %}
+    {% include "ninatoursui/partials/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+<main class="pt-8 md:pt-40 pb-16 bg-gradient-to-b from-[#f7fbff] via-white to-[#fff7fb]">
+    <section class="max-w-12xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="rounded-3xl border border-[#0f2f5f]/10 bg-white shadow-[0_20px_50px_rgba(15,47,95,0.08)] overflow-hidden">
+            <div class="bg-[linear-gradient(120deg,#0f2f5f_0%,#194a87_55%,#da176e_100%)] px-6 py-10 sm:px-10">
+                <p class="uppercase tracking-[0.22em] text-xs font-extrabold text-white/80">Nina Tours Team Guide</p>
+                <h1 class="mt-3 text-3xl sm:text-4xl font-extrabold text-white">Admin Team Tutorial</h1>
+                <p class="mt-3 max-w-3xl text-white/90 text-sm sm:text-base">
+                    Welcome to the team guide for Tour Consultants, Operations, and Social Media staff.
+                    This page walks you through daily tasks in clear, simple steps.
+                </p>
+                <div class="mt-6 flex flex-wrap gap-2">
+                    <span class="rounded-full bg-white/15 px-3 py-1 text-xs font-bold text-white">Tour Consultants</span>
+                    <span class="rounded-full bg-white/15 px-3 py-1 text-xs font-bold text-white">Operations</span>
+                    <span class="rounded-full bg-white/15 px-3 py-1 text-xs font-bold text-white">Social Media</span>
+                </div>
+            </div>
+
+            <div class="px-6 py-6 sm:px-10 border-t border-[#0f2f5f]/10 bg-[#f9fcff]">
+                <h2 class="text-sm font-extrabold uppercase tracking-[0.18em] text-[#0f2f5f]/70">Quick Links</h2>
+                <div class="mt-4 flex flex-wrap gap-3">
+                    <a href="/admin/" class="rounded-full bg-[#0f2f5f] px-4 py-2 text-xs font-extrabold text-white hover:bg-[#194a87] transition-colors">Admin Dashboard</a>
+                    <a href="/admin/adminside/package/" class="rounded-full border border-[#0f2f5f]/20 px-4 py-2 text-xs font-bold text-[#0f2f5f] hover:border-[#da176e] hover:text-[#da176e] transition-colors">Packages</a>
+                    <a href="/admin/adminside/hotel/" class="rounded-full border border-[#0f2f5f]/20 px-4 py-2 text-xs font-bold text-[#0f2f5f] hover:border-[#da176e] hover:text-[#da176e] transition-colors">Hotels</a>
+                    <a href="/admin/users/contactinquiry/" class="rounded-full border border-[#0f2f5f]/20 px-4 py-2 text-xs font-bold text-[#0f2f5f] hover:border-[#da176e] hover:text-[#da176e] transition-colors">Inquiries</a>
+                    <a href="/admin/users/careerapplication/" class="rounded-full border border-[#0f2f5f]/20 px-4 py-2 text-xs font-bold text-[#0f2f5f] hover:border-[#da176e] hover:text-[#da176e] transition-colors">Career Applications</a>
+                    <a href="/admin/blog/post/" class="rounded-full border border-[#0f2f5f]/20 px-4 py-2 text-xs font-bold text-[#0f2f5f] hover:border-[#da176e] hover:text-[#da176e] transition-colors">Blog / Content</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+        <div class="rounded-2xl border border-[#0f2f5f]/10 bg-white p-6 sm:p-10 space-y-10">
+            <section>
+                <h3 class="text-2xl font-extrabold text-[#0f2f5f]">
+                    <span class="text-[#da176e]">01.</span> Admin Basics
+                </h3>
+                <p class="mt-2 text-sm text-gray-700">Start here each morning to get organized and see what needs attention first.</p>
+                <p class="mt-4 text-sm font-bold text-[#da176e]">Steps</p>
+                <ol class="mt-2 list-decimal pl-5 text-sm text-gray-700 space-y-1">
+                    <li>Open the Admin Dashboard.</li>
+                    <li>Review new inquiries and applications.</li>
+                    <li>List what you will handle first.</li>
+                </ol>
+                <p class="mt-4 text-sm"><span class="font-bold text-[#da176e]">Do / Don’t</span></p>
+                <p class="mt-1 text-sm text-gray-700"><strong>Do:</strong> begin with the newest requests. <strong>Don’t:</strong> publish changes before a quick review.</p>
+            </section>
+
+            <section>
+                <h3 class="text-2xl font-extrabold text-[#0f2f5f]">
+                    <span class="text-[#da176e]">02.</span> Packages and Pricing
+                </h3>
+                <p class="mt-2 text-sm text-gray-700">Use this section whenever package details, prices, tables, or photos need to be updated.</p>
+                <p class="mt-4 text-sm font-bold text-[#da176e]">Steps</p>
+                <ol class="mt-2 list-decimal pl-5 text-sm text-gray-700 space-y-1">
+                    <li>Open the package record.</li>
+                    <li>Update text and pricing details.</li>
+                    <li>Save and confirm the page looks right on the live site.</li>
+                </ol>
+                <p class="mt-4 text-sm"><span class="font-bold text-[#da176e]">Do / Don’t</span></p>
+                <p class="mt-1 text-sm text-gray-700"><strong>Do:</strong> keep headings clear and easy to read. <strong>Don’t:</strong> leave repeated hotel options or itinerary lines.</p>
+                <p class="mt-3 text-sm text-[#0f2f5f]"><strong>Scenario:</strong> A customer asks for a Mara quote. Open the Mara package, confirm the current rates, then share the updated quote.</p>
+            </section>
+
+            <section>
+                <h3 class="text-2xl font-extrabold text-[#0f2f5f]">
+                    <span class="text-[#da176e]">03.</span> Hotels and Images
+                </h3>
+                <p class="mt-2 text-sm text-gray-700">Use this section when hotel photos, prices, or details need a refresh.</p>
+                <p class="mt-4 text-sm font-bold text-[#da176e]">Steps</p>
+                <ol class="mt-2 list-decimal pl-5 text-sm text-gray-700 space-y-1">
+                    <li>Find the hotel record.</li>
+                    <li>Update the image and price.</li>
+                    <li>Check the hotel card on the website.</li>
+                </ol>
+                <p class="mt-4 text-sm"><span class="font-bold text-[#da176e]">Do / Don’t</span></p>
+                <p class="mt-1 text-sm text-gray-700"><strong>Do:</strong> use clear hotel names. <strong>Don’t:</strong> keep duplicate hotel records active.</p>
+                <p class="mt-3 text-sm text-[#0f2f5f]"><strong>Scenario:</strong> A hotel image looks wrong. Replace it, save, refresh the page, and confirm the correct photo appears.</p>
+                <p class="mt-2 text-sm text-[#0f2f5f]"><strong>Action Tip:</strong> When marketing shares a new approved image, update it the same day.</p>
+            </section>
+
+            <section>
+                <h3 class="text-2xl font-extrabold text-[#0f2f5f]">
+                    <span class="text-[#da176e]">04.</span> Inquiries and Follow-up
+                </h3>
+                <p class="mt-2 text-sm text-gray-700">This section helps you respond to customer inquiries and close each case clearly.</p>
+                <p class="mt-4 text-sm font-bold text-[#da176e]">Steps</p>
+                <ol class="mt-2 list-decimal pl-5 text-sm text-gray-700 space-y-1">
+                    <li>Open the new inquiry.</li>
+                    <li>Reply with clear package or hotel details.</li>
+                    <li>Mark it as resolved after follow-up.</li>
+                </ol>
+                <p class="mt-4 text-sm"><span class="font-bold text-[#da176e]">Do / Don’t</span></p>
+                <p class="mt-1 text-sm text-gray-700"><strong>Do:</strong> reply the same day where possible. <strong>Don’t:</strong> leave inquiries without an update.</p>
+                <p class="mt-3 text-sm text-[#0f2f5f]"><strong>Scenario:</strong> For a hotel inquiry, first confirm travel dates, room preference, and budget, then send the quote.</p>
+            </section>
+
+            <section>
+                <h3 class="text-2xl font-extrabold text-[#0f2f5f]">
+                    <span class="text-[#da176e]">05.</span> Careers and Content Updates
+                </h3>
+                <p class="mt-2 text-sm text-gray-700">Use this section to review CVs, manage job applications, and keep content up to date.</p>
+                <p class="mt-4 text-sm font-bold text-[#da176e]">Steps</p>
+                <ol class="mt-2 list-decimal pl-5 text-sm text-gray-700 space-y-1">
+                    <li>Open new applications.</li>
+                    <li>Review details and documents.</li>
+                    <li>Share with the right team and update status.</li>
+                </ol>
+                <p class="mt-4 text-sm"><span class="font-bold text-[#da176e]">Do / Don’t</span></p>
+                <p class="mt-1 text-sm text-gray-700"><strong>Do:</strong> keep records neat and easy to follow. <strong>Don’t:</strong> publish content before reviewing it.</p>
+                <p class="mt-3 text-sm text-[#0f2f5f]"><strong>Scenario:</strong> A CV comes in from the careers page. Review it, forward it to the jobs team, and update the status.</p>
+            </section>
+
+            <section>
+                <h3 class="text-2xl font-extrabold text-[#0f2f5f]">Who to Contact</h3>
+                <p class="mt-2 text-sm text-gray-700"><strong>Technical assistance:</strong> Contact: <a href="mailto:kipekee254@gmail.com" class="text-[#da176e] hover:underline">kipekee254@gmail.com</a></p>
+                <p class="mt-2 text-sm text-gray-700"><strong>Sales Lead:</strong> Quote approvals, customer follow-up, and urgent requests.</p>
+                <p class="mt-2 text-sm text-gray-700"><strong>Social / Content Lead:</strong> Image quality, package highlights, and posting plans.</p>
+                <p class="mt-2 text-sm text-gray-700"><strong>HR / Jobs Lead:</strong> Career applications and candidate communication.</p>
+                <p class="mt-4 text-xs text-gray-500">Tip: If unsure, ask early so the team can support you quickly.</p>
+            </section>
+        </div>
+    </section>
+</main>
+{% endblock %}

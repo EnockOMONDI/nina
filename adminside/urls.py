@@ -20,6 +20,7 @@ urlpatterns = [
     path('careers/<slug:slug>/', views.career_detail, name='career-detail'),
     path('destinations/', views.destinations, name='destinations'),
     path('about/', views.about, name='about'),
+    path('admin-tutorial/', views.admin_tutorial, name='admin-tutorial'),
     path('corporates/', corporate_view, name='corporates'),
     path('inquiry-success/', inquiry_success_view, name='inquiry-success'),
     path('contact/', contact_view, name='contact'),
