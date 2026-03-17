@@ -12,6 +12,10 @@ BLOG_PUBLISH_STATUS = (
 )
 
 
+def generate_post_pid():
+    return shortuuid.uuid()
+
+
 class Category(models.Model):
     title = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100, unique=True)
@@ -44,7 +48,7 @@ class Post(models.Model):
     featured = models.BooleanField(default=False)
     trending = models.BooleanField(default=False)
     views = models.PositiveIntegerField(default=0)
-    pid = models.CharField(max_length=25, unique=True, editable=False, default=shortuuid.uuid)
+    pid = models.CharField(max_length=25, unique=True, editable=False, default=generate_post_pid)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
