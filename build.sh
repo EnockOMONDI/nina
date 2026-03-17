@@ -21,6 +21,10 @@ python3 manage.py showmigrations --settings=tours_travels.settings_prod
 python3 manage.py shell --settings=tours_travels.settings_prod -c "from django.db import connections; from django.db.migrations.executor import MigrationExecutor; c=connections['default']; e=MigrationExecutor(c); t=e.loader.graph.leaf_nodes(); p=e.migration_plan(t); print(f'✅ Pending migrations: {len(p)}'); raise SystemExit(1 if p else 0)"
 echo "✅ Migration verification passed"
 
+# Smoke test admin login page render to catch production-only 500s before release.
+python3 manage.py shell --settings=tours_travels.settings_prod -c "from django.test import Client; c=Client(); r=c.get('/admin/login/?next=/admin/'); print(f'✅ Admin login smoke status: {r.status_code}'); raise SystemExit(1 if r.status_code != 200 else 0)"
+echo "✅ Admin login smoke test passed"
+
 python3 manage.py collectstatic --noinput --settings=tours_travels.settings_prod
 echo "📁 Static files collected"
 python3 manage.py createcachetable --settings=tours_travels.settings_prod
