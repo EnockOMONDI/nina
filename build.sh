@@ -22,8 +22,8 @@ python3 manage.py shell --settings=tours_travels.settings_prod -c "from django.d
 echo "✅ Migration verification passed"
 
 # Smoke test admin login page render to catch production-only 500s before release.
-# Use a production-allowed host to avoid false 400 (DisallowedHost on "testserver").
-python3 manage.py shell --settings=tours_travels.settings_prod -c "from django.test import Client; c=Client(); r=c.get('/admin/login/?next=/admin/', HTTP_HOST='ninatoursandtravel.com'); print(f'✅ Admin login smoke status: {r.status_code}'); raise SystemExit(1 if r.status_code != 200 else 0)"
+# Use HTTPS + follow redirects so SECURE_SSL_REDIRECT does not create a false failure.
+python3 manage.py shell --settings=tours_travels.settings_prod -c "from django.test import Client; c=Client(); r=c.get('/admin/login/?next=/admin/', HTTP_HOST='ninatoursandtravel.com', secure=True, follow=True); print(f'✅ Admin login smoke final status: {r.status_code} redirects={len(getattr(r, \"redirect_chain\", []))}'); raise SystemExit(1 if r.status_code != 200 else 0)"
 echo "✅ Admin login smoke test passed"
 
 python3 manage.py collectstatic --noinput --settings=tours_travels.settings_prod
