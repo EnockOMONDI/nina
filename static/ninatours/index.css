@@ -366,7 +366,7 @@ h6 {
 }
 
 .package-card {
-    flex: 0 0 clamp(260px, 32vw, 390px);
+    flex: 0 0 clamp(340px, 42vw, 520px);
     scroll-snap-align: start;
     border: 1px solid rgba(218, 23, 110, 0.17);
     border-radius: 1.25rem;
@@ -512,7 +512,7 @@ h6 {
 
 .package-media {
     width: 100%;
-    height: 265px;
+    height: 185px;
     object-fit: cover;
 }
 
@@ -648,7 +648,7 @@ h6 {
     }
 
     .package-card {
-        flex-basis: clamp(250px, 62vw, 370px);
+        flex-basis: clamp(320px, 70vw, 470px);
     }
 
     .cta-panel {
@@ -676,7 +676,7 @@ h6 {
     }
 
     .package-card {
-        flex-basis: min(84vw, 320px);
+        flex-basis: min(90vw, 430px);
     }
 
     .section-head {

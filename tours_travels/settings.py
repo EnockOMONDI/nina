@@ -222,8 +222,8 @@ CKEDITOR_5_CONFIGS = {
 }
 
 UNFOLD = {
-    "SITE_TITLE": "Ziada Travel",
-    "SITE_HEADER": "Ziada Travel Admin",
+    "SITE_TITLE": "Nina Tours & Travel",
+    "SITE_HEADER": "Nina Tours Admin",
     "SITE_SUBHEADER": "Simple site control",
     "SIDEBAR": {
         "show_search": True,
@@ -242,12 +242,14 @@ UNFOLD = {
             {
                 "title": "Clients & Messages",
                 "items": [
-                    {"title": "Contact Inquiries", "link": admin_nav.users_contact_list},
-                    {"title": "Corporate Inquiries", "link": admin_nav.users_corporate_list},
-                    {"title": "Career Applications", "link": admin_nav.users_career_application_list},
-                    {"title": "MICE Inquiries", "link": admin_nav.users_mice_list},
-                    {"title": "Student Travel", "link": admin_nav.users_student_list},
-                    {"title": "NGO Travel", "link": admin_nav.users_ngo_list},
+                    {"title": "Contact Inquiries", "link": admin_nav.users_contact_list, "badge": "tours_travels.admin_nav.unread_contact_badge"},
+                    {"title": "Corporate Inquiries", "link": admin_nav.users_corporate_list, "badge": "tours_travels.admin_nav.unread_corporate_badge"},
+                    {"title": "Package Quote Inquiries", "link": admin_nav.users_package_quote_list, "badge": "tours_travels.admin_nav.unread_package_quote_badge"},
+                    {"title": "Hotel Inquiries", "link": admin_nav.users_hotel_inquiry_list, "badge": "tours_travels.admin_nav.unread_hotel_inquiry_badge"},
+                    {"title": "Career Applications", "link": admin_nav.users_career_application_list, "badge": "tours_travels.admin_nav.unread_career_badge"},
+                    {"title": "MICE Inquiries", "link": admin_nav.users_mice_list, "badge": "tours_travels.admin_nav.unread_mice_badge"},
+                    {"title": "Student Travel", "link": admin_nav.users_student_list, "badge": "tours_travels.admin_nav.unread_student_badge"},
+                    {"title": "NGO Travel", "link": admin_nav.users_ngo_list, "badge": "tours_travels.admin_nav.unread_ngo_badge"},
                 ],
             },
             {

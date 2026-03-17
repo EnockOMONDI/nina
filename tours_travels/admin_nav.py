@@ -45,9 +45,69 @@ def users_career_application_list(request=None):
     return reverse("admin:users_careerapplication_changelist")
 
 
+def users_package_quote_list(request=None):
+    return reverse("admin:users_packagequoteinquiry_changelist")
+
+
+def users_hotel_inquiry_list(request=None):
+    return reverse("admin:users_hotelinquiry_changelist")
+
+
 def auth_user_list(request=None):
     return reverse("admin:auth_user_changelist")
 
 
 def auth_group_list(request=None):
     return reverse("admin:auth_group_changelist")
+
+
+def _count_unread(model):
+    return model.objects.filter(is_read=False).count()
+
+
+def unread_contact_badge(request=None):
+    from users.models import ContactInquiry
+
+    return _count_unread(ContactInquiry)
+
+
+def unread_corporate_badge(request=None):
+    from users.models import CorporateInquiry
+
+    return _count_unread(CorporateInquiry)
+
+
+def unread_package_quote_badge(request=None):
+    from users.models import PackageQuoteInquiry
+
+    return _count_unread(PackageQuoteInquiry)
+
+
+def unread_hotel_inquiry_badge(request=None):
+    from users.models import HotelInquiry
+
+    return _count_unread(HotelInquiry)
+
+
+def unread_career_badge(request=None):
+    from users.models import CareerApplication
+
+    return _count_unread(CareerApplication)
+
+
+def unread_mice_badge(request=None):
+    from users.models import MICEInquiry
+
+    return _count_unread(MICEInquiry)
+
+
+def unread_student_badge(request=None):
+    from users.models import StudentTravelInquiry
+
+    return _count_unread(StudentTravelInquiry)
+
+
+def unread_ngo_badge(request=None):
+    from users.models import NGOTravelInquiry
+
+    return _count_unread(NGOTravelInquiry)

@@ -10,6 +10,7 @@ class ContactInquiry(models.Model):
     message = models.TextField()
     privacy_consent = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
     is_resolved = models.BooleanField(default=False)
 
     class Meta:
@@ -44,6 +45,7 @@ class PackageQuoteInquiry(models.Model):
     special_requests = models.TextField(blank=True, default="")
 
     created_at = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
     is_resolved = models.BooleanField(default=False)
 
     class Meta:
@@ -97,6 +99,7 @@ class HotelInquiry(models.Model):
     special_requests = models.TextField(blank=True, default="")
 
     created_at = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
     is_resolved = models.BooleanField(default=False)
 
     class Meta:
@@ -125,6 +128,7 @@ class CorporateInquiry(models.Model):
     service_needs = models.CharField(max_length=120, choices=SERVICE_NEEDS_CHOICES)
     message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
     is_resolved = models.BooleanField(default=False)
 
     class Meta:
@@ -172,6 +176,7 @@ class CareerApplication(models.Model):
     cover_file_size = models.PositiveIntegerField(blank=True, null=True)
 
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=STATUS_NEW)
+    is_read = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -190,6 +195,7 @@ class MICEInquiry(models.Model):
     attendees = models.PositiveIntegerField()
     event_details = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
 
     class Meta:
         ordering = ["-created_at"]
@@ -207,6 +213,7 @@ class StudentTravelInquiry(models.Model):
     number_of_students = models.PositiveIntegerField()
     travel_details = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
 
     class Meta:
         ordering = ["-created_at"]
@@ -226,6 +233,7 @@ class NGOTravelInquiry(models.Model):
     travel_details = models.TextField()
     sustainability_requirements = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
 
     class Meta:
         ordering = ["-created_at"]

@@ -16,8 +16,8 @@ urlpatterns = [
     path('news/', include('blog.urls')),
 ]
 
-admin.site.site_header = "Ziada Travel Admin"
-admin.site.site_title = "Ziada Travel"
+admin.site.site_header = "Nina Tours Admin"
+admin.site.site_title = "Nina Tours & Travel"
 admin.site.index_title = "Site Settings"
 
 if settings.DEBUG:
