@@ -186,6 +186,82 @@ class CareerApplication(models.Model):
         return f"{self.full_name} - {self.job.title}"
 
 
+DEFAULT_FEEDBACK_CATEGORIES = [
+    "Transport",
+    "Accommodation",
+    "Tour Guide / Driver",
+    "Communication",
+    "Activities",
+    "Value for Money",
+    "Logistics",
+    "Timeliness",
+    "Professionalism",
+    "Coordination",
+]
+
+DEFAULT_FEEDBACK_HIGHLIGHTS = [
+    "Scenery",
+    "Comfort",
+    "Organization",
+    "Fun/Vibe",
+    "Customer Service",
+    "Food",
+    "Activities",
+]
+
+
+class TripFeedback(models.Model):
+    EXPECTATION_CHOICES = (
+        ("exceeded", "Exceeded"),
+        ("met", "Met"),
+        ("below", "Below"),
+    )
+    TRAVEL_AGAIN_CHOICES = (
+        ("yes", "Yes"),
+        ("maybe", "Maybe"),
+        ("no", "No"),
+    )
+
+    trip_name = models.CharField(max_length=220, blank=True, default="")
+    destination = models.CharField(max_length=220, blank=True, default="")
+    travel_date = models.DateField(null=True, blank=True)
+
+    full_name = models.CharField(max_length=120)
+    email = models.EmailField()
+    phone = models.CharField(max_length=30, blank=True, default="")
+    can_feature_publicly = models.BooleanField(null=True, blank=True)
+
+    overall_rating = models.PositiveSmallIntegerField(null=True, blank=True)
+    likelihood_to_recommend = models.PositiveSmallIntegerField(null=True, blank=True)
+
+    category_ratings = models.JSONField(default=dict, blank=True)
+    highlights_selected = models.JSONField(default=list, blank=True)
+
+    best_part = models.TextField(blank=True, default="")
+    improvements = models.TextField(blank=True, default="")
+    testimonial = models.TextField(blank=True, default="")
+
+    expectation_result = models.CharField(max_length=20, choices=EXPECTATION_CHOICES, blank=True, default="")
+    would_travel_again = models.CharField(max_length=10, choices=TRAVEL_AGAIN_CHOICES, blank=True, default="")
+    interested_destinations = models.TextField(blank=True, default="")
+
+    can_use_media = models.BooleanField(null=True, blank=True)
+    media_urls = models.JSONField(default=list, blank=True)
+    media_uuids = models.JSONField(default=list, blank=True)
+    media_names = models.JSONField(default=list, blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
+    is_resolved = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        trip = self.trip_name or self.destination or "Trip Feedback"
+        return f"{trip} - {self.full_name}"
+
+
 class MICEInquiry(models.Model):
     company_name = models.CharField(max_length=200)
     contact_person = models.CharField(max_length=100)

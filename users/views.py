@@ -8,13 +8,21 @@ from django.utils import timezone
 
 from adminside.models import CareerJob, Hotel, Package, PackageHotelOption
 
-from .forms import CareerApplicationForm, ContactForm, CorporateInquiryForm, HotelInquiryForm, PackageQuoteInquiryForm
+from .forms import (
+    CareerApplicationForm,
+    ContactForm,
+    CorporateInquiryForm,
+    HotelInquiryForm,
+    PackageQuoteInquiryForm,
+    TripFeedbackForm,
+)
 from .tasks import (
     send_career_application_emails,
     send_contact_emails,
     send_corporate_emails,
     send_hotel_inquiry_emails,
     send_package_quote_emails,
+    send_trip_feedback_emails,
 )
 
 logger = logging.getLogger(__name__)
@@ -66,6 +74,34 @@ def corporate_view(request):
 def inquiry_success_view(request):
     inquiry_id = request.GET.get("id", "").strip()
     return render(request, "ninatoursui/pages/inquiry-success.html", {"inquiry_id": inquiry_id})
+
+
+def trip_feedback_view(request):
+    if request.method == "POST":
+        form = TripFeedbackForm(request.POST)
+        if form.is_valid():
+            feedback = form.save()
+            _dispatch_email_async(send_trip_feedback_emails, feedback, "Trip feedback")
+            return redirect(f"{reverse('inquiry-success')}?id={feedback.id}")
+
+        messages.error(request, "Please check the feedback form and try again.")
+        logger.warning("Trip feedback form validation failed. Errors: %s", form.errors.as_json())
+    else:
+        initial = {
+            "trip_name": request.GET.get("trip_name", "").strip(),
+            "destination": request.GET.get("destination", "").strip(),
+            "travel_date": request.GET.get("travel_date", "").strip(),
+        }
+        form = TripFeedbackForm(initial=initial)
+
+    return render(
+        request,
+        "ninatoursui/pages/trip-feedback.html",
+        {
+            "form": form,
+            "uploadcare_public_key": settings.UPLOADCARE_PUBLIC_KEY,
+        },
+    )
 
 
 def package_quote_view(request):

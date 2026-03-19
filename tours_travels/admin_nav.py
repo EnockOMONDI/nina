@@ -53,6 +53,10 @@ def users_hotel_inquiry_list(request=None):
     return reverse("admin:users_hotelinquiry_changelist")
 
 
+def users_trip_feedback_list(request=None):
+    return reverse("admin:users_tripfeedback_changelist")
+
+
 def auth_user_list(request=None):
     return reverse("admin:auth_user_changelist")
 
@@ -111,3 +115,9 @@ def unread_ngo_badge(request=None):
     from users.models import NGOTravelInquiry
 
     return _count_unread(NGOTravelInquiry)
+
+
+def unread_trip_feedback_badge(request=None):
+    from users.models import TripFeedback
+
+    return _count_unread(TripFeedback)

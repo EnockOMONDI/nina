@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+  <body style="margin:0;padding:0;background-color:#f5f7fb;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color:#f5f7fb;padding:24px 0;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="680" cellspacing="0" cellpadding="0" style="background-color:#ffffff;border:1px solid #e6eaf0;border-radius:16px;overflow:hidden;">
+            <tr>
+              <td style="padding:22px 28px;background:#0f1e36;color:#ffffff;font-family:Arial,Helvetica,sans-serif;">
+                <h1 style="margin:0;font-size:20px;">NEW TRIP FEEDBACK</h1>
+                <p style="margin:6px 0 0 0;font-size:13px;color:#dbe7ff;">Nina Tours &amp; Travel Ltd</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:24px 28px;color:#1f2937;font-family:Arial,Helvetica,sans-serif;">
+                <p style="margin:0 0 12px 0;color:#475569;">A traveler has submitted post-trip feedback.</p>
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;">
+                  <tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;width:220px;">Feedback ID</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{{ feedback.id }}</td></tr>
+                  {% if feedback.trip_name %}<tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;">Trip Name</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{{ feedback.trip_name }}</td></tr>{% endif %}
+                  {% if feedback.destination %}<tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;">Destination</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{{ feedback.destination }}</td></tr>{% endif %}
+                  {% if feedback.travel_date %}<tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;">Travel Date</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{{ feedback.travel_date }}</td></tr>{% endif %}
+                  <tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;">Name</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{{ feedback.full_name }}</td></tr>
+                  <tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;">Email</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{{ feedback.email }}</td></tr>
+                  {% if feedback.phone %}<tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;">Phone</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{{ feedback.phone }}</td></tr>{% endif %}
+                  {% if feedback.overall_rating %}<tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;">Overall Rating</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{{ feedback.overall_rating }}/10</td></tr>{% endif %}
+                  {% if feedback.likelihood_to_recommend|default_if_none:'' != '' %}<tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;">Likelihood to Recommend</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{{ feedback.likelihood_to_recommend }}/10</td></tr>{% endif %}
+                  {% if feedback.expectation_result %}<tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;">Expectation</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{{ feedback.get_expectation_result_display }}</td></tr>{% endif %}
+                  {% if feedback.would_travel_again %}<tr><td style="padding:10px 0;border-bottom:1px solid #edf2f7;color:#da176e;font-weight:bold;">Would Travel Again</td><td style="padding:10px 0;border-bottom:1px solid #edf2f7;">{{ feedback.get_would_travel_again_display }}</td></tr>{% endif %}
+                </table>
+
+                {% if feedback.category_ratings %}
+                <div style="margin:18px 0 0 0;padding:14px;border:1px solid #edf2f7;border-radius:10px;background-color:#fbfcff;">
+                  <p style="margin:0 0 8px 0;color:#da176e;font-weight:bold;">Category Ratings</p>
+                  {% for label, rating in feedback.category_ratings.items %}
+                    <p style="margin:0 0 4px 0;color:#334155;">{{ label }}: {{ rating }}/10</p>
+                  {% endfor %}
+                </div>
+                {% endif %}
+
+                {% if feedback.highlights_selected %}
+                <div style="margin:14px 0 0 0;padding:14px;border:1px solid #edf2f7;border-radius:10px;background-color:#fbfcff;">
+                  <p style="margin:0 0 8px 0;color:#da176e;font-weight:bold;">Highlights</p>
+                  <p style="margin:0;color:#334155;">{{ feedback.highlights_selected|join:", " }}</p>
+                </div>
+                {% endif %}
+
+                {% if feedback.best_part %}
+                <div style="margin:14px 0 0 0;padding:14px;border:1px solid #edf2f7;border-radius:10px;background-color:#fbfcff;">
+                  <p style="margin:0 0 8px 0;color:#da176e;font-weight:bold;">What They Enjoyed Most</p>
+                  <p style="margin:0;color:#334155;line-height:1.6;">{{ feedback.best_part }}</p>
+                </div>
+                {% endif %}
+
+                {% if feedback.improvements %}
+                <div style="margin:14px 0 0 0;padding:14px;border:1px solid #edf2f7;border-radius:10px;background-color:#fbfcff;">
+                  <p style="margin:0 0 8px 0;color:#da176e;font-weight:bold;">Improvements</p>
+                  <p style="margin:0;color:#334155;line-height:1.6;">{{ feedback.improvements }}</p>
+                </div>
+                {% endif %}
+
+                {% if feedback.testimonial %}
+                <div style="margin:14px 0 0 0;padding:14px;border:1px solid #edf2f7;border-radius:10px;background-color:#fbfcff;">
+                  <p style="margin:0 0 8px 0;color:#da176e;font-weight:bold;">Testimonial</p>
+                  <p style="margin:0;color:#334155;line-height:1.6;">{{ feedback.testimonial }}</p>
+                </div>
+                {% endif %}
+
+                {% if feedback.interested_destinations %}
+                <div style="margin:14px 0 0 0;padding:14px;border:1px solid #edf2f7;border-radius:10px;background-color:#fbfcff;">
+                  <p style="margin:0 0 8px 0;color:#da176e;font-weight:bold;">Interested Destinations</p>
+                  <p style="margin:0;color:#334155;line-height:1.6;">{{ feedback.interested_destinations }}</p>
+                </div>
+                {% endif %}
+
+                {% if feedback.media_urls %}
+                <div style="margin:14px 0 0 0;padding:14px;border:1px solid #edf2f7;border-radius:10px;background-color:#fbfcff;">
+                  <p style="margin:0 0 8px 0;color:#da176e;font-weight:bold;">Shared Media</p>
+                  {% for media_url in feedback.media_urls %}
+                    <p style="margin:0 0 6px 0;"><a href="{{ media_url }}" style="color:#0f2f5f;text-decoration:none;">{{ media_url }}</a></p>
+                  {% endfor %}
+                </div>
+                {% endif %}
+
+                <div style="margin:18px 0 0 0;padding:14px;border:1px solid #e9edf5;border-radius:10px;background-color:#ffffff;">
+                  <p style="margin:0 0 8px 0;color:#da176e;font-weight:bold;">Admin Next Steps</p>
+                  <p style="margin:0 0 6px 0;color:#334155;">1. Review satisfaction score and identify quick recovery items if needed.</p>
+                  <p style="margin:0 0 6px 0;color:#334155;">2. Send appreciation message and offer next destination options when relevant.</p>
+                  <p style="margin:0;color:#334155;">3. Update status in Admin and assign follow-up owner.</p>
+                  <p style="margin:10px 0 0 0;">
+                    <a href="{{ admin_change_url }}" style="color:#0f2f5f;text-decoration:none;font-weight:bold;">Open Feedback in Admin</a>
+                  </p>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:16px 28px;border-top:1px solid #e9edf5;color:#64748b;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.6;">
+                <div><strong style="color:#334155;">Nina Tours &amp; Travel Ltd</strong></div>
+                <div>National Bank Building, Harambee Avenue, 2nd Floor, Nairobi, Kenya</div>
+                <div>
+                  <a href="tel:+254750787364" style="color:#da176e;text-decoration:none;">+254 750 787 364</a> |
+                  <a href="mailto:info@ninatoursandtravel.com" style="color:#da176e;text-decoration:none;">info@ninatoursandtravel.com</a>
+                  {% if site_url %}| <a href="{{ site_url }}" style="color:#da176e;text-decoration:none;">Visit Website</a>{% endif %}
+                </div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

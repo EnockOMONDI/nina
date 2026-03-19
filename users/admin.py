@@ -10,6 +10,7 @@ from .models import (
     StudentTravelInquiry,
     NGOTravelInquiry,
     PackageQuoteInquiry,
+    TripFeedback,
 )
 
 
@@ -133,3 +134,19 @@ class CareerApplicationAdmin(ReadAwareAdmin):
         "cover_file_size",
         "created_at",
     )
+
+
+@admin.register(TripFeedback)
+class TripFeedbackAdmin(ReadAwareAdmin):
+    list_display = (
+        "unread_badge",
+        "trip_name",
+        "destination",
+        "full_name",
+        "email",
+        "overall_rating",
+        "likelihood_to_recommend",
+        "created_at",
+    )
+    list_filter = ("is_read", "is_resolved", "created_at", "expectation_result", "would_travel_again")
+    search_fields = ("trip_name", "destination", "full_name", "email", "interested_destinations")

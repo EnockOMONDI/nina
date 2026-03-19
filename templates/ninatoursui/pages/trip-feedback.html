@@ -1,0 +1,267 @@
+{% extends "ninatoursui/base.html" %}
+{% load static %}
+{% block title %}Trip Feedback | Nina Tours & Travel{% endblock %}
+
+{% block nav %}
+    {% include "ninatoursui/partials/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+<main class="nina-landing pt-8 md:pt-44 pb-14">
+    <section class="max-w-12xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 xl:grid-cols-12 gap-8">
+            <aside class="xl:col-span-4 space-y-6">
+                <div class="rounded-3xl border border-gray-200 bg-gradient-to-br from-[#0f2f5f] via-[#17437f] to-[#0f2f5f] p-7 sm:p-8 text-white shadow-xl">
+                    <p class="text-xs uppercase tracking-[0.18em] font-bold text-[#8ccaff]">Traveler Feedback</p>
+                    <h1 class="mt-3 text-3xl sm:text-4xl font-extrabold leading-tight">Share Your Trip Experience</h1>
+                    <p class="mt-4 text-white/90 leading-relaxed">
+                        Thank you for traveling with Nina Tours. Your feedback helps us improve every future experience.
+                    </p>
+                </div>
+
+                <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
+                    <h2 class="text-xl font-extrabold text-[#0f2f5f]">Quick Notes</h2>
+                    <ul class="mt-4 space-y-2 text-sm text-gray-700">
+                        <li>Only <strong>Name</strong> and <strong>Email</strong> are required.</li>
+                        <li>All other fields are optional.</li>
+                        <li>If you wish to share any photos or videos from the trip, select Yes below and an upload button will appear at the bottom.</li>
+                    </ul>
+                </div>
+            </aside>
+
+            <div class="xl:col-span-8">
+                <div class="rounded-3xl border border-gray-200 bg-white p-6 sm:p-8 shadow-[0_14px_30px_rgba(218,23,110,0.10)]">
+                    <p class="text-xs uppercase tracking-[0.18em] font-bold text-[#8ccaff]">Post-Trip Form</p>
+                    <h2 class="mt-2 text-2xl sm:text-3xl font-extrabold text-[#0f2f5f]">Tell Us About Your Trip Experience</h2>
+
+                    <form method="post" class="mt-6 space-y-7" id="trip-feedback-form">
+                        {% csrf_token %}
+                        {{ form.media_manifest }}
+
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+
+                        {% if form.non_field_errors %}
+                            <div class="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">{{ form.non_field_errors }}</div>
+                        {% endif %}
+
+                        <section class="space-y-4">
+                            <h3 class="text-lg font-extrabold text-[#0f2f5f]">1. Trip Context</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="md:col-span-2">
+                                    <label class="block text-xs font-bold uppercase tracking-[0.12em] text-[#0f2f5f] mb-2">Trip Name</label>
+                                    {{ form.trip_name }}
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-[0.12em] text-[#0f2f5f] mb-2">Destination</label>
+                                    {{ form.destination }}
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-[0.12em] text-[#0f2f5f] mb-2">Travel Date</label>
+                                    {{ form.travel_date }}
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="space-y-4">
+                            <h3 class="text-lg font-extrabold text-[#0f2f5f]">2. Customer Info</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-[0.12em] text-[#0f2f5f] mb-2">Name *</label>
+                                    {{ form.full_name }}
+                                    {% if form.full_name.errors %}<p class="mt-1 text-xs text-rose-600">{{ form.full_name.errors.0 }}</p>{% endif %}
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-[0.12em] text-[#0f2f5f] mb-2">Email *</label>
+                                    {{ form.email }}
+                                    {% if form.email.errors %}<p class="mt-1 text-xs text-rose-600">{{ form.email.errors.0 }}</p>{% endif %}
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-[0.12em] text-[#0f2f5f] mb-2">Phone</label>
+                                    {{ form.phone }}
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-[0.12em] text-[#0f2f5f] mb-2">Can we feature your review publicly?</label>
+                                    {{ form.can_feature_publicly }}
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="space-y-4">
+                            <h3 class="text-lg font-extrabold text-[#0f2f5f]">3. Overall Experience</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-[0.12em] text-[#0f2f5f] mb-2">Overall Rating (1–10)</label>
+                                    {{ form.overall_rating }}
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-[0.12em] text-[#0f2f5f] mb-2">Likelihood to Recommend (0–10)</label>
+                                    {{ form.likelihood_to_recommend }}
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="space-y-4">
+                            <h3 class="text-lg font-extrabold text-[#0f2f5f]">4. Rate Different Parts of the Trip (Optional)</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {% for label, field in form.category_field_rows %}
+                                    <div>
+                                        <label class="block text-xs font-bold uppercase tracking-[0.12em] text-[#0f2f5f] mb-2">{{ label }} (1–10)</label>
+                                        {{ field }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </section>
+
+                        <section class="space-y-4">
+                            <h3 class="text-lg font-extrabold text-[#0f2f5f]">5. What Stood Out Most</h3>
+                            <p class="text-sm text-gray-600">What stood out most? Select all that apply.</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                                {% for checkbox in form.highlights_selected %}
+                                    <label class="flex items-center gap-2 rounded-xl border border-gray-200 px-3 py-2 text-sm text-gray-700">
+                                        {{ checkbox.tag }} {{ checkbox.choice_label }}
+                                    </label>
+                                {% endfor %}
+                            </div>
+                        </section>
+
+                        <section class="space-y-4">
+                            <h3 class="text-lg font-extrabold text-[#0f2f5f]">6. Tell Us More</h3>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-[0.12em] text-[#0f2f5f] mb-2">What did you enjoy the most?</label>
+                                {{ form.best_part }}
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-[0.12em] text-[#0f2f5f] mb-2">What can we improve?</label>
+                                {{ form.improvements }}
+                            </div>
+                        </section>
+
+                        <section class="space-y-4">
+                            <h3 class="text-lg font-extrabold text-[#0f2f5f]">7. Your Short Review</h3>
+                            <p id="testimonial-hint" class="text-sm text-gray-600">Write a short testimonial about your experience (optional).</p>
+                            {{ form.testimonial }}
+                        </section>
+
+                        <section class="space-y-4">
+                            <h3 class="text-lg font-extrabold text-[#0f2f5f]">8. Did the Trip Match What You Expected?</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-[0.12em] text-[#0f2f5f] mb-2">Did the trip meet your expectations?</label>
+                                    {{ form.expectation_result }}
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="space-y-4">
+                            <h3 class="text-lg font-extrabold text-[#0f2f5f]">9. Where Would You Like to Travel Next?</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-[0.12em] text-[#0f2f5f] mb-2">Would you travel with us again?</label>
+                                    {{ form.would_travel_again }}
+                                </div>
+                                <div class="md:col-span-2">
+                                    <label class="block text-xs font-bold uppercase tracking-[0.12em] text-[#0f2f5f] mb-2">Destinations you are interested in</label>
+                                    {{ form.interested_destinations }}
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="space-y-4">
+                            <h3 class="text-lg font-extrabold text-[#0f2f5f]">10. Trip Photos You Can Share</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-[0.12em] text-[#0f2f5f] mb-2">Do you have any photos from the trip you can share with us?</label>
+                                    {{ form.can_use_media }}
+                                </div>
+                                <div class="md:col-span-2 hidden" id="media-upload-wrap">
+                                    <label class="block text-xs font-bold uppercase tracking-[0.12em] text-[#0f2f5f] mb-2">Upload Trip Photos (optional)</label>
+                                    <input type="hidden" id="feedback-media-widget" role="uploadcare-uploader" data-public-key="{{ uploadcare_public_key }}" data-multiple="true" data-images-only="false" data-clearable="true" data-tabs="file url" />
+                                    <p id="media-upload-label" class="mt-1 text-xs text-gray-600">No files selected</p>
+                                </div>
+                            </div>
+                            {% if form.media_manifest.errors %}<p class="mt-1 text-xs text-rose-600">{{ form.media_manifest.errors.0 }}</p>{% endif %}
+                        </section>
+
+                        <button type="submit" class="inline-flex w-full items-center justify-center rounded-full bg-[#da176e] px-6 py-3.5 text-white font-extrabold text-base shadow-[0_10px_24px_rgba(218,23,110,0.25)] hover:bg-[#bf125f] transition-colors">
+                            Submit Feedback
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script>
+<script>
+    (function () {
+        const ratingField = document.getElementById("id_overall_rating");
+        const hint = document.getElementById("testimonial-hint");
+        const mediaConsent = document.getElementById("id_can_use_media");
+        const mediaWrap = document.getElementById("media-upload-wrap");
+        const mediaManifest = document.getElementById("id_media_manifest");
+        const mediaLabel = document.getElementById("media-upload-label");
+        const mediaItems = [];
+
+        function updateHint() {
+            const rating = parseInt((ratingField && ratingField.value) || "", 10);
+            if (!hint) return;
+            if (!isNaN(rating) && rating >= 8) {
+                hint.textContent = "We’re glad you loved it. Share a short testimonial so we can feature your experience.";
+            } else {
+                hint.textContent = "Write a short testimonial about your experience (optional).";
+            }
+        }
+
+        function updateMediaVisibility() {
+            if (!mediaConsent || !mediaWrap) return;
+            const show = mediaConsent.value === "yes";
+            mediaWrap.classList.toggle("hidden", !show);
+            if (!show) {
+                mediaItems.length = 0;
+                if (mediaManifest) mediaManifest.value = "[]";
+                if (mediaLabel) mediaLabel.textContent = "No files selected";
+            }
+        }
+
+        function syncMediaManifest() {
+            if (mediaManifest) mediaManifest.value = JSON.stringify(mediaItems);
+            if (mediaLabel) mediaLabel.textContent = mediaItems.length ? `${mediaItems.length} file(s) selected` : "No files selected";
+        }
+
+        if (ratingField) {
+            ratingField.addEventListener("input", updateHint);
+            updateHint();
+        }
+
+        if (mediaConsent) {
+            mediaConsent.addEventListener("change", updateMediaVisibility);
+            updateMediaVisibility();
+        }
+
+        if (window.uploadcare) {
+            const widget = uploadcare.Widget("#feedback-media-widget");
+            widget.onUploadComplete(function (info) {
+                mediaItems.push({
+                    uuid: info.uuid || "",
+                    cdnUrl: info.cdnUrl || "",
+                    name: info.name || ""
+                });
+                syncMediaManifest();
+            });
+            widget.onChange(function (fileGroup) {
+                if (!fileGroup) {
+                    mediaItems.length = 0;
+                    syncMediaManifest();
+                }
+            });
+        }
+    })();
+</script>
+{% endblock %}

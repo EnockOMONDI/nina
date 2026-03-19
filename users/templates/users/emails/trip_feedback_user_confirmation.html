@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <body style="margin:0;padding:0;background-color:#f5f7fb;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color:#f5f7fb;padding:24px 0;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="640" cellspacing="0" cellpadding="0" style="background-color:#ffffff;border:1px solid #e6eaf0;border-radius:16px;overflow:hidden;">
+            <tr>
+              <td style="padding:20px 28px;background:#0f1e36;color:#ffffff;font-family:Arial,Helvetica,sans-serif;">
+                <h1 style="margin:0;font-size:20px;">Thank You for Your Feedback</h1>
+                <p style="margin:6px 0 0 0;font-size:13px;color:#dbe7ff;">Nina Tours &amp; Travel Ltd</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:24px 28px;color:#1f2937;font-family:Arial,Helvetica,sans-serif;">
+                <p style="margin:0 0 12px 0;line-height:1.6;">Hi {{ feedback.full_name }},</p>
+                <p style="margin:0 0 14px 0;line-height:1.6;color:#475569;">
+                  We have received your trip feedback. Thank you for taking time to help us improve our service.
+                </p>
+
+                {% if feedback.trip_name or feedback.destination %}
+                <div style="margin:0 0 16px 0;padding:14px;border:1px solid #edf2f7;border-radius:10px;background-color:#fbfcff;">
+                  <p style="margin:0 0 8px 0;color:#da176e;font-weight:bold;">Trip Details</p>
+                  {% if feedback.trip_name %}<p style="margin:0 0 4px 0;">Trip: {{ feedback.trip_name }}</p>{% endif %}
+                  {% if feedback.destination %}<p style="margin:0 0 4px 0;">Destination: {{ feedback.destination }}</p>{% endif %}
+                  {% if feedback.travel_date %}<p style="margin:0;">Travel Date: {{ feedback.travel_date }}</p>{% endif %}
+                </div>
+                {% endif %}
+
+                <p style="margin:0;color:#334155;line-height:1.6;">
+                  If you need support for your next trip, reply to this email and our team will assist.
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:16px 28px;border-top:1px solid #e9edf5;color:#64748b;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.6;">
+                <div><strong style="color:#334155;">Nina Tours &amp; Travel Ltd</strong></div>
+                <div>National Bank Building, Harambee Avenue, 2nd Floor, Nairobi, Kenya</div>
+                <div>
+                  <a href="tel:+254750787364" style="color:#da176e;text-decoration:none;">+254 750 787 364</a> |
+                  <a href="mailto:info@ninatoursandtravel.com" style="color:#da176e;text-decoration:none;">info@ninatoursandtravel.com</a>
+                  {% if site_url %}| <a href="{{ site_url }}" style="color:#da176e;text-decoration:none;">Visit Website</a>{% endif %}
+                </div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

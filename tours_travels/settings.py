@@ -246,6 +246,7 @@ UNFOLD = {
                     {"title": "Corporate Inquiries", "link": admin_nav.users_corporate_list, "badge": "tours_travels.admin_nav.unread_corporate_badge"},
                     {"title": "Package Quote Inquiries", "link": admin_nav.users_package_quote_list, "badge": "tours_travels.admin_nav.unread_package_quote_badge"},
                     {"title": "Hotel Inquiries", "link": admin_nav.users_hotel_inquiry_list, "badge": "tours_travels.admin_nav.unread_hotel_inquiry_badge"},
+                    {"title": "Trip Feedback", "link": admin_nav.users_trip_feedback_list, "badge": "tours_travels.admin_nav.unread_trip_feedback_badge"},
                     {"title": "Career Applications", "link": admin_nav.users_career_application_list, "badge": "tours_travels.admin_nav.unread_career_badge"},
                     {"title": "MICE Inquiries", "link": admin_nav.users_mice_list, "badge": "tours_travels.admin_nav.unread_mice_badge"},
                     {"title": "Student Travel", "link": admin_nav.users_student_list, "badge": "tours_travels.admin_nav.unread_student_badge"},

@@ -8,6 +8,7 @@ from users.views import (
     hotel_quote_view,
     inquiry_success_view,
     package_quote_view,
+    trip_feedback_view,
 )
 
 urlpatterns = [
@@ -24,6 +25,7 @@ urlpatterns = [
     path('corporates/', corporate_view, name='corporates'),
     path('inquiry-success/', inquiry_success_view, name='inquiry-success'),
     path('contact/', contact_view, name='contact'),
+    path('trip-feedback/', trip_feedback_view, name='trip-feedback'),
     path('quote/package/', package_quote_view, name='package-quote'),
     path('quote/hotel/', hotel_quote_view, name='hotel-quote'),
 ]

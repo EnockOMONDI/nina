@@ -258,3 +258,34 @@ def send_career_application_emails(application):
         admin_html,
         [getattr(settings, "JOBS_EMAIL", settings.ADMIN_EMAIL)] + extra_recipients,
     )
+
+
+def send_trip_feedback_emails(feedback):
+    user_subject = "Nina Tours: Thank you for sharing your trip feedback"
+    admin_subject = "NEW TRIP FEEDBACK"
+
+    extra_recipients = [
+        email.strip()
+        for email in getattr(settings, "EXTRA_EMAIL_RECIPIENTS", [])
+        if email.strip()
+    ]
+
+    site_url = getattr(settings, "SITE_URL", "").rstrip("/")
+    user_html = render_to_string(
+        "users/emails/trip_feedback_user_confirmation.html",
+        {
+            "feedback": feedback,
+            "site_url": site_url,
+        },
+    )
+    admin_html = render_to_string(
+        "users/emails/trip_feedback_admin_notification.html",
+        {
+            "feedback": feedback,
+            "site_url": site_url,
+            "admin_change_url": _admin_change_url("admin:users_tripfeedback_change", feedback.id),
+        },
+    )
+
+    send_email(user_subject, user_html, [feedback.email] + extra_recipients)
+    send_email(admin_subject, admin_html, [settings.ADMIN_EMAIL] + extra_recipients)

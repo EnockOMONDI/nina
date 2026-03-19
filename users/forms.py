@@ -1,4 +1,5 @@
 import re
+import json
 from urllib.parse import urlparse
 
 from django import forms
@@ -7,7 +8,7 @@ from django.utils import timezone
 
 from adminside.models import CareerJob, Hotel, PackageHotelOption
 
-from .models import CareerApplication, ContactInquiry, CorporateInquiry, HotelInquiry, PackageQuoteInquiry
+from .models import CareerApplication, ContactInquiry, CorporateInquiry, HotelInquiry, PackageQuoteInquiry, TripFeedback
 
 
 TRAVEL_CATEGORY_CHOICES = (
@@ -542,3 +543,211 @@ class CareerApplicationForm(forms.ModelForm):
             )
 
         return cleaned_data
+
+
+class TripFeedbackForm(forms.ModelForm):
+    YES_NO_CHOICES = (
+        ("", "Select"),
+        ("yes", "Yes"),
+        ("no", "No"),
+    )
+
+    EXPECTATION_CHOICES = (("", "Select"),) + TripFeedback.EXPECTATION_CHOICES
+    TRAVEL_AGAIN_CHOICES = (("", "Select"),) + TripFeedback.TRAVEL_AGAIN_CHOICES
+
+    CATEGORY_FIELDS = (
+        ("transport", "Transport"),
+        ("accommodation", "Accommodation"),
+        ("tour_guide_driver", "Tour Guide / Driver"),
+        ("communication", "Communication"),
+        ("activities", "Activities"),
+        ("value_for_money", "Value for Money"),
+        ("logistics", "Logistics"),
+        ("timeliness", "Timeliness"),
+        ("professionalism", "Professionalism"),
+        ("coordination", "Coordination"),
+    )
+
+    HIGHLIGHT_CHOICES = (
+        ("Scenery", "Scenery"),
+        ("Comfort", "Comfort"),
+        ("Organization", "Organization"),
+        ("Fun/Vibe", "Fun/Vibe"),
+        ("Customer Service", "Customer Service"),
+        ("Food", "Food"),
+        ("Activities", "Activities"),
+    )
+
+    can_feature_publicly = forms.TypedChoiceField(
+        choices=YES_NO_CHOICES,
+        required=False,
+        coerce=lambda val: True if val == "yes" else False if val == "no" else None,
+    )
+    can_use_media = forms.TypedChoiceField(
+        choices=YES_NO_CHOICES,
+        required=False,
+        coerce=lambda val: True if val == "yes" else False if val == "no" else None,
+    )
+    highlights_selected = forms.MultipleChoiceField(
+        choices=HIGHLIGHT_CHOICES,
+        required=False,
+        widget=forms.CheckboxSelectMultiple,
+    )
+    media_manifest = forms.CharField(required=False, widget=forms.HiddenInput())
+
+    # Per-category optional ratings (1-10). Saved into category_ratings JSON.
+    transport_rating = forms.IntegerField(required=False, min_value=1, max_value=10)
+    accommodation_rating = forms.IntegerField(required=False, min_value=1, max_value=10)
+    tour_guide_driver_rating = forms.IntegerField(required=False, min_value=1, max_value=10)
+    communication_rating = forms.IntegerField(required=False, min_value=1, max_value=10)
+    activities_rating = forms.IntegerField(required=False, min_value=1, max_value=10)
+    value_for_money_rating = forms.IntegerField(required=False, min_value=1, max_value=10)
+    logistics_rating = forms.IntegerField(required=False, min_value=1, max_value=10)
+    timeliness_rating = forms.IntegerField(required=False, min_value=1, max_value=10)
+    professionalism_rating = forms.IntegerField(required=False, min_value=1, max_value=10)
+    coordination_rating = forms.IntegerField(required=False, min_value=1, max_value=10)
+
+    class Meta:
+        model = TripFeedback
+        fields = [
+            "trip_name",
+            "destination",
+            "travel_date",
+            "full_name",
+            "email",
+            "phone",
+            "can_feature_publicly",
+            "overall_rating",
+            "likelihood_to_recommend",
+            "highlights_selected",
+            "best_part",
+            "improvements",
+            "testimonial",
+            "expectation_result",
+            "would_travel_again",
+            "interested_destinations",
+            "can_use_media",
+            "media_manifest",
+        ]
+        widgets = {
+            "travel_date": forms.DateInput(attrs={"type": "date"}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        input_class = (
+            "w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-slate-900 "
+            "focus:border-[#da176e] focus:ring-2 focus:ring-[#da176e]/15 outline-none"
+        )
+        select_class = input_class + " appearance-none"
+        textarea_class = input_class
+
+        self.fields["full_name"].required = True
+        self.fields["email"].required = True
+
+        self.fields["trip_name"].widget.attrs.update({"class": input_class, "placeholder": "e.g. 6 Days Mara Safari"})
+        self.fields["destination"].widget.attrs.update({"class": input_class, "placeholder": "e.g. Maasai Mara"})
+        self.fields["travel_date"].widget.attrs.update({"class": input_class})
+        self.fields["full_name"].widget.attrs.update({"class": input_class, "placeholder": "Your full name"})
+        self.fields["email"].widget.attrs.update({"class": input_class, "placeholder": "your@email.com"})
+        self.fields["phone"].widget.attrs.update({"class": input_class, "placeholder": "+254 7XX XXX XXX (optional)"})
+        self.fields["can_feature_publicly"].widget.attrs.update({"class": select_class})
+        self.fields["overall_rating"].widget.attrs.update({"class": input_class, "min": "1", "max": "10", "placeholder": "1 - 10"})
+        self.fields["likelihood_to_recommend"].widget.attrs.update({"class": input_class, "min": "0", "max": "10", "placeholder": "0 - 10"})
+        self.fields["best_part"].widget = forms.Textarea(
+            attrs={"class": textarea_class, "rows": 4, "placeholder": "What did you enjoy the most?"}
+        )
+        self.fields["improvements"].widget = forms.Textarea(
+            attrs={"class": textarea_class, "rows": 4, "placeholder": "What can we improve?"}
+        )
+        self.fields["testimonial"].widget = forms.Textarea(
+            attrs={"class": textarea_class, "rows": 4, "placeholder": "Write a short testimonial (optional)."}
+        )
+        self.fields["expectation_result"].widget.attrs.update({"class": select_class})
+        self.fields["would_travel_again"].widget.attrs.update({"class": select_class})
+        self.fields["interested_destinations"].widget = forms.Textarea(
+            attrs={"class": textarea_class, "rows": 3, "placeholder": "e.g. Zanzibar, Amboseli, Dubai"}
+        )
+        self.fields["can_use_media"].widget.attrs.update({"class": select_class, "id": "id_can_use_media"})
+
+        for key, _label in self.CATEGORY_FIELDS:
+            field_name = f"{key}_rating"
+            self.fields[field_name].widget.attrs.update(
+                {
+                    "class": input_class,
+                    "min": "1",
+                    "max": "10",
+                    "placeholder": "1 - 10",
+                }
+            )
+
+        self.category_field_rows = [
+            (label, self[f"{key}_rating"])
+            for key, label in self.CATEGORY_FIELDS
+        ]
+
+    def clean_media_manifest(self):
+        raw = (self.cleaned_data.get("media_manifest") or "").strip()
+        if not raw:
+            return []
+
+        try:
+            payload = json.loads(raw)
+        except json.JSONDecodeError:
+            raise forms.ValidationError("Invalid media upload payload.")
+
+        if not isinstance(payload, list):
+            raise forms.ValidationError("Invalid media upload payload.")
+
+        cleaned_items = []
+        for idx, item in enumerate(payload[:20]):
+            if not isinstance(item, dict):
+                continue
+
+            uuid = str(item.get("uuid", "")).strip()
+            cdn_url = str(item.get("cdnUrl", "")).strip()
+            name = str(item.get("name", "")).strip()
+
+            if not uuid or not cdn_url:
+                continue
+
+            if cdn_url.startswith("//"):
+                cdn_url = f"https:{cdn_url}"
+
+            parsed = urlparse(cdn_url)
+            host = parsed.netloc.lower()
+            allowed_hosts = ("ucarecdn.com", "uploadcare.com", "ucarecd.net")
+            host_allowed = any(host == domain or host.endswith(f".{domain}") for domain in allowed_hosts)
+            if parsed.scheme != "https" or not host_allowed:
+                raise forms.ValidationError(f"Invalid media file URL at item {idx + 1}.")
+
+            cleaned_items.append({"uuid": uuid, "cdnUrl": cdn_url, "name": name})
+
+        return cleaned_items
+
+    def clean(self):
+        cleaned_data = super().clean()
+        media_items = cleaned_data.get("media_manifest", [])
+        cleaned_data["_media_items"] = media_items if isinstance(media_items, list) else []
+        return cleaned_data
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+
+        category_ratings = {}
+        for key, label in self.CATEGORY_FIELDS:
+            value = self.cleaned_data.get(f"{key}_rating")
+            if value not in (None, ""):
+                category_ratings[label] = int(value)
+
+        instance.category_ratings = category_ratings
+        instance.highlights_selected = list(self.cleaned_data.get("highlights_selected") or [])
+
+        media_items = self.cleaned_data.get("_media_items", [])
+        instance.media_uuids = [item["uuid"] for item in media_items]
+        instance.media_urls = [item["cdnUrl"] for item in media_items]
+        instance.media_names = [item.get("name", "") for item in media_items]
+
+        if commit:
+            instance.save()
+        return instance
