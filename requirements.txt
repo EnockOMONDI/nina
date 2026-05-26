@@ -1,36 +1,36 @@
 # Django Framework
 Django==5.0.14
-django-unfold>=0.22.0
-django-ckeditor-5>=0.2.12
-django-crispy-forms>=2.1.0
-django-import-export>=3.3.7
-django-taggit>=5.0.1
-djangorestframework>=3.14.0
+django-unfold==0.87.0
+django-ckeditor-5==0.2.20
+django-crispy-forms==2.5
+django-import-export==4.4.0
+django-taggit==6.1.0
+djangorestframework==3.17.1
 
 # Database
-dj-database-url>=2.1.0
-psycopg2-binary>=2.9.6
+dj-database-url==3.1.2
+psycopg2-binary==2.9.11
 
 # Image & File Processing
-Pillow>=10.2.0
-pyuploadcare>=6.0.0
-pydantic>=2.5.0
+Pillow==12.2.0
+pyuploadcare==6.2.1
+pydantic==2.12.5
 
 # Email & Communication
-mailtrap>=2.0.0
+mailtrap==2.5.0
 
 # Server & Deployment
-gunicorn>=21.2.0
-whitenoise>=6.6.0
+gunicorn==25.3.0
+whitenoise==6.12.0
 
 # Background Tasks (Email Marketing)
-celery>=5.3.0
-redis>=4.5.0
-django-redis>=6.0.0
-django-ratelimit>=4.1.0
+celery==5.6.3
+redis==7.4.0
+django-redis==6.0.0
+django-ratelimit==4.1.0
 
 # Utilities
-python-decouple>=3.8
-python-dotenv>=1.0.1
-requests>=2.31.0
-shortuuid>=1.0.13
+python-decouple==3.8
+python-dotenv==1.2.2
+requests==2.33.1
+shortuuid==1.0.13
