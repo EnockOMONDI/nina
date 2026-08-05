@@ -35,7 +35,28 @@ BUDGET_RANGE_CHOICES = (
 )
 
 
-class ContactForm(forms.ModelForm):
+class SpamProtectedFormMixin:
+    website = forms.CharField(
+        required=False,
+        label="Website",
+        widget=forms.TextInput(
+            attrs={
+                "autocomplete": "off",
+                "tabindex": "-1",
+                "aria-hidden": "true",
+                "style": "position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;",
+            }
+        ),
+    )
+
+    def clean_website(self):
+        value = (self.cleaned_data.get("website") or "").strip()
+        if value:
+            raise forms.ValidationError("Invalid submission.")
+        return ""
+
+
+class ContactForm(SpamProtectedFormMixin, forms.ModelForm):
     subject = forms.ChoiceField(choices=TRAVEL_CATEGORY_CHOICES)
 
     class Meta:
@@ -105,7 +126,7 @@ class ContactForm(forms.ModelForm):
         self.fields["privacy_consent"].widget = forms.HiddenInput()
 
 
-class CorporateInquiryForm(forms.ModelForm):
+class CorporateInquiryForm(SpamProtectedFormMixin, forms.ModelForm):
     class Meta:
         model = CorporateInquiry
         fields = [
@@ -188,7 +209,7 @@ class CorporateInquiryForm(forms.ModelForm):
         )
 
 
-class PackageQuoteInquiryForm(forms.ModelForm):
+class PackageQuoteInquiryForm(SpamProtectedFormMixin, forms.ModelForm):
     hotel_option = forms.ChoiceField(required=False)
 
     class Meta:
@@ -311,7 +332,7 @@ class PackageQuoteInquiryForm(forms.ModelForm):
         )
 
 
-class HotelInquiryForm(forms.ModelForm):
+class HotelInquiryForm(SpamProtectedFormMixin, forms.ModelForm):
     class Meta:
         model = HotelInquiry
         fields = [
@@ -545,7 +566,7 @@ class CareerApplicationForm(forms.ModelForm):
         return cleaned_data
 
 
-class TripFeedbackForm(forms.ModelForm):
+class TripFeedbackForm(SpamProtectedFormMixin, forms.ModelForm):
     YES_NO_CHOICES = (
         ("", "Select"),
         ("yes", "Yes"),

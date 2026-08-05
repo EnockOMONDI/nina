@@ -20,7 +20,7 @@ class ContactInquiryEmailTests(TestCase):
             "email": "user@example.com",
             "phone": "0700000000",
             "company": "Test Co",
-            "subject": "Safari Experience",
+            "subject": "Tours, Holidays & Safaris",
             "message": "I want to plan a safari.",
             "privacy_consent": "on",
         }
@@ -36,8 +36,8 @@ class ContactInquiryEmailTests(TestCase):
 
         self.assertEqual(len(mail.outbox), 2)
         subjects = {email.subject for email in mail.outbox}
-        self.assertIn("We received your request", subjects)
-        self.assertIn("New contact inquiry", subjects)
+        self.assertIn("Nina Tours: We received your request", subjects)
+        self.assertIn("NEW CONTACT INQUIRY", subjects)
 
         to_addresses = {email.to[0] for email in mail.outbox}
         self.assertIn("user@example.com", to_addresses)
@@ -45,6 +45,80 @@ class ContactInquiryEmailTests(TestCase):
 
         for email in mail.outbox:
             self.assertEqual(email.from_email, "Ziada Tours and Travel <info@ziadatoursandtravel.com>")
+
+    @override_settings(
+        PUBLIC_FORM_BLOCKED_NAMES=["robertmus"],
+        PUBLIC_FORM_BLOCKED_EMAILS=[],
+        PUBLIC_FORM_BLOCKED_IPS=[],
+    )
+    def test_blocked_contact_name_is_not_saved_or_emailed(self):
+        payload = {
+            "full_name": "RobertMus",
+            "email": "blocked@example.com",
+            "phone": "0700000000",
+            "company": "Spam Co",
+            "subject": "Tours, Holidays & Safaris",
+            "message": "Spam submission.",
+            "privacy_consent": "on",
+        }
+
+        response = self.client.post(reverse("contact"), data=payload, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(ContactInquiry.objects.count(), 0)
+        self.assertEqual(len(mail.outbox), 0)
+        self.assertContains(response, "This sender has been blocked for spam")
+
+    @override_settings(
+        PUBLIC_FORM_BLOCKED_NAMES=[],
+        PUBLIC_FORM_BLOCKED_EMAILS=["blocked@example.com"],
+        PUBLIC_FORM_BLOCKED_IPS=[],
+    )
+    def test_blocked_contact_email_is_not_saved_or_emailed(self):
+        payload = {
+            "full_name": "Blocked User",
+            "email": "blocked@example.com",
+            "phone": "0700000000",
+            "company": "Spam Co",
+            "subject": "Tours, Holidays & Safaris",
+            "message": "Spam submission.",
+            "privacy_consent": "on",
+        }
+
+        response = self.client.post(reverse("contact"), data=payload, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(ContactInquiry.objects.count(), 0)
+        self.assertEqual(len(mail.outbox), 0)
+        self.assertContains(response, "This sender has been blocked for spam")
+
+    @override_settings(
+        PUBLIC_FORM_BLOCKED_NAMES=[],
+        PUBLIC_FORM_BLOCKED_EMAILS=[],
+        PUBLIC_FORM_BLOCKED_IPS=["203.0.113.10"],
+    )
+    def test_blocked_contact_forwarded_ip_is_not_saved_or_emailed(self):
+        payload = {
+            "full_name": "Blocked User",
+            "email": "user@example.com",
+            "phone": "0700000000",
+            "company": "Spam Co",
+            "subject": "Tours, Holidays & Safaris",
+            "message": "Spam submission.",
+            "privacy_consent": "on",
+        }
+
+        response = self.client.post(
+            reverse("contact"),
+            data=payload,
+            HTTP_X_FORWARDED_FOR="203.0.113.10, 10.0.0.1",
+            follow=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(ContactInquiry.objects.count(), 0)
+        self.assertEqual(len(mail.outbox), 0)
+        self.assertContains(response, "This sender has been blocked for spam")
 
 
 @override_settings(
@@ -77,8 +151,8 @@ class CorporateInquiryEmailTests(TestCase):
 
         self.assertEqual(len(mail.outbox), 2)
         subjects = {email.subject for email in mail.outbox}
-        self.assertIn("We received your corporate travel inquiry", subjects)
-        self.assertIn("New corporate inquiry", subjects)
+        self.assertIn("Nina Tours: We received your corporate travel inquiry", subjects)
+        self.assertIn("NEW CORPORATE INQUIRY", subjects)
 
         to_addresses = {email.to[0] for email in mail.outbox}
         self.assertIn("corp@example.com", to_addresses)
@@ -131,5 +205,5 @@ class PackageQuoteInquiryEmailTests(TestCase):
 
         self.assertEqual(len(mail.outbox), 2)
         subjects = {email.subject for email in mail.outbox}
-        self.assertIn(f"We received your quote request for {package.title}", subjects)
-        self.assertIn(f"New package quote inquiry - {package.title}", subjects)
+        self.assertIn(f"Nina Tours: We received your quote request for {package.title}", subjects)
+        self.assertIn(f"NEW PACKAGE QUOTE INQUIRY - {package.title}", subjects)

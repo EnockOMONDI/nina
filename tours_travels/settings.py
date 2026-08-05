@@ -166,6 +166,30 @@ EMAIL_TIMEOUT = config("EMAIL_TIMEOUT", default=10, cast=int)
 
 EMAIL_RATE_LIMIT_PER_MINUTE = config("EMAIL_RATE_LIMIT_PER_MINUTE", default=60, cast=int)
 EMAIL_RATE_LIMIT_PER_HOUR = config("EMAIL_RATE_LIMIT_PER_HOUR", default=100, cast=int)
+PUBLIC_FORM_RATE_LIMIT_IP = config("PUBLIC_FORM_RATE_LIMIT_IP", default="10/h")
+PUBLIC_FORM_RATE_LIMIT_EMAIL = config("PUBLIC_FORM_RATE_LIMIT_EMAIL", default="5/h")
+PUBLIC_FORM_BLOCKED_NAMES = [
+    item.strip().lower()
+    for item in config("PUBLIC_FORM_BLOCKED_NAMES", default="Sigojoky,RobertMus,alurgeola").split(",")
+    if item.strip()
+]
+PUBLIC_FORM_BLOCKED_EMAILS = [
+    item.strip().lower()
+    for item in config("PUBLIC_FORM_BLOCKED_EMAILS", default="").split(",")
+    if item.strip()
+]
+PUBLIC_FORM_BLOCKED_IPS = [
+    item.strip()
+    for item in config("PUBLIC_FORM_BLOCKED_IPS", default="").split(",")
+    if item.strip()
+]
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "nina-tours-local-cache",
+    }
+}
 
 GOOGLE_ANALYTICS_ID = config("GOOGLE_ANALYTICS_ID", default="")
 GOOGLE_TAG_MANAGER_ID = config("GOOGLE_TAG_MANAGER_ID", default="")

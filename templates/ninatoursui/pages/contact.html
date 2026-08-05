@@ -38,6 +38,7 @@
                     <form method="post" class="mt-6 space-y-5">
                         {% csrf_token %}
                         {{ form.privacy_consent }}
+                        <input type="text" name="website" autocomplete="off" tabindex="-1" aria-hidden="true" style="position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;">
 
                         {% if messages %}
                             {% for message in messages %}

@@ -27,7 +27,7 @@
                 </article>
 
                 <article class="hero-slide">
-                    <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1900&q=80" alt="Mountain lake" class="hero-media">
+                    <img src="{% static 'ninatours/hero-safari.jpg' %}" alt="Safari vehicle viewing giraffes" class="hero-media">
                     <div class="hero-overlay"></div>
                     <div class="hero-content">
                         <p class="hero-kicker">Tours, Safaris and Holidays</p>
@@ -62,15 +62,18 @@
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
         <div class="section-head">
             <h2 class="section-title">Corporate Travel, Safaris & Holidays Delivered with Care for Every Traveler.</h2>
-            <p class="section-copy">Expert guidance and complete support for every journey from start to finish,  so you can focus on the experience.</p>
+            <p class="section-copy">Expert guidance and complete support for every journey from start to finish, so you can focus on the experience.</p>
         </div>
-
-      
     </section>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+        {% include "ninatoursui/partials/student-testimonials.html" %}
+    </div>
+
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20">
         <div class="section-head flex-wrap gap-4">
             <div>
-                <h1 class="text-3xl sm:text-4xl font-extrabold text-[#0f2f5f] tracking-tight">Explore Polular Trips </h1>
+                <h1 class="text-3xl sm:text-4xl font-extrabold text-[#0f2f5f] tracking-tight">Explore Popular Trips</h1>
                 <div class="mt-4 flex flex-wrap items-center gap-2">
                     <a href="{% url 'home' %}?market=all" class="inline-flex items-center rounded-full px-4 py-2 text-sm font-bold transition-colors {% if selected_market == 'all' %}bg-[#da176e] text-white{% else %}bg-[#f8f4f8] text-[#0f2f5f] hover:bg-[#fde8f3]{% endif %}">
                         All Packages
@@ -184,8 +187,6 @@
         </div>
     </section>
 
-
-
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20">
         <div class="cta-panel">
             <div>
@@ -230,6 +231,66 @@
                 goTo((current + 1) % slides.length);
             }, 9500);
         }
+
+        document.querySelectorAll('[data-testimonial-stream]').forEach((stream) => {
+            const tabs = Array.from(stream.querySelectorAll('[data-testimonial-tab]'));
+            const panels = Array.from(stream.querySelectorAll('[data-testimonial-panel]'));
+            const dots = Array.from(stream.querySelectorAll('[data-testimonial-dot]'));
+            const prev = stream.querySelector('[data-testimonial-prev]');
+            const next = stream.querySelector('[data-testimonial-next]');
+            if (!tabs.length || tabs.length !== panels.length) return;
+
+            let currentTestimonial = 0;
+            let testimonialTimer = null;
+
+            const showTestimonial = (idx) => {
+                tabs[currentTestimonial].classList.remove('is-active');
+                panels[currentTestimonial].classList.remove('is-active');
+                if (dots[currentTestimonial]) dots[currentTestimonial].classList.remove('is-active');
+                currentTestimonial = idx;
+                tabs[currentTestimonial].classList.add('is-active');
+                panels[currentTestimonial].classList.add('is-active');
+                if (dots[currentTestimonial]) dots[currentTestimonial].classList.add('is-active');
+            };
+
+            const goNextTestimonial = () => showTestimonial((currentTestimonial + 1) % tabs.length);
+            const goPrevTestimonial = () => showTestimonial((currentTestimonial - 1 + tabs.length) % tabs.length);
+            const stopTestimonialAuto = () => {
+                if (!testimonialTimer) return;
+                clearInterval(testimonialTimer);
+                testimonialTimer = null;
+            };
+            const startTestimonialAuto = () => {
+                if (testimonialTimer) return;
+                testimonialTimer = setInterval(goNextTestimonial, 3000);
+            };
+
+            tabs.forEach((tab, idx) => tab.addEventListener('click', () => {
+                stopTestimonialAuto();
+                showTestimonial(idx);
+                startTestimonialAuto();
+            }));
+            dots.forEach((dot, idx) => dot.addEventListener('click', () => {
+                stopTestimonialAuto();
+                showTestimonial(idx);
+                startTestimonialAuto();
+            }));
+            if (prev) prev.addEventListener('click', () => {
+                stopTestimonialAuto();
+                goPrevTestimonial();
+                startTestimonialAuto();
+            });
+            if (next) next.addEventListener('click', () => {
+                stopTestimonialAuto();
+                goNextTestimonial();
+                startTestimonialAuto();
+            });
+            stream.addEventListener('mouseenter', stopTestimonialAuto);
+            stream.addEventListener('mouseleave', startTestimonialAuto);
+            stream.addEventListener('touchstart', stopTestimonialAuto, { passive: true });
+            stream.addEventListener('touchend', startTestimonialAuto, { passive: true });
+            startTestimonialAuto();
+        });
 
         const carousel = document.getElementById('package-carousel');
         const prev = document.getElementById('pkg-prev');

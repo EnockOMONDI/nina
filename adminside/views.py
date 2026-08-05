@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
 
 from users.forms import CareerApplicationForm
+from users.testimonials import get_student_testimonials
 
 from .models import CareerJob, Destination, Hotel, Package
 
@@ -64,6 +65,7 @@ def home(request):
         {
             "featured_packages": featured_packages,
             "selected_market": selected_market,
+            "student_testimonials": get_student_testimonials(),
         },
     )
 

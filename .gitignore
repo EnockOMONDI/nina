@@ -1,14 +1,11 @@
-# virtual envs
+# local environments
 env/
 venv/
 .venv/
 
+# secrets and machine-local config
 .env
 .env.*
-# local env + secrets
-.env
-.env.*
-.env.production
 !.env.example
 !.env.production.template
 
@@ -26,16 +23,21 @@ __pycache__/
 htmlcov/
 *.pyc
 *.pyo
+
 *.pyd
+
 # django/runtime
 db.sqlite3
 *.sqlite3
 /staticfiles/
 /media/
-.DS_Store
-.md
-*.md
 static/ninatours packages/*.docx
+
+# local documentation and analysis notes
+*.md
+*.MD
+*.Md
+*.mD
 
 # logs/temp
 *.log
@@ -45,4 +47,3 @@ tmp/
 *.bak
 *.swp
 .DS_Store
-

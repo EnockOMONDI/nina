@@ -1,0 +1,55 @@
+{% if student_testimonials %}
+<section class="student-testimonials" data-testimonial-stream>
+    <div class="student-testimonials-head">
+        <div>
+            <p class="section-kicker">World Scholars &amp; School Groups</p>
+            <p class="student-testimonials-label">Testimonials</p>
+            <h2 class="section-title">Student Travel Stories</h2>
+            <p class="section-copy">Feedback from school trips, academic travel groups, and student programs coordinated with care.</p>
+        </div>
+        <a href="{% url 'trip-feedback' %}" class="student-feedback-link">Share Feedback</a>
+    </div>
+
+    <div class="student-testimonial-layout">
+        <div class="student-review-rail" aria-label="Student travel testimonial list">
+            {% for testimonial in student_testimonials %}
+                <button class="student-review-tab{% if forloop.first %} is-active{% endif %}" type="button" data-testimonial-tab="{{ forloop.counter0 }}">
+                    <span class="student-review-meta">
+                        <span class="student-review-trip">{{ testimonial.program }}</span>
+                        {% if testimonial.source_url %}
+                            <a class="student-review-name" href="{{ testimonial.source_url }}" target="_blank" rel="noopener">{{ testimonial.name }}</a>
+                        {% else %}
+                            <span class="student-review-name">{{ testimonial.name }}</span>
+                        {% endif %}
+                        <span class="student-review-org">{{ testimonial.organization }}</span>
+                        <span class="student-review-rating">{{ testimonial.rating }} rating</span>
+                    </span>
+                </button>
+            {% endfor %}
+        </div>
+
+        <div class="student-quote-stage">
+            {% for testimonial in student_testimonials %}
+                <article class="student-quote-card{% if forloop.first %} is-active{% endif %}" data-testimonial-panel="{{ forloop.counter0 }}">
+                    <div class="student-quote-mark" aria-hidden="true">&ldquo;</div>
+                    <p class="student-quote-text">{{ testimonial.quote }}</p>
+                    <div class="student-quote-footer">
+                        <span class="student-context-chip">{{ testimonial.program }}</span>
+                        <span class="student-context-chip">{{ testimonial.meta }}</span>
+                    </div>
+                </article>
+            {% endfor %}
+
+            <div class="student-testimonial-controls">
+                <button class="control-btn" type="button" data-testimonial-prev aria-label="Previous testimonial">&#8592;</button>
+                <div class="student-testimonial-dots" aria-label="Student testimonial slides">
+                    {% for testimonial in student_testimonials %}
+                        <button class="student-testimonial-dot{% if forloop.first %} is-active{% endif %}" type="button" data-testimonial-dot="{{ forloop.counter0 }}" aria-label="Go to testimonial {{ forloop.counter }}"></button>
+                    {% endfor %}
+                </div>
+                <button class="control-btn" type="button" data-testimonial-next aria-label="Next testimonial">&#8594;</button>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}

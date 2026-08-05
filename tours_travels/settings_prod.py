@@ -33,6 +33,30 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
 EMAIL_TIMEOUT = int(os.getenv('EMAIL_TIMEOUT', EMAIL_TIMEOUT))
 EMAIL_RATE_LIMIT_PER_MINUTE = int(os.getenv('EMAIL_RATE_LIMIT_PER_MINUTE', EMAIL_RATE_LIMIT_PER_MINUTE))
 EMAIL_RATE_LIMIT_PER_HOUR = int(os.getenv('EMAIL_RATE_LIMIT_PER_HOUR', EMAIL_RATE_LIMIT_PER_HOUR))
+PUBLIC_FORM_RATE_LIMIT_IP = os.getenv('PUBLIC_FORM_RATE_LIMIT_IP', PUBLIC_FORM_RATE_LIMIT_IP)
+PUBLIC_FORM_RATE_LIMIT_EMAIL = os.getenv('PUBLIC_FORM_RATE_LIMIT_EMAIL', PUBLIC_FORM_RATE_LIMIT_EMAIL)
+PUBLIC_FORM_BLOCKED_NAMES = [
+    item.strip().lower()
+    for item in os.getenv('PUBLIC_FORM_BLOCKED_NAMES', ",".join(PUBLIC_FORM_BLOCKED_NAMES)).split(',')
+    if item.strip()
+]
+PUBLIC_FORM_BLOCKED_EMAILS = [
+    item.strip().lower()
+    for item in os.getenv('PUBLIC_FORM_BLOCKED_EMAILS', ",".join(PUBLIC_FORM_BLOCKED_EMAILS)).split(',')
+    if item.strip()
+]
+PUBLIC_FORM_BLOCKED_IPS = [
+    item.strip()
+    for item in os.getenv('PUBLIC_FORM_BLOCKED_IPS', ",".join(PUBLIC_FORM_BLOCKED_IPS)).split(',')
+    if item.strip()
+]
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+        "LOCATION": "site_cache",
+    }
+}
 
 GOOGLE_ANALYTICS_ID = os.getenv('GOOGLE_ANALYTICS_ID', GOOGLE_ANALYTICS_ID)
 GOOGLE_TAG_MANAGER_ID = os.getenv('GOOGLE_TAG_MANAGER_ID', GOOGLE_TAG_MANAGER_ID)

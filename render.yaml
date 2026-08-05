@@ -83,6 +83,16 @@ services:
         value: ""
       - key: EMAIL_TIMEOUT
         value: 10
+      - key: PUBLIC_FORM_RATE_LIMIT_IP
+        value: 10/h
+      - key: PUBLIC_FORM_RATE_LIMIT_EMAIL
+        value: 5/h
+      - key: PUBLIC_FORM_BLOCKED_NAMES
+        value: Sigojoky,RobertMus,alurgeola
+      - key: PUBLIC_FORM_BLOCKED_EMAILS
+        value: ""
+      - key: PUBLIC_FORM_BLOCKED_IPS
+        value: ""
 
 databases:
   - name: ziadatravel-db
