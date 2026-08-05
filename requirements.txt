@@ -1,6 +1,6 @@
 # Django Framework
 Django==5.0.14
-django-unfold==0.87.0
+django-unfold==0.63.0
 django-ckeditor-5==0.2.20
 django-crispy-forms==2.5
 django-import-export==4.4.0
