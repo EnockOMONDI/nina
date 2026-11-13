@@ -1,3 +1,5 @@
+from unittest.mock import Mock, patch
+
 from django.core import mail
 from django.test import TestCase, override_settings
 from django.urls import reverse
@@ -5,6 +7,7 @@ from django.urls import reverse
 from adminside.models import Package
 
 from .models import ContactInquiry, CorporateInquiry, PackageQuoteInquiry
+from .tasks import send_email
 
 
 @override_settings(
@@ -207,3 +210,40 @@ class PackageQuoteInquiryEmailTests(TestCase):
         subjects = {email.subject for email in mail.outbox}
         self.assertIn(f"Nina Tours: We received your quote request for {package.title}", subjects)
         self.assertIn(f"NEW PACKAGE QUOTE INQUIRY - {package.title}", subjects)
+
+
+@override_settings(
+    EMAIL_PROVIDER="resend",
+    RESEND_API_KEY="re_test_key",
+    RESEND_SENDER_EMAIL="info@ninatoursandtravel.com",
+    RESEND_SENDER_NAME="Nina Tours & Travel",
+    EMAIL_TIMEOUT=7,
+)
+class ResendEmailTests(TestCase):
+    @patch("users.tasks.requests.post")
+    def test_resend_provider_posts_verified_sender_and_recipients(self, post):
+        response = Mock(status_code=200, text='{"id":"email_123"}')
+        post.return_value = response
+
+        result = send_email(
+            "Test subject",
+            "<p>Test message</p>",
+            ["customer@example.com", "info@ninatoursandtravel.com"],
+        )
+
+        self.assertTrue(result)
+        post.assert_called_once_with(
+            "https://api.resend.com/emails",
+            headers={
+                "accept": "application/json",
+                "authorization": "Bearer re_test_key",
+                "content-type": "application/json",
+            },
+            json={
+                "from": "Nina Tours & Travel <info@ninatoursandtravel.com>",
+                "to": ["customer@example.com", "info@ninatoursandtravel.com"],
+                "subject": "Test subject",
+                "html": "<p>Test message</p>",
+            },
+            timeout=7,
+        )

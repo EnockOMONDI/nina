@@ -44,6 +44,8 @@ def send_email(subject, html_message, recipient_list):
         return send_email_via_mailtrap(subject, html_message, from_email, recipient_list)
     if provider in {"brevo_api", "brevo"}:
         return send_email_via_brevo_api(subject, html_message, from_email, recipient_list)
+    if provider in {"resend_api", "resend"}:
+        return send_email_via_resend(subject, html_message, from_email, recipient_list)
 
     email = EmailMessage(subject, html_message, from_email, recipient_list)
     email.content_subtype = "html"
@@ -98,6 +100,41 @@ def send_email_via_brevo_api(subject, html_message, from_email, recipient_list):
     )
     if response.status_code >= 400:
         raise RuntimeError(f"Brevo API send failed ({response.status_code}): {response.text[:300]}")
+    return True
+
+
+def send_email_via_resend(subject, html_message, from_email, recipient_list):
+    api_key = getattr(settings, "RESEND_API_KEY", "").strip()
+    if not api_key:
+        raise RuntimeError("Resend API key is missing. Set RESEND_API_KEY.")
+
+    recipients = [email.strip() for email in recipient_list if email and email.strip()]
+    if not recipients:
+        raise RuntimeError("Recipient list is empty.")
+
+    sender_email = getattr(settings, "RESEND_SENDER_EMAIL", "").strip()
+    sender_name = getattr(settings, "RESEND_SENDER_NAME", "Nina Tours & Travel").strip()
+    if not sender_email:
+        raise RuntimeError("Resend sender email is missing. Set RESEND_SENDER_EMAIL.")
+
+    sender = f"{sender_name} <{sender_email}>" if sender_name else sender_email
+    response = requests.post(
+        "https://api.resend.com/emails",
+        headers={
+            "accept": "application/json",
+            "authorization": f"Bearer {api_key}",
+            "content-type": "application/json",
+        },
+        json={
+            "from": sender,
+            "to": recipients,
+            "subject": subject,
+            "html": html_message,
+        },
+        timeout=getattr(settings, "EMAIL_TIMEOUT", 10),
+    )
+    if response.status_code >= 400:
+        raise RuntimeError(f"Resend API send failed ({response.status_code}): {response.text[:300]}")
     return True
 
 

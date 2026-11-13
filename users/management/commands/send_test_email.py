@@ -6,7 +6,7 @@ from users.tasks import send_contact_emails
 
 
 class Command(BaseCommand):
-    help = "Send a real test contact inquiry email via configured SMTP provider"
+    help = "Send a real test contact inquiry email via the configured provider"
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -24,16 +24,21 @@ class Command(BaseCommand):
         user_email = options["user_email"]
         admin_email = options["admin_email"] or settings.ADMIN_EMAIL
 
-        self.stdout.write(self.style.NOTICE("Starting SMTP test email..."))
+        self.stdout.write(self.style.NOTICE("Starting test email..."))
         self.stdout.write(self.style.NOTICE(f"EMAIL_PROVIDER={getattr(settings, 'EMAIL_PROVIDER', None)}"))
-        self.stdout.write(self.style.NOTICE(f"EMAIL_HOST={getattr(settings, 'EMAIL_HOST', None)}"))
-        self.stdout.write(self.style.NOTICE(f"EMAIL_PORT={getattr(settings, 'EMAIL_PORT', None)}"))
-        self.stdout.write(self.style.NOTICE(f"EMAIL_HOST_USER={getattr(settings, 'EMAIL_HOST_USER', None)}"))
         self.stdout.write(self.style.NOTICE(f"DEFAULT_FROM_EMAIL={getattr(settings, 'DEFAULT_FROM_EMAIL', None)}"))
         self.stdout.write(self.style.NOTICE(f"ADMIN_EMAIL={admin_email}"))
 
-        if getattr(settings, "EMAIL_HOST_PASSWORD", "").strip() in ("", "REPLACE_WITH_BREVO_SMTP_KEY"):
-            self.stdout.write(self.style.ERROR("EMAIL_HOST_PASSWORD is missing or placeholder. Update your .env."))
+        provider = str(getattr(settings, "EMAIL_PROVIDER", "smtp")).strip().lower()
+        if provider in {"resend", "resend_api"}:
+            if not getattr(settings, "RESEND_API_KEY", "").strip():
+                self.stdout.write(self.style.ERROR("RESEND_API_KEY is missing. Update the environment variables."))
+                return
+            if not getattr(settings, "RESEND_SENDER_EMAIL", "").strip():
+                self.stdout.write(self.style.ERROR("RESEND_SENDER_EMAIL is missing. Update the environment variables."))
+                return
+        elif getattr(settings, "EMAIL_HOST_PASSWORD", "").strip() in ("", "REPLACE_WITH_BREVO_SMTP_KEY"):
+            self.stdout.write(self.style.ERROR("EMAIL_HOST_PASSWORD is missing or placeholder. Update the environment variables."))
             return
 
         inquiry = ContactInquiry.objects.create(
